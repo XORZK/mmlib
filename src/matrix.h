@@ -2,12 +2,13 @@
 #define MATRIX_H
 
 #pragma once
+#include "MACROS.h"
 #include "vector.h"
 #include "rational.h"
 #include <iostream>
 #include <stdint.h>
 
-template <typename T> 
+template <typename T>
 class matrix {
     static_assert((std::is_arithmetic<T>::value || std::is_same<T, rat>::value),
                   "Matrix must contain arithmetic types.");
@@ -22,6 +23,12 @@ class matrix {
 
         matrix(uint64_t rows, uint64_t cols);
 
+        matrix(const matrix<T>& mat_2);
+
+        matrix(const matrix<T>& mat_2, uint64_t rows, uint64_t cols);
+
+        ~matrix();
+
         void fill(T value);
 
         vector<T>& operator[](uint64_t idx) const;
@@ -33,6 +40,8 @@ class matrix {
         matrix<T> operator-(const matrix<T>& mat_2) const;
 
         matrix<T> operator*(const matrix<T>& mat_2) const;
+
+        vector<T> operator*(const vector<T>& v2) const;
 
         template <typename U>
         operator matrix<U>() const;
@@ -60,7 +69,15 @@ class matrix {
         static matrix<T> P(uint64_t size, uint64_t i, uint64_t j);
 
         static matrix<T> P(uint64_t size, vector<uint64_t> swaps);
-} ;
+
+        static matrix<double> create_projection_matrix(const double b, const double t,
+                                                       const double l, const double r,
+                                                       const double n, const double f);
+
+        static matrix<double> create_2d_rotation_matrix(double theta = 0, bool deg = true);
+
+        static matrix<double> create_3d_rotation_matrix(double yaw = 0, double pitch = 0, double roll = 0, bool deg = true);
+};
 
 template <typename T> 
 std::ostream& operator<<(std::ostream& out, const matrix<T>& mat);
@@ -85,6 +102,35 @@ matrix<T>::matrix(uint64_t rows, uint64_t cols) : N(rows), M(cols) {
     for (uint64_t i = 0; i < this->N; i++) {
         this->vectors[i] = vector<T>::zero(this->M);
     }
+}
+
+template <typename T>
+matrix<T>::matrix(const matrix<T>& mat_2) : N(mat_2.get_rows()), M(mat_2.get_cols()) {
+    this->vectors = static_cast<vector<T>*>(malloc(sizeof(vector<T>) * this->N));
+
+    for (uint64_t i = 0; i < this->N; i++) {
+        this->vectors[i] = vector(mat_2[i]);
+    }
+}
+
+template <typename T>
+matrix<T>::matrix(const matrix<T>& mat_2, uint64_t rows, uint64_t cols) : N(rows), M(cols) { 
+    this->vectors = static_cast<vector<T>*>(malloc(sizeof(vector<T>) * this->N));
+
+    for (uint64_t i = 0; i < this->N; i++) {
+        this->vectors[i] = vector<T>::zero(this->M);
+    }
+
+    for (uint64_t i = 0; (i < mat_2.get_rows()) && (i < this->N); i++) {
+        for (uint64_t k = 0; (k < mat_2.get_cols()) && (k < this->M); k++) {
+            this->vectors[i][k] = mat_2[i][k];
+        }
+    }
+}
+
+template <typename T>
+matrix<T>::~matrix() {
+    free(this->vectors);
 }
 
 template <typename T>
@@ -153,6 +199,19 @@ matrix<T> matrix<T>::operator*(const matrix<T>& mat_2) const {
     }
 
     return p; 
+}
+
+template <typename T>
+vector<T> matrix<T>::operator*(const vector<T>& v2) const {
+    assert(v2.get_size() == this->M);
+
+    vector<T> prod(this->N);
+
+    for (uint64_t i = 0; i < this->N; i++) {
+        prod.push_back(this->vectors[i] * v2);
+    }
+    
+    return prod;
 }
 
 template <typename T> 
@@ -345,7 +404,7 @@ template <typename T>
 matrix<double> invert(matrix<T> mat) {
     assert(mat.is_square());
 
-    matrix<double> modified = static_cast<matrix<double>>(mat), I = matrix<double>::I(mat.get_rows());
+    matrix<double> modified = static_cast<matrix<double>>(mat), I = matrix<double>::I(mat.get_rows()), P = matrix<double>::I(mat.get_rows());
 
     if (!det(mat)) {
         return modified;
@@ -364,8 +423,9 @@ matrix<double> invert(matrix<T> mat) {
                 row_swap++;
             }
 
-            matrix<double> P = matrix<double>::P(rows, row_swap, i);
-            modified = P * modified;
+            matrix<double> row_exchange = matrix<double>::P(rows, row_swap, i);
+            modified = row_exchange * modified;
+            P = row_exchange * modified;
             pivot = modified[i][i];
         }
 
@@ -393,7 +453,68 @@ matrix<double> invert(matrix<T> mat) {
         I[i] /= pivot;
     }
 
-    return I;
+    return P * I;
+}
+
+/* Bottom, Top, Left, Right, Near, and Far Coordinates. */
+template <typename T>
+matrix<double> matrix<T>::create_projection_matrix(const double b, const double t,
+                                                   const double l, const double r,
+                                                   const double n, const double f) {
+    // initializing the projection matrix
+    matrix<double> P(4, 4);
+
+    P[0] = vector<double>(new double[]{(2*n)/(r-l),0,(r+l)/(r-l),0}, 4);
+
+    P[1] = vector<double>(new double[]{0,(2*n)/(t-b),(t+b)/(t-b),0}, 4);
+
+    P[2] = vector<double>(new double[]{0,0,-(f+n)/(f-n),(-2*f*n)/(f-n)}, 4);
+
+    P[3] = vector<double>(new double[]{0,0,-1,0}, 4);
+
+    return P;
+}
+
+template <typename T>
+matrix<double> matrix<T>::create_2d_rotation_matrix(double theta, bool deg) {
+    if (deg) {
+        theta *= M_PI/180;
+    }
+
+    matrix<double> R(2,2);
+
+    R[0] = vector<double>(new double[]{cos(theta), -sin(theta)});
+    R[1] = vector<double>(new double[]{sin(theta), cos(theta)});
+
+    return R;
+}
+
+// yaw: z, pitch: y, roll: x
+// degrees on default --> conversion is required
+template <typename T>
+matrix<double> matrix<T>::create_3d_rotation_matrix(double yaw, double pitch, double roll, bool deg) {
+    matrix<double> Rz(3,3), Ry(3,3), Rx(3,3);
+
+    if (deg) {
+        yaw *= M_PI/180;
+        pitch *= M_PI/180;
+        roll *= M_PI/180;
+    }
+
+    Rz[0] = vector<double>(new double[]{cos(yaw), -sin(yaw), 0}, 3);
+    Rz[1] = vector<double>(new double[]{sin(yaw), cos(yaw), 0}, 3);
+    Rz[2] = vector<double>(new double[]{0, 0, 1}, 3);
+
+    Ry[0] = vector<double>(new double[]{cos(pitch), 0, sin(pitch)}, 3);
+    Ry[1] = vector<double>(new double[]{0, 1, 0}, 3);
+    Ry[2] = vector<double>(new double[]{-sin(pitch), 0, cos(pitch)}, 3);
+
+    Rx[0] = vector<double>(new double[]{1, 0, 0}, 3);
+    Rx[1] = vector<double>(new double[]{0, cos(roll), -sin(roll)}, 3);
+    Rx[2] = vector<double>(new double[]{0, sin(roll), cos(roll)}, 3);
+
+
+    return (Rz * Ry * Rx);
 }
 
 #endif

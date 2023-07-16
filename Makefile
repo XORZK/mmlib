@@ -1,5 +1,5 @@
-IN=rational.cc main.cc
-OUT=main.exe
+IN=src/rational.cc src/window.cc src/color.cc src/camera.cc main.cc 
+OUT=main
 
 default:
-	g++ -std=c++17 -O3 -lm -I src/include -L src/lib $(IN) -o $(OUT) -lmingw32 -lSDL2
+	g++ -g -std=c++17 -O3 -lm -I src/include -L src/lib $(IN) -o $(OUT) -lSDL2 && ./$(OUT)

@@ -11,7 +11,6 @@ class rat {
         uint64_t Q;
 
         void simplify();
-
     public:
         rat(const int64_t p = 0, const uint64_t q = 1);
 

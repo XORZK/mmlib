@@ -4,12 +4,12 @@
 #pragma once
 #include "MACROS.h"
 #include "rational.h"
-#include <iostream>
 #include <algorithm>
-#include <type_traits>
 #include <assert.h>
+#include <iostream>
 #include <math.h>
 #include <stdint.h>
+#include <type_traits>
 
 template <typename T>
 class vector {
@@ -31,6 +31,10 @@ class vector {
 
         vector(T* d, uint64_t data_size);
 
+        vector(const vector<T>& v2);
+
+        ~vector();
+
         void fill(T value);
 
         T& operator[](uint64_t idx) const;
@@ -45,6 +49,8 @@ class vector {
         void operator/=(const U scalar);
 
         vector<T> operator+(const vector<T> v2) const;
+
+        void operator+=(const vector<T> v2);
 
         vector<T> operator+(const T value) const;
 
@@ -73,7 +79,19 @@ class vector {
 
         bool is_column() const;
 
+        vector<T> slice(uint64_t slice_idx);
+
         static vector<T> zero(uint64_t size);
+
+        static vector<T> create_vec2(T x, T y);
+
+        static vector<T> create_vec3(T x, T y, T z);
+
+        static vector<T> create_vec4(T x, T y, T z);
+
+        static vector<T> create_vec4(T x, T y, T z, T w);
+
+        static vector<T> create_vec4(const vector<T> v3);
 };
 
 template <typename T>
@@ -86,7 +104,9 @@ void vector<T>::widen(uint64_t new_capacity) {
     T* copy = static_cast<T*>(malloc(new_capacity * sizeof(T)));
 
     if (this->size != 0) {
-        std::copy(this->data, this->data + this->size, copy);
+        for (uint64_t i = 0; i < this->size; i++) {
+            copy[i] = this->data[i];
+        }
     }
 
     this->data = copy;
@@ -109,6 +129,20 @@ template <typename M> vector<T>::vector(M* dat, uint64_t dat_size): size(dat_siz
 template <typename T>
 vector<T>::vector(T* dat, uint64_t dat_size): size(dat_size), capacity(MAX(dat_size, 10)), data(dat) {}
 
+template <typename T>
+vector<T>::vector(const vector<T>& v2) {
+    this->data = static_cast<T*>(malloc(v2.get_size() * sizeof(T)));
+    this->size = v2.get_size();
+
+    for (uint64_t i = 0; i < this->size; i++) {
+        this->data[i] = v2[i];
+    }
+}
+
+template <typename T>
+vector<T>::~vector() {
+    free(this->data);
+}
 
 template <typename T> 
 void vector<T>::fill(T value) {
@@ -193,6 +227,15 @@ vector<T> vector<T>::operator+(const T value) const {
     }
 
     return s;
+}
+
+template <typename T>
+void vector<T>::operator+=(const vector<T> v2) {
+    assert(this->size == v2.get_size());
+
+    for (uint64_t i = 0; i < this->size; i++) {
+        this->data[i] += v2[i];
+    }
 }
 
 template <typename T>
@@ -290,6 +333,19 @@ void vector<T>::set_size(uint64_t new_size) {
     this->size = new_size;
 }
 
+// Slices upto (but not including) slice_idx
+template <typename T>
+vector<T> vector<T>::slice(uint64_t slice_idx) {
+    assert(this->size >= slice_idx);
+    vector<T> sliced(slice_idx);
+
+    for (uint64_t i = 0; i < slice_idx; i++) {
+        sliced.push_back(this->data[i]);
+    }
+
+    return sliced;
+}
+
 template <typename T>
 vector<T> vector<T>::zero(uint64_t s) {
     vector<T> z(s);
@@ -307,6 +363,36 @@ std::ostream& operator<<(std::ostream& out, const vector<T>& vec) {
     }
 
     return out;
+}
+
+template <typename T>
+vector<T> vector<T>::create_vec2(T x, T y) {
+    vector<T> point(new T[]{x,y}, 2);
+    return point;
+}
+
+template <typename T>
+vector<T> vector<T>::create_vec3(T x, T y, T z) {
+    vector<T> point(new T[]{x,y,z}, 3);
+    return point;
+}
+
+template <typename T>
+vector<T> vector<T>::create_vec4(T x, T y, T z) {
+    vector<T> point(new T[]{x,y,z,static_cast<T>(1)}, 4);
+    return point;
+}
+
+template <typename T>
+vector<T> vector<T>::create_vec4(T x, T y, T z, T w) {
+    vector<T> point(new T[]{x,y,z,w}, 4);
+    return point;
+}
+
+template <typename T>
+vector<T> vector<T>::create_vec4(const vector<T> v3) {
+    vector<T> point(new T[]{v3[0], v3[1], v3[2], (v3.get_size() == 3 ? static_cast<T>(1) : v3[4])}, 4);
+    return point;
 }
 
 #endif
