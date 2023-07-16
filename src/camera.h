@@ -21,8 +21,6 @@ class camera {
 
         camera(uint64_t width, uint64_t height, double fov);
 
-        ~camera();
-
         void compute_screen_coords(const double init_n, const double init_f);
 
         void translate(vector<int64_t> translation);

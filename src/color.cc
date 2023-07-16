@@ -15,9 +15,6 @@ color::color(uint8_t R,
     this->v4 = vector<uint8_t>(new uint8_t[]{R, G, B, A}, 4);
 }
 
-color::~color() {
-}
-
 uint8_t color::R() const {
     return this->v4[0];
 }

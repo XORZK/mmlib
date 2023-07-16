@@ -23,10 +23,6 @@ camera::camera(uint64_t width, uint64_t height, double fov) {
     this->pos = vector<int64_t>::zero(3);
 }
 
-camera::~camera() {
-}
-
-
 void camera::translate(vector<int64_t> translation) {
     this->pos += translation;
 }

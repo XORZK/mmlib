@@ -33,8 +33,6 @@ class vector {
 
         vector(const vector<T>& v2);
 
-        ~vector();
-
         void fill(T value);
 
         T& operator[](uint64_t idx) const;
@@ -137,11 +135,6 @@ vector<T>::vector(const vector<T>& v2) {
     for (uint64_t i = 0; i < this->size; i++) {
         this->data[i] = v2[i];
     }
-}
-
-template <typename T>
-vector<T>::~vector() {
-    free(this->data);
 }
 
 template <typename T> 

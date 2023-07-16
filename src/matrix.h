@@ -27,8 +27,6 @@ class matrix {
 
         matrix(const matrix<T>& mat_2, uint64_t rows, uint64_t cols);
 
-        ~matrix();
-
         void fill(T value);
 
         vector<T>& operator[](uint64_t idx) const;
@@ -126,11 +124,6 @@ matrix<T>::matrix(const matrix<T>& mat_2, uint64_t rows, uint64_t cols) : N(rows
             this->vectors[i][k] = mat_2[i][k];
         }
     }
-}
-
-template <typename T>
-matrix<T>::~matrix() {
-    free(this->vectors);
 }
 
 template <typename T>
