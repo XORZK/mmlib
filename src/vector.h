@@ -8,13 +8,12 @@
 #include <assert.h>
 #include <iostream>
 #include <math.h>
+#include <stdarg.h>
 #include <stdint.h>
 #include <type_traits>
 
 template <typename T>
 class vector {
-    static_assert((std::is_arithmetic<T>::value || std::is_same<T, rat>::value),
-                   "Vector must contain arithmetic types.");
     private:
         uint64_t size, capacity;
         T* data;
@@ -62,6 +61,10 @@ class vector {
         double magnitude() const;
 
         vector<double> normalize() const;
+
+        void remove(uint64_t idx);
+
+        void pop();
 
         void push_back(const T value); 
 
@@ -125,7 +128,7 @@ template <typename T>
 template <typename M> vector<T>::vector(M* dat, uint64_t dat_size): size(dat_size), capacity(MAX(dat_size, 10)), data(static_cast<T*>(dat)), column(false) {}
 
 template <typename T>
-vector<T>::vector(T* dat, uint64_t dat_size): size(dat_size), capacity(MAX(dat_size, 10)), data(dat) {}
+vector<T>::vector(T* dat, uint64_t dat_size): size(dat_size), capacity(MAX(dat_size, 10)), data(static_cast<T*>(dat)) {}
 
 template <typename T>
 vector<T>::vector(const vector<T>& v2) {
@@ -286,6 +289,26 @@ vector<double> vector<T>::normalize() const {
 }
 
 template <typename T>
+void vector<T>::remove(uint64_t idx) {
+    assert(idx >= 0 && idx < this->size);
+
+    T* copy = static_cast<T*>(malloc(sizeof(T) * (this->size-1)));
+
+    for (uint64_t i = 0; i < this->size; i++) {
+        if (i == idx) continue;
+        copy[i - (i > idx)] = this->data[i];
+    }
+
+    this->size--;
+    this->data = copy;
+}
+
+template <typename T>
+void vector<T>::pop() {
+    this->size = MAX(this->size-1, 0);
+}
+
+template <typename T>
 void vector<T>::push_back(const T value) {
     if (this->size >= this->capacity) {
         this->widen(this->size + 2);
@@ -351,8 +374,9 @@ vector<T> vector<T>::zero(uint64_t s) {
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const vector<T>& vec) {
+    out << "<";
     for (uint64_t i = 0; i < vec.get_size(); i++) {
-        out << "[" << vec[i] << "]" << (vec.is_column() && (i < vec.get_size()-1) ? "\n" : "");
+        out << vec[i] << (i < vec.get_size() - 1 ? "," : ">");
     }
 
     return out;

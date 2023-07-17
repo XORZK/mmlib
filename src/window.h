@@ -18,6 +18,7 @@
 
 class window {
     private:
+        int64_t angle = 0;
         camera *c;
         bool initialized, quit, paused;
         uint64_t delay, width, height;
@@ -34,6 +35,8 @@ class window {
         void set_render_color(color c);
 
         vector<double> convert_ndc(vector<double> ndc_vertex) const;
+
+        vector<vector<double>> triangulate(vector<vector<double>> vertices) const;
     public:
         window();
 
@@ -51,17 +54,52 @@ class window {
 
         void fill_bg(color c);
 
-        void draw_point(vector<int64_t> p);
+        void draw_point(vector<double> p);
 
-        void draw_point(vector<int64_t> p, color c);
+        void draw_point(vector<double> p, color c);
 
-        void draw_line(vector<int64_t> p1, vector<int64_t> p2);
+        void draw_line(vector<double> p1, vector<double> p2);
 
-        void draw_line(vector<int64_t> p1, vector<int64_t> p2, color c);
+        void draw_line(vector<double> p1, vector<double> p2, color c);
 
-        void draw_circle(vector<int64_t> center, uint64_t radius);
+        void draw_circle(vector<double> center, uint64_t radius, bool fill = false);
 
-        void draw_circle(vector<int64_t> center, uint64_t radius, color c);
+        void draw_circle(vector<double> center, uint64_t radius, color c, bool fill = false );
+
+        void draw_wireframe_triangle(vector<double> p1, 
+                                     vector<double> p2, 
+                                     vector<double> p3);
+
+        void draw_wireframe_triangle(vector<double> p1, 
+                                     vector<double> p2, 
+                                     vector<double> p3,
+                                     color c);
+
+        void draw_filled_triangle(vector<double> p1,
+                                  vector<double> p2, 
+                                  vector<double> p3);
+
+        void draw_filled_triangle(vector<double> p1,
+                                  vector<double> p2, 
+                                  vector<double> p3,
+                                  color outline,
+                                  color fill);
+
+        void draw_filled_triangle(vector<double> p1,
+                                  vector<double> p2,
+                                  vector<double> p3,
+                                  color c);
+
+        void draw_wireframe_quadrilateral(vector<double> p1,
+                                          vector<double> p2,
+                                          vector<double> p3,
+                                          vector<double> p4);
+
+        void draw_wireframe_quadrilateral(vector<double> p1,
+                                          vector<double> p2,
+                                          vector<double> p3,
+                                          vector<double> p4,
+                                          color c);
 
         void run();
 

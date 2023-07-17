@@ -101,7 +101,7 @@ void window::fill_bg(color c) {
     SDL_RenderClear(this->r);
 }
 
-void window::draw_point(vector<int64_t> p) {
+void window::draw_point(vector<double> p) {
     if (p.get_size() == 3) {
         p = vector<double>::create_vec4(p);
     }
@@ -115,12 +115,12 @@ void window::draw_point(vector<int64_t> p) {
     } 
 }
 
-void window::draw_point(vector<int64_t> p, color c) {
+void window::draw_point(vector<double> p, color c) {
     this->set_render_color(c);
     this->draw_point(p);
 }
 
-void window::draw_line(vector<int64_t> p1, vector<int64_t> p2) {
+void window::draw_line(vector<double> p1, vector<double> p2) {
     if (p1.get_size() == 3 || p1.get_size() == 4) {
         p1 = this->convert_ndc(c->get_ndc_vertex(p1));
     }
@@ -132,18 +132,18 @@ void window::draw_line(vector<int64_t> p1, vector<int64_t> p2) {
     SDL_RenderDrawLine(this->r, p1[0], p1[1], p2[0], p2[1]);
 }
 
-void window::draw_line(vector<int64_t> p1, vector<int64_t> p2, color c) {
+void window::draw_line(vector<double> p1, vector<double> p2, color c) {
     this->set_render_color(c);
     this->draw_line(p1, p2);
 }
 
 // Implements Bresenham's Circle Drawing Algorithm
-void window::draw_circle(vector<int64_t> center, uint64_t radius) {
+void window::draw_circle(vector<double> center, uint64_t radius, bool fill) {
     // From { x, y } => { x, y, 1 }
     // Adjusting from 3D points to 2D points
     if (center.get_size() == 3 || center.get_size() == 4) {
         vector<double> adjusted_center = this->convert_ndc(c->get_ndc_vertex(center));
-        vector<double> top_point = this->convert_ndc(c->get_ndc_vertex(vector<int64_t>::create_vec3(center[0], center[1] + radius, center[2])));
+        vector<double> top_point = this->convert_ndc(c->get_ndc_vertex(vector<double>::create_vec3(center[0], center[1] + radius, center[2])));
 
         radius = static_cast<uint64_t>(top_point[1] - adjusted_center[1]);
         center = adjusted_center.slice(2);
@@ -153,15 +153,28 @@ void window::draw_circle(vector<int64_t> center, uint64_t radius) {
     int64_t x = 0, y = static_cast<int64_t>(radius);
 
     do {
-        this->draw_point(center + vector<int64_t>::create_vec2(x, y));
-        this->draw_point(center + vector<int64_t>::create_vec2(-x, y));
-        this->draw_point(center + vector<int64_t>::create_vec2(x, -y));
-        this->draw_point(center + vector<int64_t>::create_vec2(-x, -y));
+        // Fill from (x,y) to (x,-y), (y,x) to (y,-x),
+        // (-x,-y) to (-x,y), (-y,-x) to (-y,x)
+        if (fill) {
+            this->draw_line(center + vector<double>::create_vec2(x,y),
+                            center + vector<double>::create_vec2(x, -y));
+            this->draw_line(center + vector<double>::create_vec2(y,x),
+                            center + vector<double>::create_vec2(y, -x));
+            this->draw_line(center - vector<double>::create_vec2(x,y),
+                            center - vector<double>::create_vec2(x, -y));
+            this->draw_line(center - vector<double>::create_vec2(y,x),
+                            center - vector<double>::create_vec2(y, -x));
+        } else {
+            this->draw_point(center + vector<double>::create_vec2(x, y));
+            this->draw_point(center + vector<double>::create_vec2(-x, y));
+            this->draw_point(center + vector<double>::create_vec2(x, -y));
+            this->draw_point(center + vector<double>::create_vec2(-x, -y));
 
-        this->draw_point(center + vector<int64_t>::create_vec2(y, x));
-        this->draw_point(center + vector<int64_t>::create_vec2(-y, x));
-        this->draw_point(center + vector<int64_t>::create_vec2(y, -x));
-        this->draw_point(center + vector<int64_t>::create_vec2(-y, -x));
+            this->draw_point(center + vector<double>::create_vec2(y, x));
+            this->draw_point(center + vector<double>::create_vec2(-y, x));
+            this->draw_point(center + vector<double>::create_vec2(y, -x));
+            this->draw_point(center + vector<double>::create_vec2(-y, -x));
+        }
 
         // y is inside circle
         if (d <= 0) {
@@ -175,9 +188,72 @@ void window::draw_circle(vector<int64_t> center, uint64_t radius) {
     } while (x < y);
 }
 
-void window::draw_circle(vector<int64_t> center, uint64_t radius, color c) {
+void window::draw_circle(vector<double> center, uint64_t radius, color c, bool fill) {
     this->set_render_color(c);
-    this->draw_circle(center, radius);
+    this->draw_circle(center, radius, fill);
+}
+
+void window::draw_wireframe_triangle(vector<double> p1,
+                                     vector<double> p2,
+                                     vector<double> p3) {
+    this->draw_line(p1, p2);
+    this->draw_line(p1, p3);
+}
+
+void window::draw_wireframe_triangle(vector<double> p1,
+                                     vector<double> p2,
+                                     vector<double> p3,
+                                     color c) {
+    this->set_render_color(c);
+    this->draw_line(p1, p2);
+    this->draw_line(p1, p3);
+    this->draw_line(p2, p3);
+}
+
+// Assume p1, p2, and p3 are 2D vertices NDC
+void window::draw_filled_triangle(vector<double> p1, 
+                                  vector<double> p2,
+                                  vector<double> p3) {
+    if (p1.get_size() == 3 || p1.get_size() == 4) { p1 = this->convert_ndc(c->get_ndc_vertex(p1)); }
+    if (p2.get_size() == 3 || p2.get_size() == 4) { p2 = this->convert_ndc(c->get_ndc_vertex(p2)); }
+    if (p3.get_size() == 3 || p3.get_size() == 4) { p3 = this->convert_ndc(c->get_ndc_vertex(p3)); }
+
+    // Sort vertexes by ascending y value (p1, p2, p3) such that p1.y < p2.y < p3.y
+    if (p2[1] < p1[1]) { std::swap(p2, p1); }
+    if (p3[1] < p1[1]) { std::swap(p3, p1); }
+    if (p3[1] < p2[1] || (p2[1] == p3[1] && p3[0] == p1[0])) { std::swap(p3, p2); } 
+
+    double boundary = p2[1];
+
+    // increment y at every step, and draw a line between x1 and x2.
+    for (uint64_t y = p1[1]+1; y < p3[1]; y++) {
+        // figure out which edges in the triangle the y point lies within.
+        // if y < boundary: slopes 1->2, 1->3, otherwise slopes: 2->3, 1->3
+        double x1 = (y <= boundary ? interp<double>(p1[0], p1[1], p2[0], p2[1], y) : 
+                                     interp<double>(p2[0], p2[1], p3[0], p3[1], y)); 
+
+        double x2 = interp<double>(p1[0], p1[1], p3[0], p3[1], y);
+
+        this->draw_line(vector<double>::create_vec2(x1, y),
+                        vector<double>::create_vec2(x2, y));
+    }
+}
+
+void window::draw_filled_triangle(vector<double> p1,
+                                  vector<double> p2,
+                                  vector<double> p3,
+                                  color outline,
+                                  color fill) {
+    this->set_render_color(fill);
+    this->draw_filled_triangle(p1, p2, p3);
+    this->draw_wireframe_triangle(p1, p2, p3, outline);
+}
+
+void window::draw_filled_triangle(vector<double> p1,
+                                  vector<double> p2,
+                                  vector<double> p3,
+                                  color c) {
+    this->draw_filled_triangle(p1, p2, p3, c, c);
 }
 
 void window::run() {
@@ -186,33 +262,38 @@ void window::run() {
             if (this->event.type == SDL_QUIT) {
                 this->quit = true;
             }
+
+            if (this->event.type == SDL_KEYDOWN) {
+                switch (this->event.key.keysym.sym) {
+                    case (SDLK_SPACE): {
+                        this->paused = 1-this->paused;
+                        break;
+                    }
+
+                    default: break;
+                }
+            }
         }
 
-        this->draw();
+        if (!this->paused) {
+            this->draw();
+        }
     }
 }
 
 void window::draw() {
-    /*uint64_t length = 8;
+    this->fill_bg(color(0, 0, 0));
 
-    vector<double>* vertices = new vector<double>[]{
-        vector<double>::create_vec4(-5, -5, -10),
-        vector<double>::create_vec4(-5, -5, -9),
-        vector<double>::create_vec4(-5, 5, -10),
-        vector<double>::create_vec4(-5, 5, -9),
-        vector<double>::create_vec4(5, -5, -10),
-        vector<double>::create_vec4(5, -5, -9),
-        vector<double>::create_vec4(5, 5, -10),
-        vector<double>::create_vec4(5, 5, -9),
-    };
+    matrix<double> R = matrix<double>::create_x_rotation(this->angle++, true);
 
-    for (uint64_t i = 0; i < length; i++) {
-        this->draw_point(vertices[i]);
-    }*/
+    color g(0, 255, 0);
+    color r(255,0,0);
 
-
-    color c(255,0,0);
-    this->draw_circle(vector<double>::create_vec3(0, 0, -100), 30, c);
+    this->draw_filled_triangle(R * vector<double>::create_vec3(-0.25, 0, -3),
+                               R * vector<double>::create_vec3(-0.25, 0.25, -3),
+                               R * vector<double>::create_vec3(0.25, 0, -3),
+                               g, r);
 
     SDL_RenderPresent(this->r);
+    SDL_Delay(this->delay);
 }

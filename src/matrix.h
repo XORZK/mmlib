@@ -5,17 +5,15 @@
 #include "MACROS.h"
 #include "vector.h"
 #include "rational.h"
+#include <functional>
 #include <iostream>
 #include <stdint.h>
 
 template <typename T>
 class matrix {
-    static_assert((std::is_arithmetic<T>::value || std::is_same<T, rat>::value),
-                  "Matrix must contain arithmetic types.");
     private:
         uint64_t N, M;
         vector<T>* vectors;
-
     public:
         matrix();
 
@@ -28,6 +26,8 @@ class matrix {
         matrix(const matrix<T>& mat_2, uint64_t rows, uint64_t cols);
 
         void fill(T value);
+
+        void fill(std::function<T(uint64_t, uint64_t)> f);
 
         vector<T>& operator[](uint64_t idx) const;
 
@@ -74,7 +74,13 @@ class matrix {
 
         static matrix<double> create_2d_rotation_matrix(double theta = 0, bool deg = true);
 
-        static matrix<double> create_3d_rotation_matrix(double yaw = 0, double pitch = 0, double roll = 0, bool deg = true);
+        static matrix<double> create_3d_rotation_matrix(double alpha = 0, double beta = 0, double gamma = 0, bool deg = true);
+
+        static matrix<double> create_z_rotation(double alpha, bool deg = true);
+
+        static matrix<double> create_y_rotation(double beta, bool deg = true);
+        
+        static matrix<double> create_x_rotation(double gamma, bool deg = true);
 };
 
 template <typename T> 
@@ -130,6 +136,15 @@ template <typename T>
 void matrix<T>::fill(T value) {
     for (uint64_t i = 0; i < this->N; i++) {
         this->vectors[i].fill(value);
+    }
+}
+
+template <typename T>
+void matrix<T>::fill(std::function<T(uint64_t, uint64_t)> f) {
+    for (uint64_t i = 0; i < this->N; i++) {
+        for (uint64_t k = 0; k < this->M; k++) {
+            this->vectors[i][k] = f(i, k);
+        }
     }
 }
 
@@ -485,29 +500,56 @@ matrix<double> matrix<T>::create_2d_rotation_matrix(double theta, bool deg) {
 // yaw: z, pitch: y, roll: x
 // degrees on default --> conversion is required
 template <typename T>
-matrix<double> matrix<T>::create_3d_rotation_matrix(double yaw, double pitch, double roll, bool deg) {
-    matrix<double> Rz(3,3), Ry(3,3), Rx(3,3);
-
-    if (deg) {
-        yaw *= M_PI/180;
-        pitch *= M_PI/180;
-        roll *= M_PI/180;
-    }
-
-    Rz[0] = vector<double>(new double[]{cos(yaw), -sin(yaw), 0}, 3);
-    Rz[1] = vector<double>(new double[]{sin(yaw), cos(yaw), 0}, 3);
-    Rz[2] = vector<double>(new double[]{0, 0, 1}, 3);
-
-    Ry[0] = vector<double>(new double[]{cos(pitch), 0, sin(pitch)}, 3);
-    Ry[1] = vector<double>(new double[]{0, 1, 0}, 3);
-    Ry[2] = vector<double>(new double[]{-sin(pitch), 0, cos(pitch)}, 3);
-
-    Rx[0] = vector<double>(new double[]{1, 0, 0}, 3);
-    Rx[1] = vector<double>(new double[]{0, cos(roll), -sin(roll)}, 3);
-    Rx[2] = vector<double>(new double[]{0, sin(roll), cos(roll)}, 3);
-
+matrix<double> matrix<T>::create_3d_rotation_matrix(double alpha, double beta, double gamma, bool deg) {
+    matrix<double> Rz = matrix<T>::create_z_rotation(alpha, deg),
+                   Ry = matrix<T>::create_y_rotation(beta, deg),
+                   Rx = matrix<T>::create_x_rotation(gamma, deg);
 
     return (Rz * Ry * Rx);
+}
+
+template <typename T>
+matrix<double> matrix<T>::create_z_rotation(double alpha, bool deg) {
+    if (deg) {
+        alpha *= M_PI/180;
+    }
+
+    matrix<double> Rz(3,3);
+    Rz[0] = vector<double>(new double[]{cos(alpha), -sin(alpha), 0}, 3);
+    Rz[1] = vector<double>(new double[]{sin(alpha), cos(alpha), 0}, 3);
+    Rz[2] = vector<double>(new double[]{0, 0, 1}, 3);
+
+    return Rz;
+}
+
+template <typename T>
+matrix<double> matrix<T>::create_y_rotation(double beta, bool deg) {
+    if (deg) {
+        beta *= M_PI/180;
+    }
+
+    matrix<double> Ry(3,3);
+
+    Ry[0] = vector<double>(new double[]{cos(beta), 0, sin(beta)}, 3);
+    Ry[1] = vector<double>(new double[]{0, 1, 0}, 3);
+    Ry[2] = vector<double>(new double[]{-sin(beta), 0, cos(beta)}, 3);
+
+    return Ry;
+}
+
+template <typename T>
+matrix<double> matrix<T>::create_x_rotation(double gamma, bool deg) {
+    if (deg) {
+        gamma *= M_PI/180;
+    }
+
+    matrix<double> Rx(3, 3);
+
+    Rx[0] = vector<double>(new double[]{1, 0, 0}, 3);
+    Rx[1] = vector<double>(new double[]{0, cos(gamma), -sin(gamma)}, 3);
+    Rx[2] = vector<double>(new double[]{0, sin(gamma), cos(gamma)}, 3);
+
+    return Rx;
 }
 
 #endif
