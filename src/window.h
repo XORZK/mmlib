@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "color.h"
 #include "matrix.h"
+#include "triangle.h"
 #include "vector.h"
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -85,12 +86,29 @@ class window {
                                   color outline,
                                   color fill);
 
+
         void draw_filled_triangle(vector<double> p1,
                                   vector<double> p2,
                                   vector<double> p3,
                                   color c);
 
-        void draw_wireframe_polygon();
+        void draw_wireframe_triangle(triangle t);
+
+        void draw_wireframe_triangle(triangle t, color c);
+
+        void draw_filled_triangle(triangle t);
+
+        void draw_filled_triangle(triangle t, color outline, color fill);
+
+        void draw_filled_triangle(triangle t, color c);
+
+        void draw_wireframe_polygon(vector<vector<double>> vertices);
+
+        void draw_wireframe_polygon(vector<vector<double>> vertices, color c);
+
+        void draw_filled_polygon(vector<vector<double>> vertices);
+
+        void draw_filled_polygon(vector<vector<double>> vertices, color c);
 
         void run();
 

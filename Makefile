@@ -1,4 +1,4 @@
-IN=src/rational.cc src/window.cc src/color.cc src/camera.cc main.cc 
+IN=src/rational.cc src/window.cc src/color.cc src/camera.cc src/triangle.cc main.cc 
 OUT=main
 
 default:

@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <functional>
+#include "src/triangle.h"
 #include "src/window.h"
 
 int main() {
@@ -23,7 +24,7 @@ int main() {
 
     vector<vector<double>> points = vector<vector<double>>(new vector<double>[]{P5, P4, P6, P2, P1, P3, P8, P7}, 8);
 
-    vector<vector<vector<double>>> t = triangulate(points);
+    vector<triangle> t = triangulate(points);
 
     for (uint64_t i = 0; i < t.get_size(); i++) {
         std::cout << t[i] << "\n";

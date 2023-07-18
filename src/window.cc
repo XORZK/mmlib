@@ -198,6 +198,7 @@ void window::draw_wireframe_triangle(vector<double> p1,
                                      vector<double> p3) {
     this->draw_line(p1, p2);
     this->draw_line(p1, p3);
+    this->draw_line(p2, p3);
 }
 
 void window::draw_wireframe_triangle(vector<double> p1,
@@ -205,9 +206,7 @@ void window::draw_wireframe_triangle(vector<double> p1,
                                      vector<double> p3,
                                      color c) {
     this->set_render_color(c);
-    this->draw_line(p1, p2);
-    this->draw_line(p1, p3);
-    this->draw_line(p2, p3);
+    this->draw_wireframe_triangle(p1, p2, p3);
 }
 
 // Assume p1, p2, and p3 are 2D vertices NDC
@@ -256,6 +255,52 @@ void window::draw_filled_triangle(vector<double> p1,
     this->draw_filled_triangle(p1, p2, p3, c, c);
 }
 
+void window::draw_wireframe_triangle(triangle t) {
+    this->draw_wireframe_triangle(t.v1(), t.v2(), t.v3());
+}
+
+void window::draw_wireframe_triangle(triangle t, color c) {
+    this->draw_wireframe_triangle(t.v1(), t.v2(), t.v3(), c);
+}
+
+void window::draw_filled_triangle(triangle t) {
+    this->draw_filled_triangle(t.v1(), t.v2(), t.v3());
+}
+
+void window::draw_filled_triangle(triangle t, color outline, color fill) {
+    this->draw_filled_triangle(t.v1(), t.v2(), t.v3(), outline, fill);
+}
+
+void window::draw_filled_triangle(triangle t, color c) {
+    this->draw_filled_triangle(t.v1(), t.v2(), t.v3(), c);
+}
+
+void window::draw_wireframe_polygon(vector<vector<double>> vertices) {
+    vector<triangle> t = triangulate(vertices);
+
+    for (uint64_t i = 0; i < t.get_size(); i++) {
+        this->draw_wireframe_triangle(t[i]);
+    }
+}
+
+void window::draw_wireframe_polygon(vector<vector<double>> vertices, color c) {
+    this->set_render_color(c);
+    this->draw_wireframe_polygon(vertices);
+}
+
+void window::draw_filled_polygon(vector<vector<double>> vertices) {
+    vector<triangle> t = triangulate(vertices);
+
+    for (uint64_t i = 0; i < t.get_size(); i++) {
+        this->draw_filled_triangle(t[i]);
+    }
+}
+
+void window::draw_filled_polygon(vector<vector<double>> vertices, color c) {
+    this->set_render_color(c);
+    this->draw_filled_polygon(vertices);
+}
+
 void window::run() {
     while (!this->quit) {
         while (SDL_PollEvent(&this->event)) {
@@ -281,18 +326,28 @@ void window::run() {
     }
 }
 
+
 void window::draw() {
     this->fill_bg(color(0, 0, 0));
 
     matrix<double> R = matrix<double>::create_x_rotation(this->angle++, true);
 
     color g(0, 255, 0);
-    color r(255,0,0);
 
-    this->draw_filled_triangle(R * create_vec3<double>(-0.25, 0, -3),
-                               R * create_vec3<double>(-0.25, 0.25, -3),
-                               R * create_vec3<double>(0.25, 0, -3),
-                               g, r);
+    this->set_render_color(g);
+
+    vector<double> P1 = create_vec3(0,0,-10),
+                   P2 = create_vec3(1,0,-10),
+                   P3 = create_vec3(4,2,-10),
+                   P4 = create_vec3(5,4,-10),
+                   P5 = create_vec3(4,6,-10),
+                   P6 = create_vec3(3,5,-10),
+                   P7 = create_vec3(2,8,-10),
+                   P8 = create_vec3(-1,4,-10);
+
+    vector<vector<double>> points = vector<vector<double>>(new vector<double>[]{P5, P4, P6, P2, P1, P3, P8, P7}, 8);
+
+    this->draw_filled_polygon(points);
 
     SDL_RenderPresent(this->r);
     SDL_Delay(this->delay);
