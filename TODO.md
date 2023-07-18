@@ -13,12 +13,13 @@
     - Homogenous vector <x,y,z,w> corresponds to the position vector <x/w, y/w, z/w>.
     - Combining the Orthographic Projection and Perspective Matrix gives the Perspective Projection Matrix.
     - From NDC -> Screen: Multiply by (width/2, height/2) + (width/2, height/2) --> (x + 1) * (width/2, height/2)
+- Draw Polygons --> Triangulation (Ear Clipping Method => O(n^3) -> O(n^2)) [x]
+    - Sort vertices --> Clockwise? Counter-Clockwise? (Change from Bubble to Merge Later)
+    - Triangulation can be done recursively until only one triangle remains.
+    - Remember to switch back from void to an actual valid return type.
 
 ## TODO
 High Priority:
-- Draw Polygons --> Triangulation (Ear Clipping Method => O(n^3) -> O(n^2))
-    - Sort vertices --> Clockwise? Counter-Clockwise?
-    - Triangulation can be done recursively until only one triangle remains.
 - Camera Movement
 - Shapes Library? --> Is it required? Yes.
 - Forward Kinematics

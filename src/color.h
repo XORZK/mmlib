@@ -2,8 +2,8 @@
 #define COLOR_H
 
 #pragma once
-#include <stdint.h>
 #include "vector.h"
+#include <stdint.h>
 
 class color {
     private:

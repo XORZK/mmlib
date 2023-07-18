@@ -103,7 +103,7 @@ void window::fill_bg(color c) {
 
 void window::draw_point(vector<double> p) {
     if (p.get_size() == 3) {
-        p = vector<double>::create_vec4(p);
+        p = create_vec4<double>(p);
     }
 
     if (p.get_size() == 2) {
@@ -111,7 +111,7 @@ void window::draw_point(vector<double> p) {
     } else if (p.get_size() == 4 && p[2] != 0) {
         // draws (x,y,z) vertex to screen
         vector<double> screen = this->convert_ndc(c->get_ndc_vertex(p));
-        this->draw_point(vector<double>::create_vec2(screen[0], screen[1]));
+        this->draw_point(create_vec2<double>(screen[0], screen[1]));
     } 
 }
 
@@ -143,7 +143,7 @@ void window::draw_circle(vector<double> center, uint64_t radius, bool fill) {
     // Adjusting from 3D points to 2D points
     if (center.get_size() == 3 || center.get_size() == 4) {
         vector<double> adjusted_center = this->convert_ndc(c->get_ndc_vertex(center));
-        vector<double> top_point = this->convert_ndc(c->get_ndc_vertex(vector<double>::create_vec3(center[0], center[1] + radius, center[2])));
+        vector<double> top_point = this->convert_ndc(c->get_ndc_vertex(create_vec3<double>(center[0], center[1] + radius, center[2])));
 
         radius = static_cast<uint64_t>(top_point[1] - adjusted_center[1]);
         center = adjusted_center.slice(2);
@@ -156,24 +156,24 @@ void window::draw_circle(vector<double> center, uint64_t radius, bool fill) {
         // Fill from (x,y) to (x,-y), (y,x) to (y,-x),
         // (-x,-y) to (-x,y), (-y,-x) to (-y,x)
         if (fill) {
-            this->draw_line(center + vector<double>::create_vec2(x,y),
-                            center + vector<double>::create_vec2(x, -y));
-            this->draw_line(center + vector<double>::create_vec2(y,x),
-                            center + vector<double>::create_vec2(y, -x));
-            this->draw_line(center - vector<double>::create_vec2(x,y),
-                            center - vector<double>::create_vec2(x, -y));
-            this->draw_line(center - vector<double>::create_vec2(y,x),
-                            center - vector<double>::create_vec2(y, -x));
+            this->draw_line(center + create_vec2<double>(x,y),
+                            center + create_vec2<double>(x, -y));
+            this->draw_line(center + create_vec2<double>(y,x),
+                            center + create_vec2<double>(y, -x));
+            this->draw_line(center - create_vec2<double>(x,y),
+                            center - create_vec2<double>(x, -y));
+            this->draw_line(center - create_vec2<double>(y,x),
+                            center - create_vec2<double>(y, -x));
         } else {
-            this->draw_point(center + vector<double>::create_vec2(x, y));
-            this->draw_point(center + vector<double>::create_vec2(-x, y));
-            this->draw_point(center + vector<double>::create_vec2(x, -y));
-            this->draw_point(center + vector<double>::create_vec2(-x, -y));
+            this->draw_point(center + create_vec2<double>(x, y));
+            this->draw_point(center + create_vec2<double>(-x, y));
+            this->draw_point(center + create_vec2<double>(x, -y));
+            this->draw_point(center + create_vec2<double>(-x, -y));
 
-            this->draw_point(center + vector<double>::create_vec2(y, x));
-            this->draw_point(center + vector<double>::create_vec2(-y, x));
-            this->draw_point(center + vector<double>::create_vec2(y, -x));
-            this->draw_point(center + vector<double>::create_vec2(-y, -x));
+            this->draw_point(center + create_vec2<double>(y, x));
+            this->draw_point(center + create_vec2<double>(-y, x));
+            this->draw_point(center + create_vec2<double>(y, -x));
+            this->draw_point(center + create_vec2<double>(-y, -x));
         }
 
         // y is inside circle
@@ -234,8 +234,8 @@ void window::draw_filled_triangle(vector<double> p1,
 
         double x2 = interp<double>(p1[0], p1[1], p3[0], p3[1], y);
 
-        this->draw_line(vector<double>::create_vec2(x1, y),
-                        vector<double>::create_vec2(x2, y));
+        this->draw_line(create_vec2<double>(x1, y),
+                        create_vec2<double>(x2, y));
     }
 }
 
@@ -289,9 +289,9 @@ void window::draw() {
     color g(0, 255, 0);
     color r(255,0,0);
 
-    this->draw_filled_triangle(R * vector<double>::create_vec3(-0.25, 0, -3),
-                               R * vector<double>::create_vec3(-0.25, 0.25, -3),
-                               R * vector<double>::create_vec3(0.25, 0, -3),
+    this->draw_filled_triangle(R * create_vec3<double>(-0.25, 0, -3),
+                               R * create_vec3<double>(-0.25, 0.25, -3),
+                               R * create_vec3<double>(0.25, 0, -3),
                                g, r);
 
     SDL_RenderPresent(this->r);

@@ -4,6 +4,7 @@
 #pragma once
 #include "camera.h"
 #include "color.h"
+#include "matrix.h"
 #include "vector.h"
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -36,7 +37,6 @@ class window {
 
         vector<double> convert_ndc(vector<double> ndc_vertex) const;
 
-        vector<vector<double>> triangulate(vector<vector<double>> vertices) const;
     public:
         window();
 
@@ -90,16 +90,7 @@ class window {
                                   vector<double> p3,
                                   color c);
 
-        void draw_wireframe_quadrilateral(vector<double> p1,
-                                          vector<double> p2,
-                                          vector<double> p3,
-                                          vector<double> p4);
-
-        void draw_wireframe_quadrilateral(vector<double> p1,
-                                          vector<double> p2,
-                                          vector<double> p3,
-                                          vector<double> p4,
-                                          color c);
+        void draw_wireframe_polygon();
 
         void run();
 

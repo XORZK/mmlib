@@ -2,6 +2,7 @@
 #define MACROS_H
 
 #pragma once
+#include <math.h>
 #include <stdint.h>
 #include <stdexcept>
 
@@ -9,13 +10,13 @@
 #define MIN(x,y) ((x < y) ? x : y)
 
 template <typename T>
-T gcd(T a, T b) {
+inline T gcd(T a, T b) {
     return (b == 0 ? a : gcd(b, a % b));
 }
 
 // Returns the linear equation between two points: { m, b } 
 template <typename T>
-double* linear_eq(T x1, T y1, T x2, T y2) {
+inline double* linear_eq(T x1, T y1, T x2, T y2) {
     double m = static_cast<double>((y2 - y1))/(x2 - x1);
     double b = y1 - (m*x1);
     return new double[]{ m, b };
@@ -23,7 +24,7 @@ double* linear_eq(T x1, T y1, T x2, T y2) {
 
 // Given y, find x.
 template <typename T>
-double interp(T x1, T y1, T x2, T y2, T y3) {
+inline double interp(T x1, T y1, T x2, T y2, T y3) {
     // Vertical line.
     if (x1 == x2) {
         return x1;
@@ -34,6 +35,25 @@ double interp(T x1, T y1, T x2, T y2, T y3) {
     double b = y1 - (m*x1);
 
     return (y3-b)/m;
+}
+
+template <typename T>
+inline double distance(T x1, T y1, T x2, T y2) {
+    return sqrt(pow((x1-x2), 2) + pow((y2-y1), 2));
+}
+
+// [Ax(By - Cy) + Bx(Cy - Ay) + Cx(Ay - By)]/2
+template <typename T>
+inline double signed_triangle_area(T x1, T y1, T x2, T y2, T x3, T y3) {
+    return (x1*(y2 - y3) + x2(y3 - y1) + x3(y1 - y2))/2.0;
+}
+
+template <typename T>
+inline T mod(T N, T M) {
+    while (N < 0) {
+        N += M;
+    }
+    return (N % M);
 }
 
 #endif

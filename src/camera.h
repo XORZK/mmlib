@@ -2,8 +2,8 @@
 #define CAMERA_H
 
 #pragma once
-#include "matrix.h"
 #include "vector.h"
+#include "matrix.h"
 #include <iostream>
 #include <math.h>
 #include <stdint.h>
@@ -39,7 +39,7 @@ class camera {
 template <typename T>
 vector<double> camera::get_ndc_vertex(vector<T> v_e) const {
     if (v_e.get_size() == 3) {
-        v_e = vector<T>::create_vec4(v_e);
+        v_e = create_vec4(v_e);
     }
 
     vector<double> v = static_cast<vector<double>>(v_e);

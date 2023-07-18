@@ -2,9 +2,7 @@
 #define MATRIX_H
 
 #pragma once
-#include "MACROS.h"
 #include "vector.h"
-#include "rational.h"
 #include <functional>
 #include <iostream>
 #include <stdint.h>
