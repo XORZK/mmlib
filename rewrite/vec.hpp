@@ -322,6 +322,8 @@ template <typename T> class vec3 {
 
         vec3(T x, T y, T z);
 
+        vec3(const vec2<T> v2, T z);
+
         vec3(const vec3<T>& copy);
 
         ~vec3() {}
@@ -415,6 +417,11 @@ vec3<T>::vec3(T v) {
 template <typename T> 
 vec3<T>::vec3(T x, T y, T z) {
     this->dat = static_cast<T*>(new T[]{x,y,z});
+}
+
+template <typename T> 
+vec3<T>::vec3(const vec2<T> v2, T z) {
+    this->dat = static_cast<T*>(new T[]{v2.x(),v2.y(),z});
 }
 
 template <typename T> 

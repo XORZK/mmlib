@@ -255,7 +255,7 @@ list<triangle> triangulate(list<vec3<double>>& vertices) {
         }
     }
 
-    for (int64_t k = 0; k <= size-3 && removed.size() <= sorted.size(); k++) {
+    while (triangles.size() <= size - 2) {
         int64_t vert_index = ears[0], 
                 left_index = find_left_vertex(sorted, removed, vert_index),
                 right_index = find_right_vertex(sorted, removed, vert_index);
@@ -264,9 +264,13 @@ list<triangle> triangulate(list<vec3<double>>& vertices) {
                      B = sorted[vert_index], 
                      C = sorted[left_index];
 
-        removed.push_back(vert_index);
         ears.remove(0);
         convex.remove(convex.index(vert_index));
+
+        if (removed.index(vert_index) != -1)
+            continue;
+
+        removed.push_back(vert_index);
 
         triangles.push_back(triangle(A, B, C));
 
@@ -275,7 +279,6 @@ list<triangle> triangulate(list<vec3<double>>& vertices) {
 
         // Check left neighbour
         if (det(C-A, L-C) > 0) {
-            int64_t left_index = mod(vert_index-1, size);
             reflex.remove(reflex.index(left_index));
 
             if (convex.index(left_index) == -1) 
@@ -288,7 +291,6 @@ list<triangle> triangulate(list<vec3<double>>& vertices) {
 
         // Checking right neighbour
         if (det(A-R, C-A) > 0) {
-            int64_t right_index = mod(vert_index+1, size);
             reflex.remove(reflex.index(right_index));
 
             if (convex.index(right_index) == -1)

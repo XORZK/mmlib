@@ -473,10 +473,38 @@ void window::run() {
 }
 
 void window::draw() {
-    draw_filled_triangle(vec3(0, 0, -10), 
-                         vec3(-1, 1, -2), 
-                         vec3(1, 1, -1), 
-                         color(255, 0, 0));
+    list<vec3<double>> vertices;
+
+    vertices.push_back(vec3<double>(173,29,-500)); 
+    vertices.push_back(vec3<double>(181,88,-500)); 
+    vertices.push_back(vec3<double>(246,133,-500)); 
+    vertices.push_back(vec3<double>(210,148,-500)); 
+    vertices.push_back(vec3<double>(240,147,-500)); 
+    vertices.push_back(vec3<double>(241,173,-500)); 
+    vertices.push_back(vec3<double>(209,192,-500)); 
+    vertices.push_back(vec3<double>(221,196,-500)); 
+    vertices.push_back(vec3<double>(205,220,-500)); 
+    vertices.push_back(vec3<double>(154,170,-500));  
+    vertices.push_back(vec3<double>(93,222,-500)); 
+    vertices.push_back(vec3<double>(63,223,-500)); 
+    vertices.push_back(vec3<double>(72,155,-500)); 
+    vertices.push_back(vec3<double>(109,104,-500));
+    vertices.push_back(vec3<double>(68,129,-500)); 
+    vertices.push_back(vec3<double>(59,73,-500)); 
+    vertices.push_back(vec3<double>(27,64,-500)); 
+    vertices.push_back(vec3<double>(38,39,-500)); 
+    vertices.push_back(vec3<double>(57,49,-500)); 
+    vertices.push_back(vec3<double>(118,25,-500)); 
+    vertices.push_back(vec3<double>(142,78,-500)); 
+    vertices.push_back(vec3<double>(151,50,-500)); 
+    vertices.push_back(vec3<double>(151,21,-500));
+
+    list<triangle> T = triangulate(vertices);
+
+    for (int64_t k = 0; k < T.size(); k++) 
+       this->draw_wireframe_triangle(T[k], color(255, 255, 0));
+
+
 
 
     SDL_RenderPresent(this->r);
