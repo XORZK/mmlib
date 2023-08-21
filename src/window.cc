@@ -336,14 +336,14 @@ void window::draw() {
 
     this->set_render_color(g);
 
-    vector<double> P1 = create_vec3(0,0,-10),
-                   P2 = create_vec3(1,0,-10),
-                   P3 = create_vec3(4,2,-10),
-                   P4 = create_vec3(5,4,-10),
-                   P5 = create_vec3(4,6,-10),
-                   P6 = create_vec3(3,5,-10),
-                   P7 = create_vec3(2,8,-10),
-                   P8 = create_vec3(-1,4,-10);
+    vector<double> P1 = R * create_vec3(0,0,-10),
+                   P2 = R * create_vec3(1,0,-10),
+                   P3 = R * create_vec3(4,2,-10),
+                   P4 = R * create_vec3(5,4,-10),
+                   P5 = R * create_vec3(4,6,-10),
+                   P6 = R * create_vec3(3,5,-10),
+                   P7 = R * create_vec3(2,8,-10),
+                   P8 = R * create_vec3(-1,4,-10);
 
     vector<vector<double>> points = vector<vector<double>>(new vector<double>[]{P5, P4, P6, P2, P1, P3, P8, P7}, 8);
 

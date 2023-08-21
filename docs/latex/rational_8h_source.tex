@@ -1,0 +1,64 @@
+\doxysection{rational.\+h}
+\hypertarget{rational_8h_source}{}\label{rational_8h_source}\index{src/rational.h@{src/rational.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RATIONAL\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RATIONAL\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrat}{rat}}\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ int64\_t\ P;}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ uint64\_t\ Q;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ simplify();}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}(\textcolor{keyword}{const}\ int64\_t\ p\ =\ 0,\ \textcolor{keyword}{const}\ uint64\_t\ q\ =\ 1);}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrat}{rat}}\&\ v);}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\ operator+(\mbox{\hyperlink{classrat}{rat}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\ operator-\/(\mbox{\hyperlink{classrat}{rat}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\ operator*(\mbox{\hyperlink{classrat}{rat}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\ operator/(\mbox{\hyperlink{classrat}{rat}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ int64\_t\ operator\%(\mbox{\hyperlink{classrat}{rat}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\&\ operator++();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\&\ operator-\/-\/();\ }
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\ operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrat}{rat}}\ operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keyword}{operator}\ U()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrat}{rat}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ int64\_t\ get\_P()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ uint64\_t\ get\_Q()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ value()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_integral()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ std::ostream\&\ operator<<(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classrat}{rat}}\&\ r);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00054\ rat::operator\ U()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}U\textcolor{keyword}{>}(this-\/>value());}
+\DoxyCodeLine{00056\ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

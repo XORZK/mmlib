@@ -127,10 +127,12 @@ inline vector<double> barycentric(vector<double> p,
     if (b.get_size() == 2) { b = create_vec3(b); }
     if (c.get_size() == 2) { c = create_vec3(c); }
 
-    double A = ((b-a).cross(c-a).magnitude())/2.0,
-           ACB = ((b-p).cross(c-p).magnitude())/2.0,
-           ACA = ((a-p).cross(c-p).magnitude())/2.0;
-    double alpha = ACB/A, beta = ACA/A, gamma = 1 - (alpha + beta);
+    double A   = ((b-a).cross(c-a).magnitude()),
+           AB  = ((a-p).cross(b-p).magnitude()),
+           AC  = ((a-p).cross(c-p).magnitude()),
+           BC  = ((b-p).cross(c-p).magnitude());
+
+    double alpha = BC/A, beta = AC/A, gamma = 1 - (alpha + beta);
 
     return create_vec3(alpha, beta, gamma);
 }
@@ -157,6 +159,9 @@ inline bool is_ear_vertex(vector<vector<double>>& vertices, int64_t idx) {
         }
 
         vector<double> bc = barycentric(vertices[k], vA, vB, vC);
+
+        std::cout << bc << "\n";
+
         if (!(bc[0] && bc[1] && bc[2])) {
             return false;
         }

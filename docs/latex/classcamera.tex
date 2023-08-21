@@ -1,0 +1,35 @@
+\doxysection{camera Class Reference}
+\hypertarget{classcamera}{}\label{classcamera}\index{camera@{camera}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcamera_ae365fdea78908ce3b9bc5965689aaf6a}\label{classcamera_ae365fdea78908ce3b9bc5965689aaf6a} 
+{\bfseries camera} (uint64\+\_\+t width, uint64\+\_\+t height)
+\item 
+\Hypertarget{classcamera_af27a7eda3a11a07eb798301248945a52}\label{classcamera_af27a7eda3a11a07eb798301248945a52} 
+{\bfseries camera} (uint64\+\_\+t width, uint64\+\_\+t height, double fov)
+\item 
+\Hypertarget{classcamera_a9c66c80e4098aebd124ec1749c94e9ff}\label{classcamera_a9c66c80e4098aebd124ec1749c94e9ff} 
+void {\bfseries compute\+\_\+screen\+\_\+coords} (const double init\+\_\+n, const double init\+\_\+f)
+\item 
+\Hypertarget{classcamera_ac2ec27e1a0480ae25aa66b0fce598dac}\label{classcamera_ac2ec27e1a0480ae25aa66b0fce598dac} 
+void {\bfseries translate} (\mbox{\hyperlink{classvector}{vector}}$<$ int64\+\_\+t $>$ translation)
+\item 
+\Hypertarget{classcamera_a0e57a2d2c148b510a9057a7d848a48b1}\label{classcamera_a0e57a2d2c148b510a9057a7d848a48b1} 
+\mbox{\hyperlink{classvector}{vector}}$<$ int64\+\_\+t $>$ {\bfseries get\+\_\+pos} () const
+\item 
+\Hypertarget{classcamera_a6a85ae65958170985ac6f61ea1c4b743}\label{classcamera_a6a85ae65958170985ac6f61ea1c4b743} 
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries get\+\_\+projection\+\_\+matrix} () const
+\item 
+\Hypertarget{classcamera_a1be6ac6231b6be96c12c1984fbadd824}\label{classcamera_a1be6ac6231b6be96c12c1984fbadd824} 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classvector}{vector}}$<$ double $>$ {\bfseries get\+\_\+ndc\+\_\+vertex} (\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ vertex) const
+\item 
+\Hypertarget{classcamera_ac0b7555b844c6766ae6225bf893cfdad}\label{classcamera_ac0b7555b844c6766ae6225bf893cfdad} 
+void {\bfseries reset} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/camera.\+h\item 
+src/camera.\+cc\end{DoxyCompactItemize}

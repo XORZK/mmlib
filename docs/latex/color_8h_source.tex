@@ -1,0 +1,45 @@
+\doxysection{color.\+h}
+\hypertarget{color_8h_source}{}\label{color_8h_source}\index{src/color.h@{src/color.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ COLOR\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ COLOR\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}vector.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcolor}{color}}\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classvector}{vector<uint8\_t>}}\ v4;\ }
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcolor_a63dd058746471367c67a834af926b1b2}{color}}();}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcolor_a63dd058746471367c67a834af926b1b2}{color}}(uint8\_t\ v);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcolor_a63dd058746471367c67a834af926b1b2}{color}}(uint8\_t\ \mbox{\hyperlink{classcolor_a0dca8cc0cdbd066923350ea22422c2b2}{R}},\ uint8\_t\ \mbox{\hyperlink{classcolor_aef4d0828f684e072a612a5738c3ca89c}{G}},\ uint8\_t\ \mbox{\hyperlink{classcolor_a2d7e62e19f6b070ef9d76e0d87375918}{B}},\ uint8\_t\ \mbox{\hyperlink{classcolor_a234bc23f81c7a94fd87b32d895655873}{A}}\ =\ 255);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classcolor_a0dca8cc0cdbd066923350ea22422c2b2}{R}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classcolor_aef4d0828f684e072a612a5738c3ca89c}{G}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classcolor_a2d7e62e19f6b070ef9d76e0d87375918}{B}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{classcolor_a234bc23f81c7a94fd87b32d895655873}{A}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcolor_a0dca8cc0cdbd066923350ea22422c2b2}{R}}(uint8\_t\ nR);}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcolor_aef4d0828f684e072a612a5738c3ca89c}{G}}(uint8\_t\ nG);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcolor_a2d7e62e19f6b070ef9d76e0d87375918}{B}}(uint8\_t\ nB);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcolor_a234bc23f81c7a94fd87b32d895655873}{A}}(uint8\_t\ nA);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classvector}{vector<uint8\_t>}}\&\ \mbox{\hyperlink{classcolor_ad10d024bf4337f88d46163b58662aded}{get\_color}}();}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ std::ostream\&\ operator<<(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcolor}{color}}\&\ c);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

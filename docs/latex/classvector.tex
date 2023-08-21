@@ -1,0 +1,569 @@
+\doxysection{vector\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classvector}{}\label{classvector}\index{vector$<$ T $>$@{vector$<$ T $>$}}
+
+
+{\ttfamily \#include $<$vector.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classvector_a00d237f22fd5eb1aa9a536993e82e54f}{vector}} ()
+\item 
+\mbox{\hyperlink{classvector_a5934b4b32868e77fa4e30b047ba91bff}{vector}} (uint64\+\_\+t init\+\_\+capacity)
+\item 
+{\footnotesize template$<$typename M $>$ }\\\mbox{\hyperlink{classvector_acb3817a75e5e4e3119541f5b5176dbbf}{vector}} (M \texorpdfstring{$\ast$}{*}d, uint64\+\_\+t data\+\_\+size)
+\item 
+\mbox{\hyperlink{classvector_a6534a0f702213fb74183a5e3eb05a364}{vector}} (T \texorpdfstring{$\ast$}{*}d, uint64\+\_\+t data\+\_\+size)
+\item 
+\mbox{\hyperlink{classvector_acfc969ef460a3d3763bf951ab11ae4e8}{vector}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \&v2)
+\item 
+void \mbox{\hyperlink{classvector_a1222edd2bb4e47f30471539c695881d7}{fill}} (T value)
+\item 
+T \& \mbox{\hyperlink{classvector_a4347cc729ea5f6d1d1e4cba3a856c595}{operator\mbox{[}$\,$\mbox{]}}} (uint64\+\_\+t idx) const
+\item 
+T \mbox{\hyperlink{classvector_a59063295c3c2ada0ee322212c8353fde}{operator\texorpdfstring{$\ast$}{*}}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ v2) const
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_a76c8c732166c1af1f3e2bc14f643ed16}{operator\texorpdfstring{$\ast$}{*}}} (const T scalar) const
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ double $>$ \mbox{\hyperlink{classvector_aafdcc0349c713635556bd5cd90e56c55}{operator/}} (const double scalar) const
+\item 
+{\footnotesize template$<$typename U $>$ }\\void \mbox{\hyperlink{classvector_af614689bb11977369ec5b051bf76f828}{operator/=}} (const U scalar)
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_ab0dad80693a986f5d9a99757cbc62a08}{operator+}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ v2) const
+\item 
+void \mbox{\hyperlink{classvector_aa2e02edc893c52d643e7daac4955473e}{operator+=}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ v2)
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_a591fcb7bd695a38e3d2943899b7b9ba5}{operator+}} (const T value) const
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_afc20d5fc590b6701e32a66c5016bdb3f}{operator-\/}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ v2) const
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_afb8122ffc6139983f37181c7743bdb14}{operator-\/}} (const T value) const
+\item 
+bool \mbox{\hyperlink{classvector_ae5b72c26a7d1e66f3f93201580955a06}{operator==}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \&v2) const
+\item 
+{\footnotesize template$<$typename U $>$ }\\\mbox{\hyperlink{classvector_a0b061abbdebb20a3bbdf8cdff75a39ec}{operator vector}} () const
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_a5cced0df8cb9387a809774cf1c292916}{cross}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ v2) const
+\item 
+double \mbox{\hyperlink{classvector_a1e709da11f880df74769380022981e3c}{magnitude}} () const
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ double $>$ \mbox{\hyperlink{classvector_a8bb6d588fced2d0594f2cf65d1f2efae}{normalize}} () const
+\item 
+void \mbox{\hyperlink{classvector_aa3ee6ad59948c6c808ce7fd4df3a0fe3}{remove}} (uint64\+\_\+t idx)
+\item 
+void \mbox{\hyperlink{classvector_a26ca0fd482b4aa21722b0592b0853cf8}{pop}} ()
+\item 
+void \mbox{\hyperlink{classvector_a8d4c48ae61fa1638962ff9f405a24959}{push\+\_\+back}} (const T value)
+\item 
+void \mbox{\hyperlink{classvector_a92f34c167e5fdd28f5ccef3043a4ca27}{swap}} (uint64\+\_\+t \mbox{\hyperlink{classvector_a21c16b977569d9dfc499fa87ca75c74b}{i}}, uint64\+\_\+t \mbox{\hyperlink{classvector_a16177dffad457921a67929627e88241e}{j}})
+\item 
+double \mbox{\hyperlink{classvector_a9bfde11997725a3832e2e4fc6d1856c6}{cos}} (\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ v2) const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classvector_addf346f26993855ec7f15e0e16392a3d}{get\+\_\+size}} () const
+\item 
+uint64\+\_\+t \mbox{\hyperlink{classvector_a7cac27cbc46aa944931d4e5188d32f06}{get\+\_\+capacity}} () const
+\item 
+void \mbox{\hyperlink{classvector_a62665d63742f566d81c758aa11a2a482}{set\+\_\+size}} (uint64\+\_\+t new\+\_\+size)
+\item 
+void \mbox{\hyperlink{classvector_a6b7886260083f8e79e21cac90fdffd5b}{set\+\_\+column}} (bool c)
+\item 
+bool \mbox{\hyperlink{classvector_aa7de93e5cac4649997cf70059649c695}{is\+\_\+column}} () const
+\item 
+bool \mbox{\hyperlink{classvector_aa64676bcb038b78ff0b91cff69f23e76}{contains}} (T value) const
+\item 
+int64\+\_\+t \mbox{\hyperlink{classvector_a29d19816f51d97aa24b976f6b9ade59c}{index}} (T value) const
+\item 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_a92dae29336b2cd8649891bdeba505766}{slice}} (uint64\+\_\+t slice\+\_\+idx)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_aecb34c72e8245a845b3a6784561c0d73}{zero}} (uint64\+\_\+t size)
+\item 
+static \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_a21c16b977569d9dfc499fa87ca75c74b}{i}} ()
+\item 
+static \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_a16177dffad457921a67929627e88241e}{j}} ()
+\item 
+static \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector_a7ebb49ed6d7a45335d2ab21bbebb12b6}{k}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class vector$<$ T $>$}
+A generic vector class which can be used to hold any type. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classvector_a00d237f22fd5eb1aa9a536993e82e54f}\label{classvector_a00d237f22fd5eb1aa9a536993e82e54f} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!vector@{vector}}
+\index{vector@{vector}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{vector()}{vector()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$\mbox{\hyperlink{classvector}{\+::vector}}}
+
+Instantiates an empty vector with no size. \Hypertarget{classvector_a5934b4b32868e77fa4e30b047ba91bff}\label{classvector_a5934b4b32868e77fa4e30b047ba91bff} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!vector@{vector}}
+\index{vector@{vector}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{vector()}{vector()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$\mbox{\hyperlink{classvector}{\+::vector}} (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{init\+\_\+capacity }\end{DoxyParamCaption})}
+
+Instantiates an empty vector with an initial capacity. 
+\begin{DoxyParams}{Parameters}
+{\em init\+\_\+capacity} & The initial capacity of the vector. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_acb3817a75e5e4e3119541f5b5176dbbf}\label{classvector_acb3817a75e5e4e3119541f5b5176dbbf} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!vector@{vector}}
+\index{vector@{vector}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{vector()}{vector()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename M $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$\mbox{\hyperlink{classvector}{\+::vector}} (\begin{DoxyParamCaption}\item[{M \texorpdfstring{$\ast$}{*}}]{d,  }\item[{uint64\+\_\+t}]{data\+\_\+size }\end{DoxyParamCaption})}
+
+Instantiates a vector with items from another array of type M. 
+\begin{DoxyParams}{Parameters}
+{\em d} & The array of items to instantiate the vector with. \\
+\hline
+{\em data\+\_\+size} & The size of the array. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_a6534a0f702213fb74183a5e3eb05a364}\label{classvector_a6534a0f702213fb74183a5e3eb05a364} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!vector@{vector}}
+\index{vector@{vector}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{vector()}{vector()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$\mbox{\hyperlink{classvector}{\+::vector}} (\begin{DoxyParamCaption}\item[{T \texorpdfstring{$\ast$}{*}}]{d,  }\item[{uint64\+\_\+t}]{data\+\_\+size }\end{DoxyParamCaption})}
+
+Instantiates a vector with items from another array of same generic type T. 
+\begin{DoxyParams}{Parameters}
+{\em d} & The array of items to instantiate the vector with. \\
+\hline
+{\em data\+\_\+size} & The size of the array. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_acfc969ef460a3d3763bf951ab11ae4e8}\label{classvector_acfc969ef460a3d3763bf951ab11ae4e8} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!vector@{vector}}
+\index{vector@{vector}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{vector()}{vector()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$\mbox{\hyperlink{classvector}{\+::vector}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \&}]{v2 }\end{DoxyParamCaption})}
+
+A copy constructor which instantiates a vector using the contents of another vector. 
+\begin{DoxyParams}{Parameters}
+{\em v2} & The vector to be copied. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classvector_aa64676bcb038b78ff0b91cff69f23e76}\label{classvector_aa64676bcb038b78ff0b91cff69f23e76} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!contains@{contains}}
+\index{contains@{contains}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::contains (\begin{DoxyParamCaption}\item[{T}]{value }\end{DoxyParamCaption}) const}
+
+Performs a linear search to determine whether or not the vector contains a specific value. 
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to search for within the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A boolean value determining whether or not the vector contains a specific value. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a9bfde11997725a3832e2e4fc6d1856c6}\label{classvector_a9bfde11997725a3832e2e4fc6d1856c6} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!cos@{cos}}
+\index{cos@{cos}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{cos()}{cos()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::cos (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classvector}{vector}}$<$ T $>$}]{v2 }\end{DoxyParamCaption}) const}
+
+Computes the cosine of the angle between two vectors. This is done using the definition of the dot product\+: For any two vectors, $u,v \in \mathbb{R}^n$\+: $ cos(\theta) = \frac{u \cdot v}{\|u\| \times \|v\|} $ Where $\theta$ is the angle between $u, v$ \Hypertarget{classvector_a5cced0df8cb9387a809774cf1c292916}\label{classvector_a5cced0df8cb9387a809774cf1c292916} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!cross@{cross}}
+\index{cross@{cross}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{cross()}{cross()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::cross (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$}]{v2 }\end{DoxyParamCaption}) const}
+
+Computes the dot product between two 3-\/D vectors. The dot product of two vectors $u, v \in \mathbb{R}^3$ has a magnitude equivalent to the area of the parallelogram formed by vectors \$u,v\$. The orientation of \$u \textbackslash{}times v\$ is determined by the Right Hand Rule. 
+\begin{DoxyParams}{Parameters}
+{\em v2} & The vector to compute the dot product with. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The dot product of the two vectors. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a1222edd2bb4e47f30471539c695881d7}\label{classvector_a1222edd2bb4e47f30471539c695881d7} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!fill@{fill}}
+\index{fill@{fill}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{fill()}{fill()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::fill (\begin{DoxyParamCaption}\item[{T}]{value }\end{DoxyParamCaption})}
+
+Fills the vector using a given value. 
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to fill the vector with. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_a7cac27cbc46aa944931d4e5188d32f06}\label{classvector_a7cac27cbc46aa944931d4e5188d32f06} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!get\_capacity@{get\_capacity}}
+\index{get\_capacity@{get\_capacity}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_capacity()}{get\_capacity()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+uint64\+\_\+t \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::get\+\_\+capacity}
+
+Returns the capacity of the vector (amount of items which can be held without reallocation). \begin{DoxyReturn}{Returns}
+The capacity of the vector. 
+\end{DoxyReturn}
+\Hypertarget{classvector_addf346f26993855ec7f15e0e16392a3d}\label{classvector_addf346f26993855ec7f15e0e16392a3d} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!get\_size@{get\_size}}
+\index{get\_size@{get\_size}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_size()}{get\_size()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+uint64\+\_\+t \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::get\+\_\+size}
+
+Returns the size of the vector (amount of items currently held). \begin{DoxyReturn}{Returns}
+The size of the vector. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a21c16b977569d9dfc499fa87ca75c74b}\label{classvector_a21c16b977569d9dfc499fa87ca75c74b} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!i@{i}}
+\index{i@{i}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{i()}{i()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::i\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the 3-\/D x-\/axis oriented unit vector, $i = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} $. \Hypertarget{classvector_a29d19816f51d97aa24b976f6b9ade59c}\label{classvector_a29d19816f51d97aa24b976f6b9ade59c} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!index@{index}}
+\index{index@{index}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{index()}{index()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int64\+\_\+t \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::index (\begin{DoxyParamCaption}\item[{T}]{value }\end{DoxyParamCaption}) const}
+
+Performs a linear search and returns the first instance of a value in the vector. If the value does not exist within the vector, the function returns -\/1. 
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to search for within the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The index of the first instance of a value in the vector. If the value is not contained within the vector, -\/1 is returned. 
+\end{DoxyReturn}
+\Hypertarget{classvector_aa7de93e5cac4649997cf70059649c695}\label{classvector_aa7de93e5cac4649997cf70059649c695} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!is\_column@{is\_column}}
+\index{is\_column@{is\_column}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_column()}{is\_column()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::is\+\_\+column}
+
+A getter method which denotes whether or not the vector is a column vector. \begin{DoxyReturn}{Returns}
+A boolean value denoting whether or not the vector is a column vector. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a16177dffad457921a67929627e88241e}\label{classvector_a16177dffad457921a67929627e88241e} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!j@{j}}
+\index{j@{j}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{j()}{j()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::j\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the 3-\/D y-\/axis oriented unit vector. $j = \begin{bmatrix} 0 & 1 & 0 \end{bmatrix} $. \Hypertarget{classvector_a7ebb49ed6d7a45335d2ab21bbebb12b6}\label{classvector_a7ebb49ed6d7a45335d2ab21bbebb12b6} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!k@{k}}
+\index{k@{k}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{k()}{k()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::k\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the 3-\/D z-\/axis oriented unit vector. $ k = \begin{bmatrix} 0 & 0 & 1 \end{bmatrix} $ \Hypertarget{classvector_a1e709da11f880df74769380022981e3c}\label{classvector_a1e709da11f880df74769380022981e3c} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!magnitude@{magnitude}}
+\index{magnitude@{magnitude}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{magnitude()}{magnitude()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::magnitude}
+
+Computes the magnitude of the vector. The magnitude of the vector $v \in \mathbb{R}^n$is defined to be\+: $\|v\| = \sqrt{\sum_{i=1}^{n} v_i^2}$ \begin{DoxyReturn}{Returns}
+The magnitude of the vector. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a8bb6d588fced2d0594f2cf65d1f2efae}\label{classvector_a8bb6d588fced2d0594f2cf65d1f2efae} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!normalize@{normalize}}
+\index{normalize@{normalize}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{normalize()}{normalize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ double $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::normalize}
+
+Normalizes the vector so that the magnitude of the vector is 1. The normalized vector is defined as\+: $\frac{v}{\|v\|}$ \begin{DoxyReturn}{Returns}
+The normalized form of the current vector, with magnitude 1. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a0b061abbdebb20a3bbdf8cdff75a39ec}\label{classvector_a0b061abbdebb20a3bbdf8cdff75a39ec} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator vector@{operator vector}}
+\index{operator vector@{operator vector}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator vector()}{operator vector()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename U $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator \mbox{\hyperlink{classvector}{vector}}}
+
+Typecasts the vector from type T to type U. \begin{DoxyReturn}{Returns}
+The typecasted vector. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a76c8c732166c1af1f3e2bc14f643ed16}\label{classvector_a76c8c732166c1af1f3e2bc14f643ed16} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}}
+\index{operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator\texorpdfstring{$\ast$}{*}()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator\texorpdfstring{$\ast$}{*} (\begin{DoxyParamCaption}\item[{const T}]{scalar }\end{DoxyParamCaption}) const}
+
+Returns a scaled vector multiplied by some constant $k \in \mathbb{R} $. 
+\begin{DoxyParams}{Parameters}
+{\em scalar} & The scalar to multiply the vector by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The scaled vector multiplied by some constant. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a59063295c3c2ada0ee322212c8353fde}\label{classvector_a59063295c3c2ada0ee322212c8353fde} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}}
+\index{operator\texorpdfstring{$\ast$}{*}@{operator\texorpdfstring{$\ast$}{*}}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator\texorpdfstring{$\ast$}{*}()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator\texorpdfstring{$\ast$}{*} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$}]{v2 }\end{DoxyParamCaption}) const}
+
+Computes the dot product of two vectors. The dot product between two vectors $u, v \in \mathbb{R}^n$ is defined as\+: $ \sum_{i=1}^{n} v_i * u_i $ 
+\begin{DoxyParams}{Parameters}
+{\em v2} & The vector to find the dot product of. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The dot product between two vectors $u,v$. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a591fcb7bd695a38e3d2943899b7b9ba5}\label{classvector_a591fcb7bd695a38e3d2943899b7b9ba5} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator+@{operator+}}
+\index{operator+@{operator+}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator+ (\begin{DoxyParamCaption}\item[{const T}]{value }\end{DoxyParamCaption}) const}
+
+Returns the current vector with every entry shifted by some constant $k \in \mathbb{R}$ 
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to shift every entry in the vector in the positive direction by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The vector shifted in the positive direction. 
+\end{DoxyReturn}
+\Hypertarget{classvector_ab0dad80693a986f5d9a99757cbc62a08}\label{classvector_ab0dad80693a986f5d9a99757cbc62a08} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator+@{operator+}}
+\index{operator+@{operator+}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator+ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$}]{v2 }\end{DoxyParamCaption}) const}
+
+Returns the sum of two vectors. The sum of two vectors $u, v \in \mathbb{R}^n$ is defined as\+: $(u + v)_i = u_i + v_i,  \forall 1 \le i \le n $ 
+\begin{DoxyParams}{Parameters}
+{\em v2} & The vector to add to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The sum of the two vectors. 
+\end{DoxyReturn}
+\Hypertarget{classvector_aa2e02edc893c52d643e7daac4955473e}\label{classvector_aa2e02edc893c52d643e7daac4955473e} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator+= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$}]{v2 }\end{DoxyParamCaption})}
+
+Modifies the current vector and adds it by another vector. 
+\begin{DoxyParams}{Parameters}
+{\em v2} & The vector to add to. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_afb8122ffc6139983f37181c7743bdb14}\label{classvector_afb8122ffc6139983f37181c7743bdb14} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator-\/ (\begin{DoxyParamCaption}\item[{const T}]{value }\end{DoxyParamCaption}) const}
+
+Returns the current vector with every entry shifted by some constant $k \in \mathbb{R}$ 
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to shift every entry in the vector in the negative direction by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The vector shifted in the negative direction. 
+\end{DoxyReturn}
+\Hypertarget{classvector_afc20d5fc590b6701e32a66c5016bdb3f}\label{classvector_afc20d5fc590b6701e32a66c5016bdb3f} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator-\/ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$}]{v2 }\end{DoxyParamCaption}) const}
+
+Returns the difference between two vectors. The difference between two vectors $u, v \in \mathbb{R}^n $ is defined as\+: $(u-v)_i = u_i - v_i, \forall 1 \le i \le n $ 
+\begin{DoxyParams}{Parameters}
+{\em v2} & The vector to subtract by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The difference between the two vectors. 
+\end{DoxyReturn}
+\Hypertarget{classvector_aafdcc0349c713635556bd5cd90e56c55}\label{classvector_aafdcc0349c713635556bd5cd90e56c55} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator/@{operator/}}
+\index{operator/@{operator/}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator/()}{operator/()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ double $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator/ (\begin{DoxyParamCaption}\item[{const double}]{scalar }\end{DoxyParamCaption}) const}
+
+Returns a scaled vector divided by some constant $k \in \mathbb{R}, k \ne 0 $ 
+\begin{DoxyParams}{Parameters}
+{\em scalar} & The scalar to divide the vector by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The scaled vector divided by some constant. 
+\end{DoxyReturn}
+\Hypertarget{classvector_af614689bb11977369ec5b051bf76f828}\label{classvector_af614689bb11977369ec5b051bf76f828} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator/=@{operator/=}}
+\index{operator/=@{operator/=}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator/=()}{operator/=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename U $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator/= (\begin{DoxyParamCaption}\item[{const U}]{scalar }\end{DoxyParamCaption})}
+
+Modifies the current vector and divides it by some scalar. 
+\begin{DoxyParams}{Parameters}
+{\em The} & scalar to divide the vector by. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_ae5b72c26a7d1e66f3f93201580955a06}\label{classvector_ae5b72c26a7d1e66f3f93201580955a06} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \&}]{v2 }\end{DoxyParamCaption}) const}
+
+Checks whether or not two vectors are equal. 
+\begin{DoxyParams}{Parameters}
+{\em v2} & The vector of which equality is checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A boolean value denoting whether or not the two vectors are equal. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a4347cc729ea5f6d1d1e4cba3a856c595}\label{classvector_a4347cc729ea5f6d1d1e4cba3a856c595} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \& \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{idx }\end{DoxyParamCaption}) const}
+
+Overrides the subscript operator to allow for vector indexing. 
+\begin{DoxyParams}{Parameters}
+{\em idx} & The index to get from the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The entry at the specified index. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a26ca0fd482b4aa21722b0592b0853cf8}\label{classvector_a26ca0fd482b4aa21722b0592b0853cf8} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!pop@{pop}}
+\index{pop@{pop}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::pop}
+
+Removes the last entry (tail) of the vector. \Hypertarget{classvector_a8d4c48ae61fa1638962ff9f405a24959}\label{classvector_a8d4c48ae61fa1638962ff9f405a24959} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!push\_back@{push\_back}}
+\index{push\_back@{push\_back}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{push\_back()}{push\_back()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::push\+\_\+back (\begin{DoxyParamCaption}\item[{const T}]{value }\end{DoxyParamCaption})}
+
+Appends an entry to the back (tail) of the vector. 
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to push to the back of the vector. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_aa3ee6ad59948c6c808ce7fd4df3a0fe3}\label{classvector_aa3ee6ad59948c6c808ce7fd4df3a0fe3} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!remove@{remove}}
+\index{remove@{remove}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::remove (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{idx }\end{DoxyParamCaption})}
+
+Removes the entry at a specific index within the vector. 
+\begin{DoxyParams}{Parameters}
+{\em idx} & The index of the entry to remove. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_a6b7886260083f8e79e21cac90fdffd5b}\label{classvector_a6b7886260083f8e79e21cac90fdffd5b} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!set\_column@{set\_column}}
+\index{set\_column@{set\_column}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{set\_column()}{set\_column()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::set\+\_\+column (\begin{DoxyParamCaption}\item[{bool}]{c }\end{DoxyParamCaption})}
+
+A setter method which determines whether or not the vector is a column vector. 
+\begin{DoxyParams}{Parameters}
+{\em c} & A boolean value denoting whether or not the vector is a column vector. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_a62665d63742f566d81c758aa11a2a482}\label{classvector_a62665d63742f566d81c758aa11a2a482} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!set\_size@{set\_size}}
+\index{set\_size@{set\_size}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{set\_size()}{set\_size()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::set\+\_\+size (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{new\+\_\+size }\end{DoxyParamCaption})}
+
+Redefines the size of the vector, 
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+size} & The new size of the vector. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_a92dae29336b2cd8649891bdeba505766}\label{classvector_a92dae29336b2cd8649891bdeba505766} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!slice@{slice}}
+\index{slice@{slice}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{slice()}{slice()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::slice (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{slice\+\_\+idx }\end{DoxyParamCaption})}
+
+Returns a slice (sub-\/vector) of the vector. The function slices from the 0th index upto, but not including, the final specificed index. 
+\begin{DoxyParams}{Parameters}
+{\em slice\+\_\+idx} & The index to slice upto. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A subvector which contains the values from the 0th index upto, but not including, the value at the slice index specified. 
+\end{DoxyReturn}
+\Hypertarget{classvector_a92f34c167e5fdd28f5ccef3043a4ca27}\label{classvector_a92f34c167e5fdd28f5ccef3043a4ca27} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!swap@{swap}}
+\index{swap@{swap}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::swap (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{i,  }\item[{uint64\+\_\+t}]{j }\end{DoxyParamCaption})}
+
+Swaps two indices within the vector. Likewise, this can also be done using a permutation matrix. 
+\begin{DoxyParams}{Parameters}
+{\em i} & The first index of the entry to be swapped. \\
+\hline
+{\em j} & The second index of the entry to be swapped. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classvector_aecb34c72e8245a845b3a6784561c0d73}\label{classvector_aecb34c72e8245a845b3a6784561c0d73} 
+\index{vector$<$ T $>$@{vector$<$ T $>$}!zero@{zero}}
+\index{zero@{zero}!vector$<$ T $>$@{vector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{zero()}{zero()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \mbox{\hyperlink{classvector}{vector}}$<$ T $>$\+::zero (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+A static method which returns a zero vector of any specific size and type. 
+\begin{DoxyParams}{Parameters}
+{\em The} & size of the zero vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A zero vector of some specified size and type. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/vector.\+h\end{DoxyCompactItemize}

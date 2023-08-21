@@ -1,0 +1,178 @@
+\doxysection{matrix\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classmatrix}{}\label{classmatrix}\index{matrix$<$ T $>$@{matrix$<$ T $>$}}
+
+
+{\ttfamily \#include $<$matrix.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmatrix_a5bbbb47321f32b546b272239ab6c007b}{matrix}} ()
+\item 
+\mbox{\hyperlink{classmatrix_af37c699dac06a253c5a924841010021f}{matrix}} (uint64\+\_\+t size)
+\item 
+\mbox{\hyperlink{classmatrix_a679043157f85e0aa8c19ca8a8d2003b8}{matrix}} (uint64\+\_\+t rows, uint64\+\_\+t cols)
+\item 
+\mbox{\hyperlink{classmatrix_add150bd6d961fccc58f29fb9327af6ca}{matrix}} (const \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ \&mat\+\_\+2)
+\item 
+\mbox{\hyperlink{classmatrix_a8cc71b5ec8154b4730d3d7d2f7498378}{matrix}} (const \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ \&mat\+\_\+2, uint64\+\_\+t rows, uint64\+\_\+t cols)
+\item 
+\Hypertarget{classmatrix_a4ba820c23c8f10c0026943249a573498}\label{classmatrix_a4ba820c23c8f10c0026943249a573498} 
+void {\bfseries fill} (T value)
+\item 
+\Hypertarget{classmatrix_aa618de4c2ca0e346ded79dee91182729}\label{classmatrix_aa618de4c2ca0e346ded79dee91182729} 
+void {\bfseries fill} (std\+::function$<$ T(uint64\+\_\+t, uint64\+\_\+t)$>$ f)
+\item 
+\Hypertarget{classmatrix_ad58586d21ce1b7bf5d0d52cd7ec26b23}\label{classmatrix_ad58586d21ce1b7bf5d0d52cd7ec26b23} 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (uint64\+\_\+t idx) const
+\item 
+\Hypertarget{classmatrix_a09dec5c12eaac13bc444896642a5d66c}\label{classmatrix_a09dec5c12eaac13bc444896642a5d66c} 
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries operator\texorpdfstring{$\ast$}{*}} (const double scalar) const
+\item 
+\Hypertarget{classmatrix_ad100037afd373305d1e370d9af431ece}\label{classmatrix_ad100037afd373305d1e370d9af431ece} 
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries operator+} (const \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ \&mat\+\_\+2) const
+\item 
+\Hypertarget{classmatrix_a0c81c67146d7ae3f359b01727727519b}\label{classmatrix_a0c81c67146d7ae3f359b01727727519b} 
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries operator-\/} (const \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ \&mat\+\_\+2) const
+\item 
+\Hypertarget{classmatrix_a8774c243ca0182fe105d0a629eef913f}\label{classmatrix_a8774c243ca0182fe105d0a629eef913f} 
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries operator\texorpdfstring{$\ast$}{*}} (const \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ \&mat\+\_\+2) const
+\item 
+\Hypertarget{classmatrix_a2d6660134e9f2b9974313232ff8e0673}\label{classmatrix_a2d6660134e9f2b9974313232ff8e0673} 
+\mbox{\hyperlink{classvector}{vector}}$<$ T $>$ {\bfseries operator\texorpdfstring{$\ast$}{*}} (const \mbox{\hyperlink{classvector}{vector}}$<$ T $>$ \&v2) const
+\item 
+\Hypertarget{classmatrix_a82c2bbafe2bbab465092963c4e5d2f27}\label{classmatrix_a82c2bbafe2bbab465092963c4e5d2f27} 
+{\footnotesize template$<$typename U $>$ }\\{\bfseries operator matrix} () const
+\item 
+\Hypertarget{classmatrix_a37f2a562d0b2178048033764ef018e22}\label{classmatrix_a37f2a562d0b2178048033764ef018e22} 
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries transpose} () const
+\item 
+\Hypertarget{classmatrix_a240edfec23c8ab5a112d764aaaa9f706}\label{classmatrix_a240edfec23c8ab5a112d764aaaa9f706} 
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries minor} (uint64\+\_\+t i, uint64\+\_\+t j) const
+\item 
+\Hypertarget{classmatrix_a8e46af4b50c9da847b062905c9f84a4f}\label{classmatrix_a8e46af4b50c9da847b062905c9f84a4f} 
+bool {\bfseries is\+\_\+lower\+\_\+triangular} () const
+\item 
+\Hypertarget{classmatrix_ae87501d5e12ee816e4f007084765998b}\label{classmatrix_ae87501d5e12ee816e4f007084765998b} 
+bool {\bfseries is\+\_\+upper\+\_\+triangular} () const
+\item 
+\Hypertarget{classmatrix_affcbdf95d7ad1629347df0de7e00d9ae}\label{classmatrix_affcbdf95d7ad1629347df0de7e00d9ae} 
+bool {\bfseries is\+\_\+triangular} () const
+\item 
+\Hypertarget{classmatrix_afd5527f89cf69df27835d43bb508bd9a}\label{classmatrix_afd5527f89cf69df27835d43bb508bd9a} 
+bool {\bfseries is\+\_\+square} () const
+\item 
+\Hypertarget{classmatrix_a2c7dc7a53dbcf278a9284546b11ba479}\label{classmatrix_a2c7dc7a53dbcf278a9284546b11ba479} 
+uint64\+\_\+t {\bfseries get\+\_\+rows} () const
+\item 
+\Hypertarget{classmatrix_ad4ee302849ed07bbbf1d78ba4ac29e6e}\label{classmatrix_ad4ee302849ed07bbbf1d78ba4ac29e6e} 
+uint64\+\_\+t {\bfseries get\+\_\+cols} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmatrix_a3ad4b8854bc0dfb2bd189364ee543c83}\label{classmatrix_a3ad4b8854bc0dfb2bd189364ee543c83} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries I} (uint64\+\_\+t size)
+\item 
+\Hypertarget{classmatrix_a3cdea49b82f3d72ddc4a13ad8ce04d35}\label{classmatrix_a3cdea49b82f3d72ddc4a13ad8ce04d35} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries E} (uint64\+\_\+t size, uint64\+\_\+t i, uint64\+\_\+t j, T l)
+\item 
+\Hypertarget{classmatrix_a455b43c5c6062d496ef4ce5f0f03a29e}\label{classmatrix_a455b43c5c6062d496ef4ce5f0f03a29e} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries P} (uint64\+\_\+t size, uint64\+\_\+t i, uint64\+\_\+t j)
+\item 
+\Hypertarget{classmatrix_a788c0855f1d3872de0133df3e2ab4bde}\label{classmatrix_a788c0855f1d3872de0133df3e2ab4bde} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ {\bfseries P} (uint64\+\_\+t size, \mbox{\hyperlink{classvector}{vector}}$<$ uint64\+\_\+t $>$ swaps)
+\item 
+\Hypertarget{classmatrix_a93d3bd0c40fa2cbc561cb05ddbac3327}\label{classmatrix_a93d3bd0c40fa2cbc561cb05ddbac3327} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries create\+\_\+projection\+\_\+matrix} (const double b, const double t, const double l, const double r, const double n, const double f)
+\item 
+\Hypertarget{classmatrix_af49ac7e5321e72c4d29023efb15b34ff}\label{classmatrix_af49ac7e5321e72c4d29023efb15b34ff} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries create\+\_\+2d\+\_\+rotation\+\_\+matrix} (double theta=0, bool deg=true)
+\item 
+\Hypertarget{classmatrix_a76731111127bd806337878f6f9507eb6}\label{classmatrix_a76731111127bd806337878f6f9507eb6} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries create\+\_\+3d\+\_\+rotation\+\_\+matrix} (double alpha=0, double beta=0, double gamma=0, bool deg=true)
+\item 
+\Hypertarget{classmatrix_a0b6a948727c4df0b9343622d19af67e2}\label{classmatrix_a0b6a948727c4df0b9343622d19af67e2} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries create\+\_\+z\+\_\+rotation} (double alpha, bool deg=true)
+\item 
+\Hypertarget{classmatrix_abaad292d7f47632e2703be686e35599c}\label{classmatrix_abaad292d7f47632e2703be686e35599c} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries create\+\_\+y\+\_\+rotation} (double beta, bool deg=true)
+\item 
+\Hypertarget{classmatrix_ad35f6f3290f5157cc3232af76ed1cb5b}\label{classmatrix_ad35f6f3290f5157cc3232af76ed1cb5b} 
+static \mbox{\hyperlink{classmatrix}{matrix}}$<$ double $>$ {\bfseries create\+\_\+x\+\_\+rotation} (double gamma, bool deg=true)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class matrix$<$ T $>$}
+A generic matrix class which can be used to hold any type. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classmatrix_a5bbbb47321f32b546b272239ab6c007b}\label{classmatrix_a5bbbb47321f32b546b272239ab6c007b} 
+\index{matrix$<$ T $>$@{matrix$<$ T $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!matrix$<$ T $>$@{matrix$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$\mbox{\hyperlink{classmatrix}{\+::matrix}}}
+
+Instantiates an empty matrix with no size. \Hypertarget{classmatrix_af37c699dac06a253c5a924841010021f}\label{classmatrix_af37c699dac06a253c5a924841010021f} 
+\index{matrix$<$ T $>$@{matrix$<$ T $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!matrix$<$ T $>$@{matrix$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$\mbox{\hyperlink{classmatrix}{\+::matrix}} (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+Instantiates a square matrix with an initial size. 
+\begin{DoxyParams}{Parameters}
+{\em size} & The amount of columns and rows of the matrix. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classmatrix_a679043157f85e0aa8c19ca8a8d2003b8}\label{classmatrix_a679043157f85e0aa8c19ca8a8d2003b8} 
+\index{matrix$<$ T $>$@{matrix$<$ T $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!matrix$<$ T $>$@{matrix$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$\mbox{\hyperlink{classmatrix}{\+::matrix}} (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{rows,  }\item[{uint64\+\_\+t}]{cols }\end{DoxyParamCaption})}
+
+Instantiates a matrix of specified dimensions. 
+\begin{DoxyParams}{Parameters}
+{\em rows} & The amount of rows in the matrix. \\
+\hline
+{\em cols} & The amount of columns in the matrix. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classmatrix_add150bd6d961fccc58f29fb9327af6ca}\label{classmatrix_add150bd6d961fccc58f29fb9327af6ca} 
+\index{matrix$<$ T $>$@{matrix$<$ T $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!matrix$<$ T $>$@{matrix$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$\mbox{\hyperlink{classmatrix}{\+::matrix}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ \&}]{mat\+\_\+2 }\end{DoxyParamCaption})}
+
+A copy constructor which instantiates a matrix using the contents of another matrix. 
+\begin{DoxyParams}{Parameters}
+{\em mat\+\_\+2} & The matrix to be copied. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classmatrix_a8cc71b5ec8154b4730d3d7d2f7498378}\label{classmatrix_a8cc71b5ec8154b4730d3d7d2f7498378} 
+\index{matrix$<$ T $>$@{matrix$<$ T $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!matrix$<$ T $>$@{matrix$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$\mbox{\hyperlink{classmatrix}{\+::matrix}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmatrix}{matrix}}$<$ T $>$ \&}]{mat\+\_\+2,  }\item[{uint64\+\_\+t}]{rows,  }\item[{uint64\+\_\+t}]{cols }\end{DoxyParamCaption})}
+
+A copy constructor which instantiates a matrix using the contents of another matrix. The matrix is then expanded or shrunk according to the dimensions specified. For example, if  $M = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 4 & 5 \\\ 6 & 7 & 9 
+ \end{bmatrix}$. $f(M, 2, 2) = \begin{bmatrix} 1 & 2 \\\ 3 & 4 \end{bmatrix} $. 
+\begin{DoxyParams}{Parameters}
+{\em mat\+\_\+2} & \\
+\hline
+{\em rows} & Th \\
+\hline
+{\em cols} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/matrix.\+h\end{DoxyCompactItemize}

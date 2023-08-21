@@ -20,6 +20,8 @@
 
 ## TODO
 High Priority:
+- Polygon Triangulation doesn't work? Fix Barycentric Coordinates.
+- Convex Hull
 - Camera Movement
 - Shapes Library? --> Is it required? Yes.
 - Forward Kinematics

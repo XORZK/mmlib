@@ -12,92 +12,252 @@
 #include <stdint.h>
 #include <type_traits>
 
+/** A generic vector class which can be used to hold any type. */
 template <typename T>
 class vector {
     private:
-        uint64_t size, capacity;
-        T* data;
-        bool column;
-
+        uint64_t size; ///< The current size (amount of items) in the vector.
+        uint64_t capacity; ///< The allocated capacity of the array representing the vector.
+        T* data; ///< The array used to represent the vector.
+        bool column; ///< A boolean value which denotes whether or not the vector is a column or row vector.
+       
+        /** Performs widening on the array containing the items of the vector.
+         * @param new_capacity The new capacity of the vector.
+         * */
         void widen(uint64_t new_capacity);
     public:
+        /** Instantiates an empty vector with no size. */
         vector();
 
+        /** Instantiates an empty vector with an initial capacity. 
+         * @param init_capacity The initial capacity of the vector.
+         * */
         vector(uint64_t init_capacity);
 
+        /** Instantiates a vector with items from another array of type M.
+         * @param d The array of items to instantiate the vector with.
+         * @param data_size The size of the array.
+         * */
         template <typename M>
         vector(M* d, uint64_t data_size);
 
+        /** Instantiates a vector with items from another array of same generic type T.
+         * @param d The array of items to instantiate the vector with.
+         * @param data_size The size of the array.
+         * */
         vector(T* d, uint64_t data_size);
 
+        /** A copy constructor which instantiates a vector using the contents of another vector.
+         * @param v2 The vector to be copied.
+         * */
         vector(const vector<T>& v2);
 
+        ~vector() {}
+
+        /** Fills the vector using a given value.
+         * @param value The value to fill the vector with.
+         * */
         void fill(T value);
 
+        /** Overrides the subscript operator to allow for vector indexing.
+         * @param idx The index to get from the vector.
+         * @return The entry at the specified index.
+         * */
         T& operator[](uint64_t idx) const;
 
+        /** Computes the dot product of two vectors.
+         * The dot product between two vectors \f$u, v \in \mathbb{R}^n\f$ is defined as:
+         * \f$ \sum_{i=1}^{n} v_i * u_i \f$
+         * @param v2 The vector to find the dot product of.
+         * @return The dot product between two vectors \f$u,v\f$.
+         * */
         T operator*(const vector<T> v2) const;
 
+        /** Returns a scaled vector multiplied by some constant \f$k \in \mathbb{R} \f$.
+         * @param scalar The scalar to multiply the vector by.
+         * @return The scaled vector multiplied by some constant.
+         * */
         vector<T> operator*(const T scalar) const;
 
+        /** Returns a scaled vector divided by some constant \f$k \in \mathbb{R}, k \ne 0 \f$ 
+         * @param scalar The scalar to divide the vector by.
+         * @return The scaled vector divided by some constant.
+         * */
         vector<double> operator/(const double scalar) const;
 
+        /** Modifies the current vector and divides it by some scalar.
+         * @param The scalar to divide the vector by.
+         * */
         template <typename U>
         void operator/=(const U scalar);
 
+        /** Returns the sum of two vectors.
+         * The sum of two vectors \f$u, v \in \mathbb{R}^n\f$ is defined as:
+         * \f$(u + v)_i = u_i + v_i,  \forall 1 \le i \le n \f$
+         * @param v2 The vector to add to.
+         * @return The sum of the two vectors.
+         * */
         vector<T> operator+(const vector<T> v2) const;
 
+        /** Modifies the current vector and adds it by another vector.
+         * @param v2 The vector to add to.
+         * */
         void operator+=(const vector<T> v2);
 
+        /** Returns the current vector with every entry shifted by some constant \f$k \in \mathbb{R}\f$
+         * @param value The value to shift every entry in the vector in the positive direction by.
+         * @return The vector shifted in the positive direction.
+         * */
         vector<T> operator+(const T value) const;
 
+        /** Returns the difference between two vectors.
+         * The difference between two vectors \f$u, v \in \mathbb{R}^n \f$ is defined as:
+         * \f$(u-v)_i = u_i - v_i, \forall 1 \le i \le n \f$
+         * @param v2 The vector to subtract by.
+         * @return The difference between the two vectors.
+         * */
         vector<T> operator-(const vector<T> v2) const;
 
+        /** Returns the current vector with every entry shifted by some constant \f$k \in \mathbb{R}\f$
+         * @param value The value to shift every entry in the vector in the negative direction by.
+         * @return The vector shifted in the negative direction.
+         * */
         vector<T> operator-(const T value) const;
 
+        /** Checks whether or not two vectors are equal.
+         * @param v2 The vector of which equality is checked.
+         * @return A boolean value denoting whether or not the two vectors are equal.
+         * */
         bool operator==(const vector<T>& v2) const;
 
+        /** Typecasts the vector from type T to type U. 
+         * @return The typecasted vector.
+         * */
         template <typename U>
         operator vector<U>() const;
 
+        /** Computes the dot product between two 3-D vectors. 
+         * The dot product of two vectors \f$u, v \in \mathbb{R}^3\f$ has 
+         * a magnitude equivalent to the area of the parallelogram formed by 
+         * vectors $u,v$. The orientation of $u \times v$ is determined
+         * by the Right Hand Rule.
+         * @param v2 The vector to compute the dot product with.
+         * @return The dot product of the two vectors.
+         * */
         vector<T> cross(const vector<T> v2) const;
 
+        /** Computes the magnitude of the vector.
+         * The magnitude of the vector \f$v \in \mathbb{R}^n\f$is defined to be:
+         * \f$\|v\| = \sqrt{\sum_{i=1}^{n} v_i^2}\f$
+         * @return The magnitude of the vector.
+         * */
         double magnitude() const;
 
+        /** Normalizes the vector so that the magnitude of the vector is 1.
+         * The normalized vector is defined as: \f$\frac{v}{\|v\|}\f$
+         * @return The normalized form of the current vector, with magnitude 1.
+         * */
         vector<double> normalize() const;
 
+        /** Removes the entry at a specific index within the vector.
+         * @param idx The index of the entry to remove.
+         * */
         void remove(uint64_t idx);
 
+        /** Removes the last entry (tail) of the vector. */
         void pop();
 
+        /** Appends an entry to the back (tail) of the vector.
+         * @param value The value to push to the back of the vector.
+         * */
         void push_back(const T value); 
 
+        /** Swaps two indices within the vector.
+         * Likewise, this can also be done using a permutation matrix.
+         * @param i The first index of the entry to be swapped.
+         * @param j The second index of the entry to be swapped.
+         * */
         void swap(uint64_t i, uint64_t j);
 
+        /** Computes the cosine of the angle between two vectors.
+         * This is done using the definition of the dot product:
+         * For any two vectors, \f$u,v \in \mathbb{R}^n\f$:
+         * \f$ cos(\theta) = \frac{u \cdot v}{\|u\| \times \|v\|} \f$
+         * Where \f$\theta\f$ is the angle between \f$u, v\f$
+         * */
         double cos(vector<T> v2) const;
 
+        /** Returns the size of the vector (amount of items currently held).
+         * @return The size of the vector.
+         * */
         uint64_t get_size() const;
 
+        /** Returns the capacity of the vector (amount of items which can be held without reallocation). 
+         * @return The capacity of the vector.
+         * */
         uint64_t get_capacity() const;
 
+        /** Redefines the size of the vector,
+         * @param new_size The new size of the vector.
+         * */
         void set_size(uint64_t new_size);
 
+        /** A setter method which determines whether or not the vector is a column vector.
+         * @param c A boolean value denoting whether or not the vector is a column vector.
+         * */
         void set_column(bool c);
 
+        /** A getter method which denotes whether or not the vector is a column vector.
+         * @return A boolean value denoting whether or not the vector is a column vector.
+         * */
         bool is_column() const;
 
+        /** Performs a linear search to determine whether or not the vector 
+         * contains a specific value.
+         * @param value The value to search for within the vector.
+         * @return A boolean value determining whether or not the vector 
+         *         contains a specific value.
+         * */
         bool contains(T value) const;
 
+        /** Performs a linear search and returns the first instance of a value 
+         * in the vector. If the value does not exist within the vector,
+         * the function returns -1.
+         * @param value The value to search for within the vector.
+         * @return The index of the first instance of a value in the vector.
+         *         If the value is not contained within the vector, -1 is
+         *         returned.
+         * */
         int64_t index(T value) const;
 
+        /** Returns a slice (sub-vector) of the vector.
+         * The function slices from the 0th index upto, but not including,
+         * the final specificed index.
+         * @param slice_idx The index to slice upto.
+         * @return A subvector which contains the values from the 
+         *         0th index upto, but not including, the value
+         *         at the slice index specified.
+         * */
         vector<T> slice(uint64_t slice_idx);
 
+        /** A static method which returns a zero vector of any specific size and type.
+         * @param The size of the zero vector.
+         * @return A zero vector of some specified size and type.
+         * */
         static vector<T> zero(uint64_t size);
 
+        /** Returns the 3-D x-axis oriented unit vector, 
+         * \f$i = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \f$. 
+         * */
         static vector<T> i();
 
+        /** Returns the 3-D y-axis oriented unit vector.
+         * \f$j = \begin{bmatrix} 0 & 1 & 0 \end{bmatrix} \f$.
+         * */
         static vector<T> j();
 
+        /** Returns the 3-D z-axis oriented unit vector.
+         * \f$ k = \begin{bmatrix} 0 & 0 & 1 \end{bmatrix} \f$*/
         static vector<T> k();
 };
 

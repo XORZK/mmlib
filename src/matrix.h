@@ -7,26 +7,62 @@
 #include <iostream>
 #include <stdint.h>
 
+/** A generic matrix class which can be used to hold any type. */
 template <typename T>
 class matrix {
     private:
-        uint64_t N, M;
-        vector<T>* vectors;
+        uint64_t N; ///< The amount of rows in the matrix.
+        uint64_t M; ///< The amount of columns in the matrix.
+        vector<T>* vectors; ///< A pointer to the vectors which represent the rows of the matrix.
     public:
+        /** Instantiates an empty matrix with no size. */
         matrix();
 
+        /** Instantiates a square matrix with an initial size.
+         * @param size The amount of columns and rows of the matrix.
+         * */
         matrix(uint64_t size);
 
+        /** Instantiates a matrix of specified dimensions.
+         * @param rows The amount of rows in the matrix.
+         * @param cols The amount of columns in the matrix.
+         * */
         matrix(uint64_t rows, uint64_t cols);
 
+        /** A copy constructor which instantiates a matrix using 
+         *  the contents of another matrix. 
+         * @param mat_2 The matrix to be copied.
+         *  */
         matrix(const matrix<T>& mat_2);
 
+        /** A copy constructor which instantiates a matrix using 
+         *  the contents of another matrix. The matrix is then 
+         *  expanded or shrunk according to the dimensions specified.
+         *  For example, if 
+         *  \f$M = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 4 & 5 \\\ 6 & 7 & 9 
+         *  \end{bmatrix}\f$.
+         *  \f$f(M, 2, 2) = \begin{bmatrix} 1 & 2 \\\ 3 & 4 \end{bmatrix} \f$.
+         * @param mat_2 The matrix to be copied.
+         * @param rows The amount of rows in the new matrix.
+         * @param cols The amount of columns in the new matrix.
+         *  */
         matrix(const matrix<T>& mat_2, uint64_t rows, uint64_t cols);
 
+        /** Fills the matrix using a given value.
+         * @param value The value to fill the matrix with.
+         * */
         void fill(T value);
 
+        /** Fills the matrix using a given function \f$f(i, j)\f$.
+         *  The entry at \f$(i,j)\f$ is filled with \f$f(i,j)\f$.
+         * @param f The function to fill the matrix with.
+         * */
         void fill(std::function<T(uint64_t, uint64_t)> f);
 
+        /** Overrides the subscript operator to allow for matrix indexing.
+         * @param idx The index of the row vector to get from the matrix.
+         * @return The row vector at the specified index.
+         * */
         vector<T>& operator[](uint64_t idx) const;
 
         matrix<double> operator*(const double scalar) const;
@@ -431,7 +467,7 @@ matrix<double> invert(matrix<T> mat) {
 
             matrix<double> row_exchange = matrix<double>::P(rows, row_swap, i);
             modified = row_exchange * modified;
-            P = row_exchange * modified;
+            P = row_exchange * P;
             pivot = modified[i][i];
         }
 

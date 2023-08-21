@@ -1,11 +1,12 @@
 #include "color.h"
 
 color::color() : v4(vector<uint8_t>::zero(4)) {
-    v4[3] = 0xFF;
+    this->v4[3] = 0xFF;
 }
 
 color::color(uint8_t v) : v4(vector<uint8_t >::zero(4)) {
     this->v4.fill(v);
+    this->v4[3] = 0xFF;
 }
 
 color::color(uint8_t R, 
@@ -31,20 +32,20 @@ uint8_t color::A() const {
     return this->v4[3];
 }
 
-void color::R(uint8_t new_r) {
-    this->v4[0] = new_r;
+void color::R(uint8_t nR) {
+    this->v4[0] = nR;
 }
 
-void color::G(uint8_t new_g) {
-    this->v4[1] = new_g;
+void color::G(uint8_t nG) {
+    this->v4[1] = nG;
 }
 
-void color::B(uint8_t new_b) {
-    this->v4[2] = new_b;
+void color::B(uint8_t nB) {
+    this->v4[2] = nB;
 }
 
-void color::A(uint8_t new_a) {
-    this->v4[3] = new_a;
+void color::A(uint8_t nA) {
+    this->v4[3] = nA;
 }
 
 

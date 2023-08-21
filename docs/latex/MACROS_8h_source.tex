@@ -1,0 +1,60 @@
+\doxysection{MACROS.\+h}
+\hypertarget{MACROS_8h_source}{}\label{MACROS_8h_source}\index{src/MACROS.h@{src/MACROS.h}}
+\mbox{\hyperlink{MACROS_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ MACROS\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ MACROS\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <assert.h>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ MAX(x,y)\ ((x\ >\ y)\ ?\ x\ :\ y)}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ MIN(x,y)\ ((x\ <\ y)\ ?\ x\ :\ y)}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00024\ \textcolor{keyword}{inline}\ T\ \mbox{\hyperlink{MACROS_8h_a4ed4f97d6b6a804b967ac19fec6a5447}{gcd}}(T\ a,\ T\ b)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ (b\ ==\ 0\ ?\ a\ :\ \mbox{\hyperlink{MACROS_8h_a4ed4f97d6b6a804b967ac19fec6a5447}{gcd}}(b,\ a\ \%\ b));}
+\DoxyCodeLine{00026\ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00038\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{MACROS_8h_a40ae84ce50fd579fa5eb69c6446ccaa1}{interp}}(T\ x1,\ T\ y1,\ T\ x2,\ T\ y2,\ T\ y3)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{//\ Vertical\ line.}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}\ (x1\ ==\ x2)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x1;}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//\ y\ =\ mx\ +\ b}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{double}\ m\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}((y2-\/y1))/(x2-\/x1);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{double}\ b\ =\ y1\ -\/\ (m*x1);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{return}\ (y3-\/b)/m;}
+\DoxyCodeLine{00049\ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{MACROS_8h_a5f940c7c73073fd200fb459ce9be4157}{distance}}(T\ x1,\ T\ y1,\ T\ x2,\ T\ y2)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ sqrt(pow((x1-\/x2),\ 2)\ +\ pow((y2-\/y1),\ 2));}
+\DoxyCodeLine{00062\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00071\ \textcolor{keyword}{inline}\ T\ \mbox{\hyperlink{MACROS_8h_a8424f6210a6b8990cb5db0d0a07e327b}{mod}}(T\ N,\ T\ M)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ assert(M\ !=\ 0);}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{while}\ (N\ <\ 0)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ N\ +=\ M;}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{return}\ (N\ \%\ M);}
+\DoxyCodeLine{00078\ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00092\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{MACROS_8h_ab82f69d23488e5ff0c47ac81d4a5b2af}{collinear}}(T\ x1,\ T\ y1,\ T\ x2,\ T\ y2,\ T\ x3,\ T\ y3)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ ((x3-\/x2)*(y2-\/y1))\ ==\ ((x2-\/x1)*(y3-\/y2));}
+\DoxyCodeLine{00094\ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

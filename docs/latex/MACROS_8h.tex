@@ -1,0 +1,147 @@
+\doxysection{src/\+MACROS.h File Reference}
+\hypertarget{MACROS_8h}{}\label{MACROS_8h}\index{src/MACROS.h@{src/MACROS.h}}
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{MACROS_8h_aacc3ee1a7f283f8ef65cea31f4436a95}{MAX}}(x,  y)~((x $>$ y) ? x \+: y)
+\item 
+\#define \mbox{\hyperlink{MACROS_8h_a74e75242132eaabbc1c512488a135926}{MIN}}(x,  y)~((x $<$ y) ? x \+: y)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{MACROS_8h_a4ed4f97d6b6a804b967ac19fec6a5447}{gcd}} (T a, T b)
+\item 
+{\footnotesize template$<$typename T $>$ }\\double \mbox{\hyperlink{MACROS_8h_a40ae84ce50fd579fa5eb69c6446ccaa1}{interp}} (T x1, T y1, T x2, T y2, T y3)
+\item 
+{\footnotesize template$<$typename T $>$ }\\double \mbox{\hyperlink{MACROS_8h_a5f940c7c73073fd200fb459ce9be4157}{distance}} (T x1, T y1, T x2, T y2)
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{MACROS_8h_a8424f6210a6b8990cb5db0d0a07e327b}{mod}} (T N, T M)
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{MACROS_8h_ab82f69d23488e5ff0c47ac81d4a5b2af}{collinear}} (T x1, T y1, T x2, T y2, T x3, T y3)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{MACROS_8h_aacc3ee1a7f283f8ef65cea31f4436a95}\label{MACROS_8h_aacc3ee1a7f283f8ef65cea31f4436a95} 
+\index{MACROS.h@{MACROS.h}!MAX@{MAX}}
+\index{MAX@{MAX}!MACROS.h@{MACROS.h}}
+\doxysubsubsection{\texorpdfstring{MAX}{MAX}}
+{\footnotesize\ttfamily \#define MAX(\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})~((x $>$ y) ? x \+: y)}
+
+Returns the maximum between two values (x,y) \Hypertarget{MACROS_8h_a74e75242132eaabbc1c512488a135926}\label{MACROS_8h_a74e75242132eaabbc1c512488a135926} 
+\index{MACROS.h@{MACROS.h}!MIN@{MIN}}
+\index{MIN@{MIN}!MACROS.h@{MACROS.h}}
+\doxysubsubsection{\texorpdfstring{MIN}{MIN}}
+{\footnotesize\ttfamily \#define MIN(\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})~((x $<$ y) ? x \+: y)}
+
+Returns the minimum between two values (x,y) 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{MACROS_8h_ab82f69d23488e5ff0c47ac81d4a5b2af}\label{MACROS_8h_ab82f69d23488e5ff0c47ac81d4a5b2af} 
+\index{MACROS.h@{MACROS.h}!collinear@{collinear}}
+\index{collinear@{collinear}!MACROS.h@{MACROS.h}}
+\doxysubsubsection{\texorpdfstring{collinear()}{collinear()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool collinear (\begin{DoxyParamCaption}\item[{T}]{x1,  }\item[{T}]{y1,  }\item[{T}]{x2,  }\item[{T}]{y2,  }\item[{T}]{x3,  }\item[{T}]{y3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Checks whether or not three pairs of points $(x_1, y_1)$, $(x_2, y_2)$, and $(x_3, y_3)$ are collinear or not. $(x_1, y_1), (x_2, y_2), (x_3, y_3)$ are collinear if the slope between $(x_1, y_1), (x_2, y_2)$ and the slope between $(x_2, y_2), (x_3, y_3) $ are the same. Therefore, we check\+: $\frac{(x_3-x_2)}{(y_3-y_2)} = \frac{(x_2-x_1)}{(y_2-y_1)}.$ 
+\begin{DoxyParams}{Parameters}
+{\em x1} & The x-\/value of the first pair of coordinates (x1, y1). \\
+\hline
+{\em y1} & The y-\/value of the first pair of coordinates (x1, y1). \\
+\hline
+{\em x2} & The x-\/value of the second pair of coordinates (x2, y2). \\
+\hline
+{\em y2} & The y-\/value of the second pair of coordinates (x2, y2). \\
+\hline
+{\em x3} & The x-\/value of the third pair of coordinates (x3, y3). \\
+\hline
+{\em y3} & The y-\/value of the third pair of coordinates (x3, y3). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A boolean value denoting whether or not the three points are collinear. 
+\end{DoxyReturn}
+\Hypertarget{MACROS_8h_a5f940c7c73073fd200fb459ce9be4157}\label{MACROS_8h_a5f940c7c73073fd200fb459ce9be4157} 
+\index{MACROS.h@{MACROS.h}!distance@{distance}}
+\index{distance@{distance}!MACROS.h@{MACROS.h}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double distance (\begin{DoxyParamCaption}\item[{T}]{x1,  }\item[{T}]{y1,  }\item[{T}]{x2,  }\item[{T}]{y2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Computes the distance between two pairs of pionts (x1, y1) and (x2, y2). The distance between $(x_1, y_1)$ and $(x_2, y_2)$ is $sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$. 
+\begin{DoxyParams}{Parameters}
+{\em x1} & The x-\/value of the first pair of coordinates (x1, y1). \\
+\hline
+{\em y1} & The y-\/value of the first pair of coordinates (x1, y1). \\
+\hline
+{\em x2} & The x-\/value of the second pair of coordinates (x2, y2). \\
+\hline
+{\em y2} & The y-\/value of the second pair of coordinates (x2, y2). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the two pair of points (x1, y1) and (x2, y2). 
+\end{DoxyReturn}
+\Hypertarget{MACROS_8h_a4ed4f97d6b6a804b967ac19fec6a5447}\label{MACROS_8h_a4ed4f97d6b6a804b967ac19fec6a5447} 
+\index{MACROS.h@{MACROS.h}!gcd@{gcd}}
+\index{gcd@{gcd}!MACROS.h@{MACROS.h}}
+\doxysubsubsection{\texorpdfstring{gcd()}{gcd()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T gcd (\begin{DoxyParamCaption}\item[{T}]{a,  }\item[{T}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the GCD between two values (a,b) using the Euclidian Algorithm. 
+\begin{DoxyParams}{Parameters}
+{\em a} & The first integer argument into the GCD function. \\
+\hline
+{\em b} & The second integer argument into the GCD function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The GCD of (a,b) which is the largest positive integer N such that (a \% N) = (b \% N) = 0. 
+\end{DoxyReturn}
+\Hypertarget{MACROS_8h_a40ae84ce50fd579fa5eb69c6446ccaa1}\label{MACROS_8h_a40ae84ce50fd579fa5eb69c6446ccaa1} 
+\index{MACROS.h@{MACROS.h}!interp@{interp}}
+\index{interp@{interp}!MACROS.h@{MACROS.h}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double interp (\begin{DoxyParamCaption}\item[{T}]{x1,  }\item[{T}]{y1,  }\item[{T}]{x2,  }\item[{T}]{y2,  }\item[{T}]{y3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Performs a linear interpolation, and computes the corresponding x-\/value to a y-\/value on a line. Linear interpolation is used to fill triangles. 
+\begin{DoxyParams}{Parameters}
+{\em x1} & The x-\/value of the first pair of coordinates (x1, y1). \\
+\hline
+{\em y1} & The y-\/value of the first pair of coordinates (x1, y1). \\
+\hline
+{\em x2} & The x-\/value of the second pair of coordinates (x2, y2). \\
+\hline
+{\em y2} & The y-\/value of the second pair of coordinates (x2, y2). \\
+\hline
+{\em y3} & The y-\/value of the third pair of coordinates (x3, y3). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The unknown x3 value corresponding to y3 on the line formed by (x1, y1) and (x2, y2). 
+\end{DoxyReturn}
+\Hypertarget{MACROS_8h_a8424f6210a6b8990cb5db0d0a07e327b}\label{MACROS_8h_a8424f6210a6b8990cb5db0d0a07e327b} 
+\index{MACROS.h@{MACROS.h}!mod@{mod}}
+\index{mod@{mod}!MACROS.h@{MACROS.h}}
+\doxysubsubsection{\texorpdfstring{mod()}{mod()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T mod (\begin{DoxyParamCaption}\item[{T}]{N,  }\item[{T}]{M }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Computes the modulus of two integers N and M. If $N<0$, we add M to N until it\textquotesingle{}s positive. 
+\begin{DoxyParams}{Parameters}
+{\em N} & The number to find the remainder of. \\
+\hline
+{\em M} & The modulus. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value of $N \pmod M$. 
+\end{DoxyReturn}
