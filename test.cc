@@ -5,6 +5,8 @@
 #include "rewrite/mat.hpp"
 #include "rewrite/color.hpp"
 #include "rewrite/triangle.hpp"
+#include "rewrite/camera.hpp"
+#include "rewrite/window.hpp"
 
 int main() {
     /*
@@ -40,7 +42,7 @@ int main() {
 
     triangle t;
 
-    std::cout << t << "\n";*/
+    std::cout << t << "\n";
 
     list<vec3<double>> vertices;
 
@@ -77,5 +79,9 @@ int main() {
 
     std::cout << barycentric(t, vec3(2.0, 1.0, 1.0)) << "\n";
 
-    std::cout << triangulate(vertices) << "\n";
+    std::cout << triangulate(vertices) << "\n";*/
+
+    window w(500, 500);
+
+    w.run();
 }

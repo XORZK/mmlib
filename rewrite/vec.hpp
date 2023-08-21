@@ -681,6 +681,10 @@ template <typename T> class vec4 {
 
         vec4(T x, T y, T z, T w);
 
+        vec4(vec3<T> v3);
+
+        vec4(vec3<T> v3, T w);
+
         vec4(const vec4<T>& copy);
 
         ~vec4() {}
@@ -771,6 +775,16 @@ vec4<T>::vec4(T v) {
 template <typename T> 
 vec4<T>::vec4(T x, T y, T z, T w) {
     this->dat = static_cast<T*>(new T[]{x,y,z,w});
+}
+
+template <typename T> 
+vec4<T>::vec4(vec3<T> v3) {
+    this->dat = static_cast<T*>(new T[]{v3.x(), v3.y(), v3.z(), static_cast<T>(1)});
+}
+
+template <typename T>
+vec4<T>::vec4(vec3<T> v3, T v) {
+    this->dat = static_cast<T*>(new T[]{v3.x(), v3.y(), v3.z(), v});
 }
 
 template <typename T>

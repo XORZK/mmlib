@@ -169,8 +169,8 @@ bool point_in_triangle(const vec3<double> A,
                        const vec3<double> P) {
     vec3<double> bary = barycentric(A, B, C, P);
 
-    return (0 < bary[0] && 0 < bary[1] && 0 < bary[2] && 
-            1 > bary[0] && 1 > bary[1] && 1 > bary[2]);
+    return (0 <= bary[0] && 0 <= bary[1] && 0 <= bary[2] && 
+            1 >= bary[0] && 1 >= bary[1] && 1 >= bary[2]);
 }
 
 bool point_in_triangle(const triangle& T, const vec3<double> P) {
@@ -182,7 +182,12 @@ bool is_ear_vertex(const triangle& T,
                    const list<int64_t>& reflex) {
 
     for (int64_t k = 0; k < reflex.size(); k++) {
-        if (point_in_triangle(T, vertices[reflex[k]])) {
+        vec3<double> P = vertices[reflex[k]];
+
+        if (P == T.v1() || P == T.v2() || P == T.v3())
+            continue;
+
+        if (point_in_triangle(T, P)) {
             return false;
         }
     }
