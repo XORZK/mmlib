@@ -1,7 +1,6 @@
-IN=src/rational.cc src/window.cc src/color.cc src/camera.cc src/triangle.cc main.cc 
 OUT=main
+IN=src/window.cpp src/camera.cpp src/color.cpp src/triangle.cpp test.cc
 LIB=-lSDL2
-TEST=rewrite/window.cpp rewrite/camera.cpp rewrite/color.cpp rewrite/triangle.cpp test.cc
 DOC=doxygen.cfg
 
 default:
@@ -10,5 +9,3 @@ default:
 docs:
 	doxygen $(DOC)
 
-test:
-	g++ -g -std=c++17 -O3 -lm $(TEST) -o $(OUT) $(LIB) && ./$(OUT)

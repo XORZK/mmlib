@@ -16,13 +16,25 @@
 #define DEFAULT_NEAR_DISTANCE 0.1
 #define DEFAULT_FAR_DISTANCE 100
 
+double relative_line_distance(const vec2<double> A, 
+                              const vec2<double> B,
+                              const vec2<double> P);
+
+color interpolate_color(const color c1,
+                        const color c2,
+                        const double P);
+
 class window {
     private:
         camera *c = nullptr;
-        bool init = false, quit = false, paused = false;
+
+        bool init = false, quit = false, paused = false, modified = true;
+
         int64_t width = DEFAULT_WINDOW_WIDTH, 
                 height = DEFAULT_WINDOW_HEIGHT, 
                 delay = RENDERER_DELAY;
+
+        int64_t global_time = 0;
 
         SDL_Window *w;
         SDL_Renderer *r;
@@ -195,6 +207,23 @@ class window {
 
         void draw_filled_triangle(const triangle& T, 
                                   const color c);
+
+        void draw_colored_line(vec2<double> v1,
+                               vec2<double> v2,
+                               const color c1,
+                               const color c2);
+
+        void draw_rainbow_triangle(vec2<double> v1,
+                                   vec2<double> v2,
+                                   vec2<double> v3);
+
+        void draw_rainbow_triangle(const vec3<double> v1,
+                                   const vec3<double> v2,
+                                   const vec3<double> v3);
+
+        void draw_rainbow_triangle(const vec4<double> v1,
+                                   const vec4<double> v2,
+                                   const vec4<double> v3);
 
         void run();
         

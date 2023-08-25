@@ -1,12 +1,12 @@
-#include "rewrite/list.hpp"
-#include "rewrite/vector.hpp"
-#include "rewrite/vec.hpp"
-#include "rewrite/matrix.hpp"
-#include "rewrite/mat.hpp"
-#include "rewrite/color.hpp"
-#include "rewrite/triangle.hpp"
-#include "rewrite/camera.hpp"
-#include "rewrite/window.hpp"
+#include "src/list.hpp"
+#include "src/vector.hpp"
+#include "src/vec.hpp"
+#include "src/matrix.hpp"
+#include "src/mat.hpp"
+#include "src/color.hpp"
+#include "src/triangle.hpp"
+#include "src/camera.hpp"
+#include "src/window.hpp"
 
 int main() {
     /*
@@ -45,7 +45,6 @@ int main() {
     std::cout << t << "\n";
 
     list<vec3<double>> vertices;
-
 
     vertices.push_back(vec3<double>(173,29,1)); 
     vertices.push_back(vec3<double>(181,88,1)); 

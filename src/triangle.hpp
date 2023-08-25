@@ -15,6 +15,8 @@ class triangle {
 
         triangle(vec3<double> v1, vec3<double> v2, vec3<double> v3) ;
 
+        triangle(const triangle& copy);
+
         vec3<double> v1() const;
 
         vec3<double> v2() const;
@@ -52,12 +54,22 @@ std::ostream& operator<<(std::ostream& out, const triangle& t);
 
 list<vec3<double>> sort_vertices(const list<vec3<double>>& vertices);
 
+vec3<double> barycentric(const vec2<double> A,
+                         const vec2<double> B,
+                         const vec2<double> C, 
+                         const vec2<double> P);
+
 vec3<double> barycentric(const vec3<double> A,
                          const vec3<double> B,
                          const vec3<double> C, 
                          const vec3<double> P);
 
 vec3<double> barycentric(const triangle& T, const vec3<double> P);
+
+bool point_in_triangle(const vec2<double> A,
+                       const vec2<double> B,
+                       const vec2<double> C, 
+                       const vec2<double> P);
 
 bool point_in_triangle(const vec3<double> A,
                        const vec3<double> B,

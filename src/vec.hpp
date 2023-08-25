@@ -1021,6 +1021,11 @@ std::ostream& operator<<(std::ostream& out, const vec4<T>& vec) {
     return (out << "vec4: " << '<' << vec.x() << ',' << vec.y() << ',' << vec.z() << ',' << vec.w() << '>');
 }
 
+template <typename T>
+inline double distance(vec2<T> v1, vec2<T> v2) {
+    return std::sqrt(std::pow(v1.x() - v2.x(), 2) + std::pow(v1.y() - v2.y(), 2));
+}
+
 template <typename T> 
 inline double distance(vec3<T> v1, vec3<T> v2) {
     return std::sqrt(std::pow(v1[0] - v2[0], 2) + std::pow(v1[1] - v2[1], 2) + std::pow(v1[2] - v2[2], 2));

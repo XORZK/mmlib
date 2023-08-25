@@ -10,6 +10,12 @@ triangle::triangle(vec3<double> v1,
                    vec3<double> v2, 
                    vec3<double> v3) : A(v1), B(v2), C(v3) {}
 
+triangle::triangle(const triangle& copy) {
+    A = vec3(copy.v1());
+    B = vec3(copy.v2());
+    C = vec3(copy.v3());
+}
+
 vec3<double> triangle::v1() const {
     return A;
 }
@@ -141,6 +147,13 @@ list<vec3<double>> sort_vertices(const list<vec3<double>>& vertices) {
     return sorted_list;
 }
 
+vec3<double> barycentric(const vec2<double> A,
+                         const vec2<double> B,
+                         const vec2<double> C,
+                         const vec2<double> P) {
+    return barycentric(vec3(A, 1.0), vec3(B, 1.0), vec3(C, 1.0), vec3(P, 1.0));
+}
+
 vec3<double> barycentric(const vec3<double> A,
                          const vec3<double> B,
                          const vec3<double> C,
@@ -162,6 +175,14 @@ vec3<double> barycentric(const vec3<double> A,
 vec3<double> barycentric(const triangle& T, const vec3<double> P) {
     return barycentric(T.v1(), T.v2(), T.v3(), P);
 }
+
+bool point_in_triangle(const vec2<double> A,
+                       const vec2<double> B,
+                       const vec2<double> C, 
+                       const vec2<double> P) {
+    return point_in_triangle(vec3(A, 1.0), vec3(B, 1.0), vec3(C, 1.0), vec3(P, 1.0));
+}
+
 
 bool point_in_triangle(const vec3<double> A,
                        const vec3<double> B,

@@ -48,6 +48,18 @@ vec4<uint8_t> color::get_v4() const {
     return this->v4;
 }
 
+color color::RED() {
+    return color(255, 0, 0);
+}
+
+color color::GREEN() {
+    return color(0, 255, 0);
+}
+
+color color::BLUE() {
+    return color(0, 0, 255);
+}
+
 std::ostream& operator<<(std::ostream& out, const color& c) {
     out << "color: " << "(" << +c.R() << "," << +c.G() << "," << +c.B() << "," << +c.A() << ")";
 

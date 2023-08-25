@@ -1,5 +1,22 @@
 #include "window.hpp"
 
+double relative_line_distance(const vec2<double> A, 
+                              const vec2<double> B,
+                              const vec2<double> P) {
+    double line_dist = distance(A, B),
+           point_dist = distance(A, P);
+
+    return point_dist/line_dist;
+}
+
+color interpolate_color(const color c1,
+                        const color c2,
+                        const double P) {
+    return color(c1.R() * P + c2.R() * (1-P),
+                 c1.G() * P + c2.G() * (1-P),
+                 c1.B() * P + c2.B() * (1-P));
+}
+
 // Initializes SDL Window
 void window::initialize_window() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -118,6 +135,7 @@ void window::draw_point(const vec4<double> point) {
     vec4<double> ndc_vert = c->compute_ndc(point);
 
     vec2<double> screen_vert = this->ndc_to_screen_coords(ndc_vert);
+
     this->draw_point(screen_vert);
 }
 
@@ -382,12 +400,12 @@ void window::draw_filled_triangle(vec2<double> v1,
     if (v2.y() > v3.y())
         std::swap(v2, v3);
 
-    if (v2.y() > v1.y())
+    if (v1.y() > v2.y())
         std::swap(v1, v2);
 
     double bounds = v2.y();
 
-    for (int64_t y = v1.y()+1; y < v3.y(); y++) {
+    for (int64_t y = v1.y(); y <= v3.y(); y++) {
         double x1 = (y <= bounds ? 
                      interp<double>(v1.x(), v1.y(), v2.x(), v2.y(), y) : 
                      interp<double>(v2.x(), v2.y(), v3.x(), v3.y(), y));
@@ -467,46 +485,112 @@ void window::run() {
             }
         }
 
-        if (!paused)
+        if (!paused) {
             this->draw();
+            ++this->global_time;
+        }
     }
 }
 
+// DDA Algorithm
+void window::draw_colored_line(vec2<double> v1,
+                               vec2<double> v2,
+                               const color c1, 
+                               const color c2) {
+
+    if (v1.x() > v2.x())
+        std::swap(v1, v2);
+
+    double dx = (v2.x() - v1.x()),
+           dy = (v2.y() - v1.y()),
+           x = v1.x(),
+           y = MIN(v1.y(), v2.y()),
+           k = 0,
+           step = MAX(ABS(dx), ABS(dy));
+
+    dx /= step;
+    dy /= step;
+
+    while (k <= step) {
+        double P = k / step;
+
+        color point_color = interpolate_color(c1, c2, P);
+    
+        this->draw_point(vec2(x, y), point_color);
+
+        x += dx;
+        y += dy;
+        ++k;
+    }
+}
+
+void window::draw_rainbow_triangle(vec2<double> v1,
+                                   vec2<double> v2,
+                                   vec2<double> v3) {
+
+    if (v1.y() > v2.y())
+        std::swap(v1, v2);
+
+    if (v2.y() > v3.y())
+        std::swap(v2, v3);
+
+    if (v1.y() > v2.y())
+        std::swap(v1, v2);
+
+    double bounds = v2.y();
+
+    for (int64_t y = v1.y(); y <= v3.y(); y++) {
+        double x1 = (y <= bounds ? 
+                     interp<double>(v1.x(), v1.y(), v2.x(), v2.y(), y) : 
+                     interp<double>(v2.x(), v2.y(), v3.x(), v3.y(), y));
+
+        double x2 = interp<double>(v1.x(), v1.y(), v3.x(), v3.y(), y);
+
+        for (int64_t x = MIN(x1, x2); x <= MAX(x1, x2); x++) {
+            vec2<double> point = vec2((double) x, (double) y);
+
+            vec3<double> bary = barycentric(vec3(v1, 1.0), 
+                                            vec3(v2, 1.0), 
+                                            vec3(v3, 1.0), 
+                                            vec3(point, 1.0));
+
+            color c(0xFF * bary[2], 0xFF * bary[0], 0xFF * bary[1]);
+
+            this->draw_point(point, c);
+        }
+    }
+}
+
+void window::draw_rainbow_triangle(const vec3<double> v1,
+                                   const vec3<double> v2,
+                                   const vec3<double> v3) {
+    this->draw_rainbow_triangle(vec4(v1, 1.0),
+                                vec4(v2, 1.0),
+                                vec4(v3, 1.0));
+}
+
+void window::draw_rainbow_triangle(const vec4<double> v1,
+                                   const vec4<double> v2,
+                                   const vec4<double> v3) {
+    vec2<double> c1 = cartesian_to_screen_coords(v1),
+                 c2 = cartesian_to_screen_coords(v2),
+                 c3 = cartesian_to_screen_coords(v3);
+
+    this->draw_rainbow_triangle(c1, c2, c3);
+}
+
 void window::draw() {
-    list<vec3<double>> vertices;
+    this->fill_background(color(0, 0, 0));
 
-    vertices.push_back(vec3<double>(173,29,-500)); 
-    vertices.push_back(vec3<double>(181,88,-500)); 
-    vertices.push_back(vec3<double>(246,133,-500)); 
-    vertices.push_back(vec3<double>(210,148,-500)); 
-    vertices.push_back(vec3<double>(240,147,-500)); 
-    vertices.push_back(vec3<double>(241,173,-500)); 
-    vertices.push_back(vec3<double>(209,192,-500)); 
-    vertices.push_back(vec3<double>(221,196,-500)); 
-    vertices.push_back(vec3<double>(205,220,-500)); 
-    vertices.push_back(vec3<double>(154,170,-500));  
-    vertices.push_back(vec3<double>(93,222,-500)); 
-    vertices.push_back(vec3<double>(63,223,-500)); 
-    vertices.push_back(vec3<double>(72,155,-500)); 
-    vertices.push_back(vec3<double>(109,104,-500));
-    vertices.push_back(vec3<double>(68,129,-500)); 
-    vertices.push_back(vec3<double>(59,73,-500)); 
-    vertices.push_back(vec3<double>(27,64,-500)); 
-    vertices.push_back(vec3<double>(38,39,-500)); 
-    vertices.push_back(vec3<double>(57,49,-500)); 
-    vertices.push_back(vec3<double>(118,25,-500)); 
-    vertices.push_back(vec3<double>(142,78,-500)); 
-    vertices.push_back(vec3<double>(151,50,-500)); 
-    vertices.push_back(vec3<double>(151,21,-500));
+    mat3<double> R = create_3d_rotation_matrix(0, global_time, 0);
 
-    list<triangle> T = triangulate(vertices);
-
-    for (int64_t k = 0; k < T.size(); k++) 
-       this->draw_wireframe_triangle(T[k], color(255, 255, 0));
-
-
-
+    this->draw_wireframe_triangle(R * vec3<double>(-1.0, 0.0, -5.0),
+                                  R * vec3<double>(1.0, 0.0, -5.0),
+                                  R * vec3<double>(0.0, 1.0, -5.0),
+                                  color(255, 0, 0));
 
     SDL_RenderPresent(this->r);
     SDL_Delay(this->delay);
+
+    this->modified = false;
 }

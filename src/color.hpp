@@ -34,6 +34,12 @@ class color {
         void A(uint8_t new_alpha);
 
         vec4<uint8_t> get_v4() const;
+
+        static color RED();
+
+        static color BLUE();
+
+        static color GREEN();
 };
 
 std::ostream& operator<<(std::ostream& out, const color& c);

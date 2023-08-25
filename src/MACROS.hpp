@@ -6,6 +6,7 @@
 
 #define MAX(x,y) ((x>y)?x:y)
 #define MIN(x,y) ((x<y)?x:y)
+#define ABS(x) (x < 0 ? -x : x)
 
 inline int64_t mod(int64_t N, int64_t M) {
     while (N < 0)
