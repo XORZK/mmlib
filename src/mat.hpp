@@ -13,17 +13,22 @@
 template <typename T> class mat2 {
     private:
         static const int64_t N = 2, M = 2;
-        vec2<T>* data;
+		vec2<T> *v1, *v2;
     public:
         mat2();
 
-        mat2(const mat2<T>& m2);
+        mat2(mat2<T>& m2);
+
+		~mat2() {
+			free(v1);
+			free(v2);
+		}
 
         void fill(T value);
 
         void fill(std::function<T(int64_t, int64_t)> func);
 
-        vec2<T>& operator[](int64_t idx) const;
+        vec2<T>& operator[](int64_t idx);
 
         mat2<T> operator*(const mat2<T>& m2) const;
 
@@ -76,19 +81,25 @@ template <typename T> class mat2 {
 template <typename T> class mat3 { 
     private:
         static const int64_t N = 3, M = 3;
-        vec3<T>* data;
+		vec3<T> *v1, *v2, *v3;
     public:
         mat3();
 
-        mat3(const mat3<T>& m2);
+        mat3(mat3<T>& m2);
+
+		~mat3() {
+			free(v1);
+			free(v2);
+			free(v3);
+		}
 
         void fill(T value);
 
         void fill(std::function<T(int64_t, int64_t)> func);
 
-        vec3<T>& operator[](int64_t idx) const;
+        vec3<T>& operator[](int64_t idx);
 
-        mat3<T> operator*(const mat3<T>& m2) const;
+        mat3<T> operator*(mat3<T>& m2) const;
 
         mat3<T> operator*(const T scalar) const;
 
@@ -98,25 +109,25 @@ template <typename T> class mat3 {
 
         mat3<T> operator-(const T value) const;
 
-        mat3<T> operator+(const mat3<T>& m2) const;
+        mat3<T> operator+(mat3<T>& m2) const;
 
-        mat3<T> operator-(const mat3<T>& m2) const;
+        mat3<T> operator-(mat3<T>& m2) const;
 
-        vec3<T> operator*(const vec3<T>& v2) const;
+        vec3<T> operator*(vec3<T>& v2) const;
 
         void operator*=(const T scalar);
 
         void operator/=(const T scalar);
 
-        void operator+=(const mat3<T>& m2);
+        void operator+=(mat3<T>& m2);
 
-        void operator-=(const mat3<T>& m2);
+        void operator-=(mat3<T>& m2);
 
         void operator+=(const T value);
 
         void operator-=(const T value);
 
-        bool operator==(const mat3<T>& m2) const;
+        bool operator==(mat3<T>& m2) const;
 
         template <typename U>
         operator mat3<U>() const;
@@ -146,6 +157,11 @@ template <typename T> class mat4 {
         mat4();
 
         mat4(const mat4<T>& m2);
+
+		~mat4() {
+			free(data);
+			data = NULL;
+		}
 
         void fill(T value);
 
@@ -205,52 +221,45 @@ template <typename T> class mat4 {
 
 template <typename T> 
 mat2<T>::mat2() {
-    this->data = static_cast<vec2<T>*>(malloc(N * sizeof(vec2<T>)));
-
-    for (int64_t k = 0; k < N; k++) 
-        this->data[k] = vec2<T>::zero();
+	v1 = new vec2<T>();
+	v2 = new vec2<T>();
 }
 
 template <typename T> 
-mat2<T>::mat2(const mat2<T>& m2) {
-    this->data = static_cast<vec2<T>*>(malloc(N * sizeof(vec2<T>)));
-
-    for (int64_t k = 0; k < N; k++) {
-        vec2<T> copy(m2[k]);
-        this->data[k] = copy;
-    }
+mat2<T>::mat2(mat2<T>& m2) {
+	v1 = new vec2<T>(m2[0]);
+	v2 = new vec2<T>(m2[1]);
 }
 
 template <typename T> 
 void mat2<T>::fill(T value) {
-    for (int64_t k = 0; k < N; k++) 
-        this->data[k].fill(value);
+	v1->fill(value);
+	v2->fill(value);
 }
 
 template <typename T>
 void mat2<T>::fill(std::function<T(int64_t, int64_t)> func) {
-    for (int64_t i = 0; i < N; i++) {
-        for (int64_t k = 0; k < N; k++) {
-            this->data[i][k] = func(i,k);
-        }
-    }
+	(*v1)[0] = func(0, 0);
+	(*v1)[1] = func(0, 1);
+	(*v2)[0] = func(1, 0);
+	(*v2)[1] = func(1, 1);
 }
 
 template <typename T> 
-vec2<T>& mat2<T>::operator[](int64_t idx) const {
+vec2<T>& mat2<T>::operator[](int64_t idx) {
     assert(("Out of Bounds Error: matrix index out of range", (idx >= 0 && idx < N)));
 
-    return this->data[idx];
+    return (idx == 0 ? *v1 : *v2);
 }
 
 template <typename T> 
 mat2<T> mat2<T>::operator*(const mat2<T>& m2) const {
     mat2<T> P;
 
-    P[0][0] = this->data[0][0] * m2[0][0] + this->data[0][1] * m2[1][0];
-    P[0][1] = this->data[0][0] * m2[0][1] + this->data[0][1] * m2[1][1];
-    P[1][0] = this->data[1][0] * m2[0][0] + this->data[1][1] * m2[1][0];
-    P[1][0] = this->data[1][0] * m2[0][1] + this->data[1][1] * m2[1][1];
+	P[0][0] = (*v1)[0] * m2[0][0] + (*v1)[1] * m2[1][0];
+	P[0][1] = (*v1)[0] * m2[0][1] + (*v1)[1] * m2[1][1];
+	P[1][0] = (*v2)[0] * m2[0][0] + (*v2)[1] * m2[1][0];
+	P[1][1] = (*v2)[0] * m2[0][1] + (*v2)[1] * m2[1][1];
 
     return P;
 }
@@ -260,7 +269,7 @@ mat2<T> mat2<T>::operator*(const T scalar) const {
     mat2<T> scaled;
 
     for (int64_t k = 0; k < N; k++) {
-        scaled[k] = (this->data[k] * scalar);
+        scaled[k] = ((*this)[k] * scalar);
     }
 
     return scaled;
@@ -272,7 +281,7 @@ mat2<T> mat2<T>::operator/(const T scalar) const {
     mat2<T> scaled;
 
     for (int64_t i = 0; i < N; i++) {
-        scaled[i] = (this->data[i] / scalar);
+        scaled[i] = ((*this)[i] / scalar);
     }
 
     return scaled;
@@ -283,7 +292,7 @@ mat2<T> mat2<T>::operator+(const T value) const {
     mat2<T> shifted;
 
     for (int64_t i = 0; i < N; i++) {
-        shifted[i] = (this->data[i] + value);
+        shifted[i] = ((*this)[i] + value);
     }
 
     return shifted;
@@ -294,7 +303,7 @@ mat2<T> mat2<T>::operator-(const T value) const {
     mat2<T> shifted;
 
     for (int64_t i = 0; i < N; i++) {
-        shifted[i] = (this->data[i] - value);
+        shifted[i] = ((*this)[i] - value);
     }
 
     return shifted;
@@ -305,7 +314,7 @@ mat2<T> mat2<T>::operator+(const mat2<T>& m2) const {
     mat2<T> sum;
 
     for (int64_t i = 0; i < N; i++) {
-        sum[i] = (this->data[i] + m2[i]);
+        sum[i] = ((*this)[i] + m2[i]);
     }
 
     return sum;
@@ -316,7 +325,7 @@ mat2<T> mat2<T>::operator-(const mat2<T>& m2) const {
     mat2<T> diff;
 
     for (int64_t i = 0; i < N; i++) {
-        diff[i] = (this->data[i] - m2[i]);
+        diff[i] = ((*this)[i] - m2[i]);
     }
 
     return diff;
@@ -324,8 +333,8 @@ mat2<T> mat2<T>::operator-(const mat2<T>& m2) const {
 
 template <typename T>
 vec2<T> mat2<T>::operator*(const vec2<T>& v2) const {
-    vec2<T> P(this->data[0] * v2,
-              this->data[1] * v2);
+    vec2<T> P((*this)[0] * v2,
+              (*this)[1] * v2);
 
     return P;
 }
@@ -333,7 +342,7 @@ vec2<T> mat2<T>::operator*(const vec2<T>& v2) const {
 template <typename T> 
 void mat2<T>::operator*=(const T scalar) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] *= scalar;
+        (*this)[i] *= scalar;
     }
 }
 
@@ -341,42 +350,42 @@ template <typename T>
 void mat2<T>::operator/=(const T scalar) {
     assert(("Math Error: Cannot divide by 0", scalar != 0));
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] /= scalar;
+        (*this)[i] /= scalar;
     }
 }
 
 template <typename T> 
 void mat2<T>::operator+=(const T value) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] += value;
+        (*this)[i] += value;
     }
 }
 
 template <typename T> 
 void mat2<T>::operator-=(const T value) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] -= value;
+        (*this)[i] -= value;
     }
 }
 
 template <typename T> 
 void mat2<T>::operator+=(const mat2<T>& m2) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] += m2[i];
+        (*this)[i] += m2[i];
     }
 }
 
 template <typename T> 
 void mat2<T>::operator-=(const mat2<T>& m2) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] -= m2[i];
+        (*this)[i] -= m2[i];
     }
 }
 
 template <typename T> 
 bool mat2<T>::operator==(const mat2<T>& m2) const {
     for (int64_t i = 0; i < N; i++) {
-        if (this->data[i] != m2[i])
+        if ((*this)[i] != m2[i])
             return false;
     }
 
@@ -388,7 +397,7 @@ mat2<T>::operator mat2<U>() const {
     mat2<U> casted;
 
     for (int64_t k = 0; k < N; k++)
-        casted[k] = static_cast<vec2<U>>(this->data[k]);
+        casted[k] = static_cast<vec2<U>>((*this)[k]);
 
     return casted;
 }
@@ -398,7 +407,7 @@ mat2<T>::operator matrix<T>() const {
     matrix<T> casted(N, N);
 
     for (int64_t k = 0; k < N; k++) 
-        casted[k] = static_cast<vector<T>>(this->data[k]);
+        casted[k] = static_cast<vector<T>>((*this)[k]);
 
     return casted;
 }
@@ -409,7 +418,7 @@ mat2<T> mat2<T>::transpose() const {
 
     for (int64_t i = 0; i < N; i++) {
         for (int64_t k = 0; k < M; k++) {
-            TP[k][i] = this->data[i][k];
+            TP[k][i] = (*this)[i][k];
         }
     }
 
@@ -418,12 +427,12 @@ mat2<T> mat2<T>::transpose() const {
 
 template <typename T> 
 bool mat2<T>::is_lower_triangular() const {
-    return (this->data[0][1] == static_cast<T>(0));
+    return ((*this)[0][1] == static_cast<T>(0));
 }
 
 template <typename T> 
 bool mat2<T>::is_upper_triangular() const {
-    return (this->data[1][0] == static_cast<T>(0));
+    return ((*this)[1][0] == static_cast<T>(0));
 }
 
 template <typename T> 
@@ -437,86 +446,82 @@ int64_t mat2<T>::rows() const { return N; }
 template <typename T> 
 int64_t mat2<T>::cols() const { return M; }
 
-
 template <typename T> 
 mat3<T>::mat3() {
-    this->data = static_cast<vec3<T>*>(malloc(N * sizeof(vec3<T>)));
-
-    for (int64_t k = 0; k < N; k++) 
-        this->data[k] = vec3<T>::zero();
+	v1 = new vec3<T>();
+	v2 = new vec3<T>();
+	v3 = new vec3<T>();
 }
 
 template <typename T> 
-mat3<T>::mat3(const mat3<T>& m2) {
-    this->data = static_cast<vec3<T>*>(malloc(N * sizeof(vec3<T>)));
-
-    for (int64_t k = 0; k < N; k++) {
-        vec3<T> copy(m2[k]);
-        this->data[k] = copy;
-    }
+mat3<T>::mat3(mat3<T>& m2) {
+	v1 = new vec3<T>(m2[0]);	
+	v2 = new vec3<T>(m2[1]);	
+	v3 = new vec3<T>(m2[2]);	
 }
 
 template <typename T> 
 void mat3<T>::fill(T value) {
-    for (int64_t k = 0; k < N; k++) 
-        this->data[k].fill(value);
+	v1->fill(value);
+	v2->fill(value);
+	v3->fill(value);
 }
 
 template <typename T>
 void mat3<T>::fill(std::function<T(int64_t, int64_t)> func) {
     for (int64_t i = 0; i < N; i++) {
         for (int64_t k = 0; k < N; k++) {
-            this->data[i][k] = func(i,k);
+            (*this)[i][k] = func(i,k);
         }
     }
 }
 
 template <typename T> 
-vec3<T>& mat3<T>::operator[](int64_t idx) const {
+vec3<T>& mat3<T>::operator[](int64_t idx) {
     assert(("Out of Bounds Error: matrix index out of range", (idx >= 0 && idx < N)));
 
-    return this->data[idx];
+    return (idx == 0 ? *v1 : idx == 1 ? *v2 : *v3);
 }
 
 template <typename T> 
-mat3<T> mat3<T>::operator*(const mat3<T>& m2) const {
+mat3<T> mat3<T>::operator*(mat3<T>& m2) const {
     mat3<T> P;
 
-    P[0][0] = this->data[0][0] * m2[0][0] + 
-              this->data[0][1] * m2[1][0] + 
-              this->data[0][2] * m2[2][0];
+    P[0][0] = (*v1)[0] * m2[0][0] + 
+              (*v1)[1] * m2[1][0] + 
+              (*v1)[2] * m2[2][0];
 
-    P[0][1] = this->data[0][0] * m2[0][1] +
-              this->data[0][1] * m2[1][1] + 
-              this->data[0][2] * m2[2][1];
+    P[0][1] = (*v1)[0] * m2[0][1] +
+              (*v1)[1] * m2[1][1] + 
+              (*v1)[2] * m2[2][1];
 
-    P[0][2] = this->data[0][0] * m2[0][2] + 
-              this->data[0][1] * m2[1][2] + 
-              this->data[0][2] * m2[2][2];
+    P[0][2] = (*v1)[0] * m2[0][2] + 
+              (*v1)[1] * m2[1][2] + 
+              (*v1)[2] * m2[2][2];
 
-    P[1][0] = this->data[1][0] * m2[0][0] + 
-              this->data[1][1] * m2[1][0] + 
-              this->data[1][2] * m2[2][0];
+    P[1][0] = (*v2)[0] * m2[0][0] + 
+              (*v2)[1] * m2[1][0] + 
+              (*v2)[2] * m2[2][0];
 
-    P[1][1] = this->data[1][0] * m2[0][1] +
-              this->data[1][1] * m2[1][1] + 
-              this->data[1][2] * m2[2][1];
+    P[1][1] = (*v2)[0] * m2[0][1] +
+              (*v2)[1] * m2[1][1] + 
+              (*v2)[2] * m2[2][1];
 
-    P[1][2] = this->data[1][0] * m2[0][2] + 
-              this->data[1][1] * m2[1][2] + 
-              this->data[1][2] * m2[2][2];
+    P[1][2] = (*v2)[0] * m2[0][2] + 
+              (*v2)[1] * m2[1][2] + 
+              (*v2)[2] * m2[2][2];
 
-    P[2][0] = this->data[2][0] * m2[0][0] + 
-              this->data[2][1] * m2[1][0] + 
-              this->data[2][2] * m2[2][0];
+    P[2][0] = (*v3)[0] * m2[0][0] + 
+              (*v3)[1] * m2[1][0] + 
+              (*v3)[2] * m2[2][0];
 
-    P[2][1] = this->data[2][0] * m2[0][1] +
-              this->data[2][1] * m2[1][1] + 
-              this->data[2][2] * m2[2][1];
+    P[2][1] = (*v3)[0] * m2[0][1] +
+              (*v3)[1] * m2[1][1] + 
+              (*v3)[2] * m2[2][1];
 
-    P[2][2] = this->data[2][0] * m2[0][2] + 
-              this->data[2][1] * m2[1][2] + 
-              this->data[2][2] * m2[2][2];
+    P[2][2] = (*v3)[0] * m2[0][2] + 
+              (*v3)[1] * m2[1][2] + 
+              (*v3)[2] * m2[2][2];
 
     return P;
 }
@@ -526,7 +531,7 @@ mat3<T> mat3<T>::operator*(const T scalar) const {
     mat3<T> scaled;
 
     for (int64_t k = 0; k < N; k++) {
-        scaled[k] = (this->data[k] * scalar);
+        scaled[k] = ((*this)[k] * scalar);
     }
 
     return scaled;
@@ -538,7 +543,7 @@ mat3<T> mat3<T>::operator/(const T scalar) const {
     mat3<T> scaled;
 
     for (int64_t i = 0; i < N; i++) {
-        scaled[i] = (this->data[i] / scalar);
+        scaled[i] = ((*this)[i] / scalar);
     }
 
     return scaled;
@@ -549,7 +554,7 @@ mat3<T> mat3<T>::operator+(const T value) const {
     mat3<T> shifted;
 
     for (int64_t i = 0; i < N; i++) {
-        shifted[i] = (this->data[i] + value);
+        shifted[i] = ((*this)[i] + value);
     }
 
     return shifted;
@@ -560,39 +565,39 @@ mat3<T> mat3<T>::operator-(const T value) const {
     mat3<T> shifted;
 
     for (int64_t i = 0; i < N; i++) {
-        shifted[i] = (this->data[i] - value);
+        shifted[i] = ((*this)[i] - value);
     }
 
     return shifted;
 }
 
 template <typename T> 
-mat3<T> mat3<T>::operator+(const mat3<T>& m2) const {
+mat3<T> mat3<T>::operator+(mat3<T>& m2) const {
     mat3<T> sum;
 
     for (int64_t i = 0; i < N; i++) {
-        sum[i] = (this->data[i] + m2[i]);
+        sum[i] = ((*this)[i] + m2[i]);
     }
 
     return sum;
 }
 
 template <typename T> 
-mat3<T> mat3<T>::operator-(const mat3<T>& m2) const {
+mat3<T> mat3<T>::operator-(mat3<T>& m2) const {
     mat3<T> diff;
 
     for (int64_t i = 0; i < N; i++) {
-        diff[i] = (this->data[i] - m2[i]);
+        diff[i] = ((*this)[i] - m2[i]);
     }
 
     return diff;
 }
 
 template <typename T> 
-vec3<T> mat3<T>::operator*(const vec3<T>& v2) const {
-    vec3<T> P(this->data[0] * v2,
-              this->data[1] * v2,
-              this->data[2] * v2);
+vec3<T> mat3<T>::operator*(vec3<T>& v) const {
+    vec3<T> P((*v1) * v,
+              (*v2) * v,
+              (*v3) * v);
 
     return P;
 }
@@ -600,7 +605,7 @@ vec3<T> mat3<T>::operator*(const vec3<T>& v2) const {
 template <typename T> 
 void mat3<T>::operator*=(const T scalar) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] *= scalar;
+        (*this)[i] *= scalar;
     }
 }
 
@@ -608,42 +613,42 @@ template <typename T>
 void mat3<T>::operator/=(const T scalar) {
     assert(("Math Error: Cannot divide by 0", scalar != 0));
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] /= scalar;
+        (*this)[i] /= scalar;
     }
 }
 
 template <typename T> 
 void mat3<T>::operator+=(const T value) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] += value;
+        (*this)[i] += value;
     }
 }
 
 template <typename T> 
 void mat3<T>::operator-=(const T value) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] -= value;
+        (*this)[i] -= value;
     }
 }
 
 template <typename T> 
-void mat3<T>::operator+=(const mat3<T>& m2) {
+void mat3<T>::operator+=(mat3<T>& m2) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] += m2[i];
+        (*this)[i] += m2[i];
     }
 }
 
 template <typename T> 
-void mat3<T>::operator-=(const mat3<T>& m2) {
+void mat3<T>::operator-=(mat3<T>& m2) {
     for (int64_t i = 0; i < N; i++) {
-        this->data[i] -= m2[i];
+        (*this)[i] -= m2[i];
     }
 }
 
 template <typename T> 
-bool mat3<T>::operator==(const mat3<T>& m2) const {
+bool mat3<T>::operator==(mat3<T>& m2) const {
     for (int64_t i = 0; i < N; i++) {
-        if (this->data[i] != m2[i])
+        if ((*this)[i] != m2[i])
             return false;
     }
 
@@ -655,7 +660,7 @@ mat3<T>::operator mat3<U>() const {
     mat3<U> casted;
 
     for (int64_t k = 0; k < N; k++)
-        casted[k] = static_cast<vec3<U>>(this->data[k]);
+        casted[k] = static_cast<vec3<U>>((*this)[k]);
 
     return casted;
 }
@@ -665,7 +670,7 @@ mat3<T>::operator matrix<T>() const {
     matrix<T> casted(N, N);
 
     for (int64_t k = 0; k < N; k++) 
-        casted[k] = static_cast<vector<T>>(this->data[k]);
+        casted[k] = static_cast<vector<T>>((*this)[k]);
 
     return casted;
 }
@@ -676,7 +681,7 @@ mat3<T> mat3<T>::transpose() const {
 
     for (int64_t i = 0; i < N; i++) {
         for (int64_t k = 0; k < M; k++) {
-            TP[k][i] = this->data[i][k];
+            TP[k][i] = (*this)[i][k];
         }
     }
 
@@ -687,14 +692,18 @@ template <typename T>
 bool mat3<T>::is_lower_triangular() const {
     T z = static_cast<T>(0);
 
-    return (this->data[0][1] == z && this->data[0][2] == z && this->data[1][2] == z);
+    return ((*this)[0][1] == z && 
+			(*this)[0][2] == z && 
+			(*this)[1][2] == z);
 }
 
 template <typename T> 
 bool mat3<T>::is_upper_triangular() const {
     T z = static_cast<T>(0);
 
-    return (this->data[1][0] == z && this->data[2][0] == z && this->data[2][1] == z);
+    return ((*this)[1][0] == z && 
+			(*this)[2][0] == z && 
+			(*this)[2][1] == z);
 }
 
 template <typename T> 
@@ -711,7 +720,7 @@ mat2<T> mat3<T>::minor(int64_t i, int64_t j) const {
             if (p == j || k == i) 
                 continue;
 
-            M[k - (k > i)][p - (p > j)] = this->data[k][p];
+            M[k - (k > i)][p - (p > j)] = (*this)[k][p];
         }
     }
 
@@ -1208,6 +1217,14 @@ inline mat3<double> create_3d_rotation_matrix(double alpha = 0,
                  X = create_x_rotation(gamma, deg);
 
     return (Z * Y * X);
+}
+
+template <typename T> 
+inline void mult(vec3<T>& v, mat3<T>& m) {
+	T a = v.x(), b = v.y(), c = v.z();
+	v[0] = (m[0][0] * a) + (m[0][1] * b) + (m[0][2] * c);
+	v[1] = (m[1][0] * a) + (m[1][1] * b) + (m[1][2] * c);
+	v[2] = (m[2][0] * a) + (m[2][1] * b) + (m[2][2] * c);
 }
 
 #endif

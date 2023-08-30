@@ -44,19 +44,19 @@ camera::camera(int64_t W, int64_t H) {
 camera::camera(int64_t W, int64_t H, double f) {
     ratio = static_cast<double>(W)/H;
     fov = f;
-    position = vec3<int64_t>::zero();
+    position = new vec3<int64_t>(0, 0, 0);
 }
 
 void camera::pos(vec3<int64_t> new_pos) {
-    position = new_pos;
+    position = new vec3<int64_t>(new_pos);
 }
 
 vec3<int64_t> camera::pos() const {
-    return position;
+    return *position;
 }
 
 void camera::translate(vec3<int64_t> translation) {
-    position += translation;
+    *position += translation;
 }
 
 mat4<double> camera::compute_projection() const {
@@ -65,5 +65,5 @@ mat4<double> camera::compute_projection() const {
 
 void camera::reset() {
     fov = DEFAULT_CAMERA_FOV;
-    position = vec3<int64_t>::zero();
+    position = new vec3<int64_t>(0,0,0);
 }

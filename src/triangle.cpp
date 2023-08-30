@@ -1,66 +1,72 @@
 #include "triangle.hpp"
 
 triangle::triangle() {
-    A = vec3<double>(-1.0, 0.0, 1.0);
-    B = vec3<double>(0.0, 1.0, 1.0);
-    C = vec3<double>(1.0, 0.0, 1.0);
+    A = new vec3<double>(-1.0, 0.0, 1.0);
+    B = new vec3<double>(0.0, 1.0, 1.0);
+    C = new vec3<double>(1.0, 0.0, 1.0);
 }
 
 triangle::triangle(vec3<double> v1, 
                    vec3<double> v2, 
-                   vec3<double> v3) : A(v1), B(v2), C(v3) {}
+                   vec3<double> v3) {
+	A = new vec3<double>(v1);
+	B = new vec3<double>(v2);
+	C = new vec3<double>(v3);
+}
 
 triangle::triangle(const triangle& copy) {
-    A = vec3(copy.v1());
-    B = vec3(copy.v2());
-    C = vec3(copy.v3());
+    A = new vec3(copy.v1());
+    B = new vec3(copy.v2());
+    C = new vec3(copy.v3());
 }
 
 vec3<double> triangle::v1() const {
-    return A;
+    return *A;
 }
 
 vec3<double> triangle::v2() const {
-    return B;
+    return *B;
 }
 
 vec3<double> triangle::v3() const {
-    return C;
+    return *C;
 }
 
 void triangle::v1(vec3<double> vertex) {
-    A = vertex;
+    A = new vec3<double>(vertex);
 }
 
 void triangle::v2(vec3<double> vertex) {
-    B = vertex;
+    B = new vec3<double>(vertex);
 }
 
 void triangle::v3(vec3<double> vertex) {
-    C = vertex;
+    C = new vec3<double>(vertex);
 }
 
 double triangle::area() const {
-    return 0.5 * ((B-A).cross(C-A).magnitude());
+    return 0.5 * (((*B)-(*A)).cross((*C)-(*A)).magnitude());
 }
 
 double triangle::perimeter() const {
-    return distance(A, B) + distance(A, C) + distance(B, C);
+    return distance((*A), (*B)) + 
+		   distance((*A), (*C)) + 
+		   distance((*B), (*C));
 }
 
 triangle triangle::operator+(const vec3<double> v) {
-    triangle shifted(A + v, B + v, C + v);
+    triangle shifted((*A) + v, (*B) + v, (*C) + v);
     
     return shifted;
 }
 
 triangle triangle::operator-(const vec3<double> v) {
-    triangle shifted(A - v, B - v, C - v);
+    triangle shifted((*A) - v, (*B) - v, (*C) - v);
     return shifted;
 }
 
 triangle triangle::operator*(const mat3<double> M) {
-    triangle transformed(M * A, M * B, M * C);
+    triangle transformed(M * (*A), M * (*B), M * (*C));
 
     return transformed;
 }
@@ -73,20 +79,20 @@ void triangle::operator-=(const vec3<double> v) {
     this->translate(v * -1.0);
 }
 
-void triangle::operator*=(const mat3<double> M) {
+void triangle::operator*=(mat3<double> M) {
     this->transform(M);
 }
 
 void triangle::translate(const vec3<double> v) {
-    A += v;
-    B += v;
-    C += v;
+    *A += v;
+    *B += v;
+    *C += v;
 }
 
-void triangle::transform(const mat3<double> M) {
-    A = M * A;
-    B = M * B;
-    C = M * C;
+void triangle::transform(mat3<double>& M) {
+    *A = M * (*A);
+    *B = M * (*B);
+    *C = M * (*C);
 }
 
 std::ostream& operator<<(std::ostream& out, const triangle& t) {

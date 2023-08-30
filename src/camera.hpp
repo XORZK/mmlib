@@ -23,11 +23,15 @@ class camera {
         // Near, Far, Right, Left, Top, Bottom Values
         double N, F, R, L, T, B;
 
-        vec3<double> position;
+        vec3<int64_t>* position;
     public:
         camera(int64_t W, int64_t H);
 
         camera(int64_t W, int64_t H, double fov);
+
+		~camera() {
+			(*position).~vec3();
+		}
 
         void compute_screen_coordinates(const double init_n, const double init_f);
 

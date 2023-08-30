@@ -15,24 +15,25 @@
 #define DEFAULT_WINDOW_HEIGHT 500
 #define DEFAULT_NEAR_DISTANCE 0.1
 #define DEFAULT_FAR_DISTANCE 100
+#define DEFAULT_Z_THRESH 0.5
 
-double relative_line_distance(const vec2<double> A, 
-                              const vec2<double> B,
-                              const vec2<double> P);
+double relative_line_distance(const vec2<double>& A, 
+                              const vec2<double>& B,
+                              const vec2<double>& P);
 
-color interpolate_color(const color c1,
-                        const color c2,
+color interpolate_color(color& c1,
+                        color& c2,
                         const double P);
 
 class window {
     private:
-        camera *c = nullptr;
+        camera *cam = nullptr;
 
         bool init = false, quit = false, paused = false, modified = true;
 
         int64_t width = DEFAULT_WINDOW_WIDTH, 
                 height = DEFAULT_WINDOW_HEIGHT, 
-                delay = RENDERER_DELAY;
+				delay = RENDERER_DELAY;
 
         int64_t global_time = 0;
 
@@ -44,11 +45,11 @@ class window {
 
         void initialize_camera();
 
-        void set_render_color(const color c);
+        void set_render_color(color c);
 
-        vec2<double> ndc_to_screen_coords(const vec4<double> ndc_vert) const;
+        vec2<double> ndc_to_screen_coords(const vec4<double>& ndc_vert) const;
 
-        vec2<double> cartesian_to_screen_coords(const vec4<double> vert) const;
+        vec2<double> cartesian_to_screen_coords(const vec4<double>& vert) const;
     public:
         window();
 
@@ -64,166 +65,166 @@ class window {
 
         bool is_running() const;
 
-        void fill_background(const color c);
+        void fill_background(color c);
 
-        void draw_point(const vec2<double> point);
+        void draw_point(const vec2<double>& point);
 
-        void draw_point(const vec3<double> point);
+        void draw_point(const vec3<double>& point);
 
-        void draw_point(const vec4<double> point);
+        void draw_point(const vec4<double>& point);
 
-        void draw_point(const vec2<double> point,   
-                        const color c);
+        void draw_point(const vec2<double>& point,   
+                        color& c);
 
-        void draw_point(const vec3<double> point, 
-                        const color c);
+        void draw_point(const vec3<double>& point, 
+                        color& c);
 
-        void draw_point(const vec4<double> point, 
-                        const color c);
+        void draw_point(const vec4<double>& point, 
+                        color& c);
 
-        void draw_line(const vec2<double> p1, 
-                       const vec2<double> p2);
+        void draw_line(const vec2<double>& p1, 
+                       const vec2<double>& p2);
 
-        void draw_line(const vec3<double> p1, 
-                       const vec3<double> p2);
+        void draw_line(const vec3<double>& p1, 
+                       const vec3<double>& p2);
 
-        void draw_line(const vec4<double> p1, 
-                       const vec4<double> p2);
+        void draw_line(const vec4<double>& p1, 
+                       const vec4<double>& p2);
 
-        void draw_line(const vec2<double> p1, 
-                       const vec2<double> p2, 
-                       const color c);
+        void draw_line(const vec2<double>& p1, 
+                       const vec2<double>& p2, 
+                       color& c);
 
-        void draw_line(const vec3<double> p1, 
-                       const vec3<double> p2, 
-                       const color c);
+        void draw_line(const vec3<double>& p1, 
+                       const vec3<double>& p2, 
+                       color& c);
 
-        void draw_line(const vec4<double> p1, 
-                       const vec4<double> p2, 
-                       const color c);
+        void draw_line(const vec4<double>& p1, 
+                       const vec4<double>& p2, 
+                       color& c);
 
-        void draw_wireframe_circle(const vec2<double> center, 
+        void draw_wireframe_circle(const vec2<double>& center, 
                                    const int64_t radius);
 
-        void draw_wireframe_circle(const vec3<double> center,
+        void draw_wireframe_circle(const vec3<double>& center,
                                    const int64_t radius);
 
-        void draw_wireframe_circle(const vec4<double> center,
+        void draw_wireframe_circle(const vec4<double>& center,
                                    const int64_t radius);
 
-        void draw_wireframe_circle(const vec2<double> center, 
+        void draw_wireframe_circle(const vec2<double>& center, 
                                    const int64_t radius, 
-                                   const color c);
+                                   color& c);
 
-        void draw_wireframe_circle(const vec4<double> center,
+        void draw_wireframe_circle(const vec4<double>& center,
                                    const int64_t radius,
-                                   const color c);
+                                   color& c);
 
-        void draw_wireframe_circle(const vec3<double> center,
+        void draw_wireframe_circle(const vec3<double>& center,
                                    const int64_t radius,
-                                   const color c);
+                                   color& c);
 
-        void draw_filled_circle(const vec2<double> center, 
+        void draw_filled_circle(const vec2<double>& center, 
                                 const int64_t radius);
 
-        void draw_filled_circle(const vec3<double> center,
+        void draw_filled_circle(const vec3<double>& center,
                                 const int64_t radius);
 
-        void draw_filled_circle(const vec4<double> center,
+        void draw_filled_circle(const vec4<double>& center,
                                 const int64_t radius);
 
-        void draw_filled_circle(const vec2<double> center, 
+        void draw_filled_circle(const vec2<double>& center, 
                                 const int64_t radius, 
-                                const color c);
+                                color& c);
 
-        void draw_filled_circle(const vec3<double> center,
+        void draw_filled_circle(const vec3<double>& center,
                                 const int64_t radius,
-                                const color c);
+                                color& c);
 
-        void draw_filled_circle(const vec4<double> center,
+        void draw_filled_circle(const vec4<double>& center,
                                 const int64_t radius,
-                                const color c);
+                                color& c);
 
-        void draw_wireframe_triangle(const vec2<double> v1,
-                                     const vec2<double> v2,
-                                     const vec2<double> v3);
+        void draw_wireframe_triangle(const vec2<double>& v1,
+                                     const vec2<double>& v2,
+                                     const vec2<double>& v3);
 
-        void draw_wireframe_triangle(const vec3<double> v1,
-                                     const vec3<double> v2, 
-                                     const vec3<double> v3);
+        void draw_wireframe_triangle(const vec3<double>& v1,
+                                     const vec3<double>& v2, 
+                                     const vec3<double>& v3);
 
-        void draw_wireframe_triangle(const vec4<double> v1, 
-                                     const vec4<double> v2,
-                                     const vec4<double> v3);
+        void draw_wireframe_triangle(const vec4<double>& v1, 
+                                     const vec4<double>& v2,
+                                     const vec4<double>& v3);
 
         void draw_wireframe_triangle(const triangle& T);
 
-        void draw_wireframe_triangle(const vec2<double> v1,
-                                     const vec2<double> v2,
-                                     const vec2<double> v3,
-                                     const color c);
+        void draw_wireframe_triangle(const vec2<double>& v1,
+                                     const vec2<double>& v2,
+                                     const vec2<double>& v3,
+                                     color& c);
 
-        void draw_wireframe_triangle(const vec3<double> v1,
-                                     const vec3<double> v2, 
-                                     const vec3<double> v3,
-                                     const color c);
+        void draw_wireframe_triangle(const vec3<double>& v1,
+                                     const vec3<double>& v2, 
+                                     const vec3<double>& v3,
+                                     color& c);
 
-        void draw_wireframe_triangle(const vec4<double> v1, 
-                                     const vec4<double> v2,
-                                     const vec4<double> v3,
-                                     const color c);
+        void draw_wireframe_triangle(const vec4<double>& v1, 
+                                     const vec4<double>& v2,
+                                     const vec4<double>& v3,
+                                     color& c);
 
         void draw_wireframe_triangle(const triangle& T, 
-                                     const color c);
+                                     color& c);
 
-        void draw_filled_triangle(vec2<double> v1,
-                                  vec2<double> v2,
-                                  vec2<double> v3);
+        void draw_filled_triangle(vec2<double>& v1,
+                                  vec2<double>& v2,
+                                  vec2<double>& v3);
 
-        void draw_filled_triangle(vec3<double> v1,
-                                  vec3<double> v2, 
-                                  vec3<double> v3);
+        void draw_filled_triangle(vec3<double>& v1,
+                                  vec3<double>& v2, 
+                                  vec3<double>& v3);
 
-        void draw_filled_triangle(vec4<double> v1, 
-                                  vec4<double> v2,
-                                  vec4<double> v3);
+        void draw_filled_triangle(vec4<double>& v1, 
+                                  vec4<double>& v2,
+                                  vec4<double>& v3);
 
         void draw_filled_triangle(const triangle& T);
 
-        void draw_filled_triangle(vec2<double> v1,
-                                  vec2<double> v2,
-                                  vec2<double> v3,
-                                  const color c);
+        void draw_filled_triangle(vec2<double>& v1,
+                                  vec2<double>& v2,
+                                  vec2<double>& v3,
+                                  color& c);
 
-        void draw_filled_triangle(vec3<double> v1,
-                                  vec3<double> v2, 
-                                  vec3<double> v3,
-                                  const color c);
+        void draw_filled_triangle(vec3<double>& v1,
+                                  vec3<double>& v2, 
+                                  vec3<double>& v3,
+                                  color& c);
 
-        void draw_filled_triangle(vec4<double> v1, 
-                                  vec4<double> v2,
-                                  vec4<double> v3,
-                                  const color c);
+        void draw_filled_triangle(vec4<double>& v1, 
+                                  vec4<double>& v2,
+                                  vec4<double>& v3,
+                                  color& c);
 
         void draw_filled_triangle(const triangle& T, 
-                                  const color c);
+                                  color& c);
 
-        void draw_colored_line(vec2<double> v1,
-                               vec2<double> v2,
-                               const color c1,
-                               const color c2);
+        void draw_colored_line(vec2<double>& v1,
+                               vec2<double>& v2,
+                               color& c1,
+                               color& c2);
 
-        void draw_rainbow_triangle(vec2<double> v1,
-                                   vec2<double> v2,
-                                   vec2<double> v3);
+        void draw_rainbow_triangle(vec2<double>& v1,
+                                   vec2<double>& v2,
+                                   vec2<double>& v3);
 
-        void draw_rainbow_triangle(const vec3<double> v1,
-                                   const vec3<double> v2,
-                                   const vec3<double> v3);
+        void draw_rainbow_triangle(const vec3<double>& v1,
+                                   const vec3<double>& v2,
+                                   const vec3<double>& v3);
 
-        void draw_rainbow_triangle(const vec4<double> v1,
-                                   const vec4<double> v2,
-                                   const vec4<double> v3);
+        void draw_rainbow_triangle(const vec4<double>& v1,
+                                   const vec4<double>& v2,
+                                   const vec4<double>& v3);
 
         void run();
         

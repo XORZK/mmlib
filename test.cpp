@@ -1,11 +1,3 @@
-#include "src/list.hpp"
-#include "src/vector.hpp"
-#include "src/vec.hpp"
-#include "src/matrix.hpp"
-#include "src/mat.hpp"
-#include "src/color.hpp"
-#include "src/triangle.hpp"
-#include "src/camera.hpp"
 #include "src/window.hpp"
 
 int main() {
@@ -78,9 +70,9 @@ int main() {
 
     std::cout << barycentric(t, vec3(2.0, 1.0, 1.0)) << "\n";
 
-    std::cout << triangulate(vertices) << "\n";*/
+    std::cout << triangulate(vertices) << "\n"; */
 
-    window w(500, 500);
+    window w(1000, 1000);
 
     w.run();
 }

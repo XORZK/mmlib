@@ -9,21 +9,24 @@
 
 class color {
     private:
-        vec4<uint8_t> v4;
+        vec4<uint8_t>* v4;
     public:
         color();
 
         color(uint8_t v);
 
-        color(uint8_t R, uint8_t G, uint8_t B, uint8_t A = 255);
+        color(uint8_t R, uint8_t G, uint8_t B, uint8_t A = 0xFF);
 
-        uint8_t R() const;
+		~color() { 
+		}
 
-        uint8_t G() const;
+        uint8_t R();
 
-        uint8_t B() const;
+        uint8_t G();
 
-        uint8_t A() const;
+        uint8_t B();
+
+        uint8_t A();
 
         void R(uint8_t new_red);
 
@@ -40,8 +43,12 @@ class color {
         static color BLUE();
 
         static color GREEN();
+
+		static color BLACK();
+
+		static color WHITE();
 };
 
-std::ostream& operator<<(std::ostream& out, const color& c);
+std::ostream& operator<<(std::ostream& out, color& c);
 
 #endif

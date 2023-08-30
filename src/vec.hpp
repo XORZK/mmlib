@@ -11,7 +11,7 @@ template <typename T> class vec2 {
     static_assert(std::is_arithmetic<T>::value, 
                   "vec2<T> must hold arithmetic types.");
     private:
-        T* dat;
+		T a, b;
         bool column_vec = false;
     public:
         vec2();
@@ -22,7 +22,7 @@ template <typename T> class vec2 {
 
         vec2(const vec2<T>& copy);
 
-        ~vec2() {}
+        ~vec2();
 
         void x(T new_x);
 
@@ -34,7 +34,7 @@ template <typename T> class vec2 {
 
         void fill(T value);
 
-        T& operator[](int64_t idx) const;
+        T& operator[](int64_t idx);
 
         T operator*(const vec2<T> v2) const;
 
@@ -94,47 +94,51 @@ template <typename T> class vec2 {
 
 template <typename T> 
 vec2<T>::vec2() {
-    this->dat = static_cast<T*>(new T[]{static_cast<T>(0), static_cast<T>(0)});
+	a = b = static_cast<T>(0);
 }
 
 template <typename T> 
 vec2<T>::vec2(T v) {
-    this->dat = static_cast<T*>(new T[]{v,v});
+	a = b = v;
 }
 
 template <typename T> 
 vec2<T>::vec2(T x, T y) {
-    this->dat = static_cast<T*>(new T[]{x,y});
+	this->a = x;
+	this->b = y;
 }
 
 template <typename T> 
 vec2<T>::vec2(const vec2<T>& copy) : column_vec(copy.column()) {
-    this->dat = static_cast<T*>(new T[]{copy.x(), copy.y()});
+	this->a = copy.x();
+	this->b = copy.y();
 }
 
 template <typename T> 
-void vec2<T>::x(T new_x) { this->dat[0] = new_x; }
+vec2<T>::~vec2() {}
 
 template <typename T> 
-T vec2<T>::x() const { return this->dat[0]; }
+void vec2<T>::x(T new_x) { this->a = new_x; }
 
 template <typename T> 
-void vec2<T>::y(T new_y) { this->dat[1] = new_y; }
+T vec2<T>::x() const { return this->a; }
 
 template <typename T> 
-T vec2<T>::y() const { return this->dat[1]; }
+void vec2<T>::y(T new_y) { this->b = new_y; }
+
+template <typename T> 
+T vec2<T>::y() const { return this->b; }
 
 template <typename T> 
 void vec2<T>::fill(T value) {
-    this->dat = static_cast<T*>(malloc(2 * sizeof(T)));
-    std::fill(this->dat, this->dat + 2, value);
+	this->a = this->b = value;
 }
 
 template <typename T> 
-T& vec2<T>::operator[](int64_t idx) const {
+T& vec2<T>::operator[](int64_t idx) {
     assert(("Out of Bounds Error: vec2 index out of range", (idx >= 0 && idx <= 1)));
 
-    return (this->dat[idx]);
+	return (idx == 0 ? a : b);
 }
 
 template <typename T> 
@@ -187,40 +191,40 @@ vec2<T> vec2<T>::operator-(const vec2<T> v2) const {
 
 template <typename T> 
 void vec2<T>::operator*=(const T scalar) {
-    this->dat[0] *= scalar;
-    this->dat[1] *= scalar;
+	this->a *= scalar;
+	this->b *= scalar;
 }
 
 template <typename T> 
 void vec2<T>::operator/=(const T scalar) {
     assert(("Math Error: Cannot divide by 0.", (scalar != 0)));
 
-    this->dat[0] /= scalar;
-    this->dat[1] /= scalar;
+    this->a /= scalar;
+    this->b /= scalar;
 }
 
 template <typename T> 
 void vec2<T>::operator+=(const vec2<T> v2) {
-    this->dat[0] -= v2.x();
-    this->dat[1] -= v2.y();
+	this->a -= v2.x();
+	this->b -= v2.y();
 }
 
 template <typename T> 
 void vec2<T>::operator-=(const vec2<T> v2) {
-    this->dat[0] -= v2.x();
-    this->dat[1] -= v2.y();
+    this->a -= v2.x();
+    this->b -= v2.y();
 }
 
 template <typename T> 
 void vec2<T>::operator+=(const T value) {
-    this->dat[0] += value;
-    this->dat[1] += value;
+    this->a += value;
+    this->b += value;
 }
 
 template <typename T> 
 void vec2<T>::operator-=(const T value) {
-    this->dat[0] -= value;
-    this->dat[1] -= value;
+	this->a -= value;
+	this->b -= value;
 }
 
 template <typename T> 
@@ -313,7 +317,7 @@ template <typename T> class vec3 {
     static_assert(std::is_arithmetic<T>::value, 
                   "vec3<T> must hold arithmetic types.");
     private:
-        T* dat;
+		T a, b, c;
         bool column_vec = false;
     public:
         vec3();
@@ -326,7 +330,7 @@ template <typename T> class vec3 {
 
         vec3(const vec3<T>& copy);
 
-        ~vec3() {}
+        ~vec3();
 
         void x(T new_x);
 
@@ -342,7 +346,7 @@ template <typename T> class vec3 {
 
         void fill(T value);
 
-        T& operator[](int64_t idx) const;
+        T& operator[](int64_t idx);
 
         T operator*(const vec3<T> v2) const;
 
@@ -404,60 +408,67 @@ template <typename T> class vec3 {
 
 template <typename T> 
 vec3<T>::vec3() {
-    this->dat = static_cast<T*>(new T[]{static_cast<T>(0),
-                                        static_cast<T>(0),
-                                        static_cast<T>(0)});
+	a = b = c = 0;
 }
 
 template <typename T> 
 vec3<T>::vec3(T v) {
-    this->dat = static_cast<T*>(new T[]{v,v,v});
+	a = b = c = v;
 }
 
 template <typename T> 
 vec3<T>::vec3(T x, T y, T z) {
-    this->dat = static_cast<T*>(new T[]{x,y,z});
+	a = x;
+	b = y;
+	c = z;
 }
 
 template <typename T> 
 vec3<T>::vec3(const vec2<T> v2, T z) {
-    this->dat = static_cast<T*>(new T[]{v2.x(),v2.y(),z});
+	a = v2.x();
+	b = v2.y();
+	c = z;
 }
 
 template <typename T> 
 vec3<T>::vec3(const vec3<T>& copy) {
-    this->dat = static_cast<T*>(new T[]{copy.x(), copy.y(), copy.z()});
+	a = copy.x();
+	b = copy.y();
+	c = copy.z();
 }
 
 template <typename T> 
-void vec3<T>::x(T new_x) { this->dat[0] = new_x; }
+vec3<T>::~vec3() {
+}
+
+template <typename T> 
+void vec3<T>::x(T new_x) { a = new_x; }
 
 template <typename T>
-T vec3<T>::x() const { return this->dat[0]; }
+T vec3<T>::x() const { return a; }
 
 template <typename T> 
-void vec3<T>::y(T new_y) { this->dat[1] = new_y; }
+void vec3<T>::y(T new_y) { b = new_y; }
 
 template <typename T> 
-T vec3<T>::y() const { return this->dat[1]; }
+T vec3<T>::y() const { return b; }
 
 template <typename T> 
-void vec3<T>::z(T new_z) { this->dat[2] = new_z; }
+void vec3<T>::z(T new_z) { c = new_z; }
 
 template <typename T> 
-T vec3<T>::z() const { return this->dat[2]; }
+T vec3<T>::z() const { return c; }
 
 template <typename T> 
 void vec3<T>::fill(T value) {
-    this->dat = static_cast<T*>(malloc(3 * sizeof(T)));
-    std::fill(this->dat, this->dat + 3, value);
+	a = b = c = value;
 }
 
 template <typename T> 
-T& vec3<T>::operator[](int64_t idx) const {
+T& vec3<T>::operator[](int64_t idx) {
     assert(("Out of Bounds Error: vec3 index out of range", (idx >= 0 && idx <= 2)));
 
-    return this->dat[idx];
+	return (idx == 0 ? a : (idx == 1) ? b : c);
 }
 
 template <typename T> 
@@ -525,46 +536,46 @@ vec3<T> vec3<T>::operator-(const vec3<T> v2) const {
 
 template <typename T> 
 void vec3<T>::operator*=(const T scalar) {
-    this->dat[0] *= scalar;
-    this->dat[1] *= scalar;
-    this->dat[2] *= scalar;
+	a *= scalar;
+	b *= scalar;
+	c *= scalar;
 }
 
 template <typename T> 
 void vec3<T>::operator/=(const T scalar) {
     assert(("Math Error: Cannot divide by 0.", (scalar != 0)));
 
-    this->dat[0] /= scalar;
-    this->dat[1] /= scalar;
-    this->dat[2] /= scalar;
+	a /= scalar;
+	b /= scalar;
+	c /= scalar;
 }
 
 template <typename T> 
 void vec3<T>::operator+=(const vec3<T> v2) {
-    this->dat[0] += v2.x();
-    this->dat[1] += v2.y();
-    this->dat[2] += v2.z();
+	a += v2.x();
+	b += v2.y();
+	c += v2.z();
 }
 
 template <typename T> 
 void vec3<T>::operator-=(const vec3<T> v2) {
-    this->dat[0] -= v2.x();
-    this->dat[1] -= v2.y();
-    this->dat[2] -= v2.z();
+	a -= v2.x();
+	b -= v2.y();
+	c -= v2.z();
 }
 
 template <typename T> 
 void vec3<T>::operator+=(const T value) {
-    this->dat[0] += value;
-    this->dat[1] += value;
-    this->dat[2] += value;
+	a += value;
+	b += value;
+	c += value;
 }
 
 template <typename T> 
 void vec3<T>::operator-=(const T value) {
-    this->dat[0] -= value;
-    this->dat[1] -= value;
-    this->dat[2] -= value;
+	a -= value;
+	b -= value;
+	c -= value;
 }
 
 template <typename T>
@@ -679,7 +690,7 @@ template <typename T> class vec4 {
 
     private:
         //x, y, z, w
-        T* dat;
+   		T a, b, c, d;     
         bool colum_vec = false;
     public:
         vec4();
@@ -694,7 +705,7 @@ template <typename T> class vec4 {
 
         vec4(const vec4<T>& copy);
 
-        ~vec4() {}
+        ~vec4();
 
         void x(T new_x);
 
@@ -714,7 +725,7 @@ template <typename T> class vec4 {
 
         void fill(T value);
 
-        T& operator[](int64_t idx) const;
+        T& operator[](int64_t idx);
 
         T operator*(const vec4<T> v2) const;
 
@@ -768,72 +779,85 @@ template <typename T> class vec4 {
 
 template <typename T> 
 vec4<T>::vec4() {
-    this->dat = static_cast<T*>(new T[]{static_cast<T>(0), 
-                                        static_cast<T>(0),
-                                        static_cast<T>(0),
-                                        static_cast<T>(0)});
+	a = b = c = d = 0;
 }
 
 template <typename T> 
 vec4<T>::vec4(T v) {
-    this->dat = static_cast<T*>(new T[]{v, v, v, static_cast<T>(1)});
+	a = b = c = v;
+	d = static_cast<T>(1);
 }
 
 template <typename T> 
 vec4<T>::vec4(T x, T y, T z, T w) {
-    this->dat = static_cast<T*>(new T[]{x,y,z,w});
+	a = x;
+	b = y;
+	c = z;
+	d = w;
 }
 
 template <typename T> 
 vec4<T>::vec4(vec3<T> v3) {
-    this->dat = static_cast<T*>(new T[]{v3.x(), v3.y(), v3.z(), static_cast<T>(1)});
+	a = v3.x();
+	b = v3.y();
+	c = v3.z();
+	d = static_cast<T>(1);
 }
 
 template <typename T>
 vec4<T>::vec4(vec3<T> v3, T v) {
-    this->dat = static_cast<T*>(new T[]{v3.x(), v3.y(), v3.z(), v});
+	a = v3.x();
+	b = v3.y();
+	c = v3.z();
+	d = v;
 }
 
 template <typename T>
 vec4<T>::vec4(const vec4<T>& copy) {
-    this->dat = static_cast<T*>(new T[]{copy.x(), copy.y(), copy.z(), copy.w()});
+	a = copy.x();
+	b = copy.y();
+	c = copy.z();
+	d = copy.w();
 }
 
 template <typename T> 
-void vec4<T>::x(T new_x) { this->dat[0] = new_x; }
+vec4<T>::~vec4() {
+}
 
 template <typename T> 
-T vec4<T>::x() const { return this->dat[0]; }
+void vec4<T>::x(T new_x) { a = new_x; }
 
 template <typename T> 
-void vec4<T>::y(T new_y) { this->dat[1] = new_y; }
+T vec4<T>::x() const { return a; }
 
 template <typename T> 
-T vec4<T>::y() const { return this->dat[1]; }
+void vec4<T>::y(T new_y) { b = new_y; }
 
 template <typename T> 
-void vec4<T>::z(T new_z) { this->dat[2] = new_z; }
+T vec4<T>::y() const { return b; }
 
 template <typename T> 
-T vec4<T>::z() const { return this->dat[2]; }
+void vec4<T>::z(T new_z) { c = new_z; }
 
 template <typename T> 
-void vec4<T>::w(T new_w) { this->dat[3] = new_w; }
+T vec4<T>::z() const { return c; }
 
 template <typename T> 
-T vec4<T>::w() const { return this->dat[3]; }
+void vec4<T>::w(T new_w) { d = new_w; }
+
+template <typename T> 
+T vec4<T>::w() const { return d; }
 
 template <typename T> 
 void vec4<T>::fill(T value) { 
-    this->dat = static_cast<T*>(malloc(4 * sizeof(T)));
-    std::fill(this->dat, this->dat + 4, value);
+	a = b = c = d = value;
 }
 
 template <typename T> 
-T& vec4<T>::operator[](int64_t idx) const {
+T& vec4<T>::operator[](int64_t idx) {
     assert(("Out of Bounds Error: vec4 index out of range", (idx >= 0 && idx <= 3)));
 
-    return this->dat[idx];
+	return (idx == 0 ? a : idx == 1 ? b : idx == 2 ? c : d);
 }
 
 template <typename T> 
@@ -909,7 +933,7 @@ vec4<T> vec4<T>::operator-(const vec4<T> v2) const {
 template <typename T> 
 void vec4<T>::operator*=(const T scalar) {
     for (int64_t k = 0; k < this->size(); k++) 
-        this->dat[k] *= scalar;
+		(*this)[k] *= scalar;
 }
 
 template <typename T> 
@@ -917,31 +941,31 @@ void vec4<T>::operator/=(const T scalar) {
     assert(("Math Error: Cannot divide by 0.", (scalar != 0)));
 
     for (int64_t k = 0; k < this->size(); k++) 
-        this->dat[k] /= scalar;
+		(*this)[k] /= scalar;
 }
 
 template <typename T> 
 void vec4<T>::operator+=(const T value) {
     for (int64_t k = 0; k < this->size(); k++) 
-        this->dat[k] += value;
+        (*this)[k] += value;
 }
 
 template <typename T> 
 void vec4<T>::operator-=(const T value) {
     for (int64_t k = 0; k < this->size(); k++) 
-        this->dat[k] -= value;
+        (*this)[k] -= value;
 }
 
 template <typename T> 
 void vec4<T>::operator+=(const vec4<T> v2) {
     for (int64_t k = 0; k < this->size(); k++) 
-        this->dat[k] += v2[k];
+		(*this)[k] += v2[k];
 }
 
 template <typename T> 
 void vec4<T>::operator-=(const vec4<T> v2) {
     for (int64_t k = 0; k < this->size(); k++) 
-        this->dat[k] -= v2[k];
+        (*this)[k] -= v2[k];
 }
 
 template <typename T>

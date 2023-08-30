@@ -9,13 +9,19 @@
 class triangle {
     private:
         // vertices
-        vec3<double> A, B, C;
+        vec3<double> *A, *B, *C;
     public:
         triangle();
 
         triangle(vec3<double> v1, vec3<double> v2, vec3<double> v3) ;
 
         triangle(const triangle& copy);
+
+		~triangle() {
+			(*A).~vec3();
+			(*B).~vec3();
+			(*C).~vec3();
+		}
 
         vec3<double> v1() const;
 
@@ -43,11 +49,11 @@ class triangle {
 
         void operator-=(const vec3<double> v);
 
-        void operator*=(const mat3<double> M);
+        void operator*=(mat3<double> M);
 
         void translate(const vec3<double> v);
 
-        void transform(const mat3<double> M);
+        void transform(mat3<double>& M);
 };
 
 std::ostream& operator<<(std::ostream& out, const triangle& t);
