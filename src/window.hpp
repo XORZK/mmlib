@@ -4,6 +4,7 @@
 #pragma once
 #include "color.hpp"
 #include "camera.hpp"
+#include "polygon.hpp"
 #include "triangle.hpp"
 #include "mat.hpp"
 #include "vec.hpp"
@@ -15,7 +16,8 @@
 #define DEFAULT_WINDOW_HEIGHT 500
 #define DEFAULT_NEAR_DISTANCE 0.1
 #define DEFAULT_FAR_DISTANCE 100
-#define DEFAULT_Z_THRESH 0.5
+#define DEFAULT_Z_THRESH 0.125
+#define CAMERA_SPEED 0.0625
 
 double relative_line_distance(const vec2<double>& A, 
                               const vec2<double>& B,
@@ -28,6 +30,7 @@ color interpolate_color(color& c1,
 class window {
     private:
         camera *cam = nullptr;
+		mat4<double> *view_mat;
 
         bool init = false, quit = false, paused = false, modified = true;
 
@@ -225,6 +228,16 @@ class window {
         void draw_rainbow_triangle(const vec4<double>& v1,
                                    const vec4<double>& v2,
                                    const vec4<double>& v3);
+
+		void draw_wireframe_polygon(polygon& p);
+
+		void draw_filled_polygon(polygon& p);
+
+		void draw_wireframe_polygon(polygon& p,
+									color& c);
+
+		void draw_filled_polygon(polygon& p,
+								 color& c);
 
         void run();
         

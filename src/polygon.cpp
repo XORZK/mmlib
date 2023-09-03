@@ -1,36 +1,36 @@
 #include "polygon.hpp"
 
 polygon::polygon() : size(0) {
-    vertices = list();
-    triangulated = list();
+    verts = list<vec3<double>>();
+    tri = list<triangle>();
 }
 
 polygon::polygon(const list<vec3<double>> &vert) : size(vert.size()) {
-    vertices = list();
+    verts = list<vec3<double>>();
 
     for (int64_t k = 0; k < size; k++) 
-        vertices.push_back(vec3(vert[k]));
+        verts.push_back(vec3(vert[k]));
 
-    vertices = sort_vertices(vertices);
-    triangulated = triangulate(vertices);
+    verts = sort_vertices(verts);
+    tri = triangulate(verts);
 }
 
 polygon::polygon(const polygon& poly) : size(poly.vertex_count()) {
-    vertices = list();
+    verts = list<vec3<double>>();
 
     for (int64_t k = 0; k < size; k++) {
-        vertices.push_back(vec3(poly[k]));
+        verts.push_back(vec3(poly[k]));
     }
 
-    vertices = sort_vertices(vertices);
-    triangulated = triangulate(vertices);
+    verts = sort_vertices(verts);
+    tri = triangulate(verts);
 }
 
 double polygon::area() const {
     double A = 0.0;
 
-    for (int64_t k = 0; k < triangulated.size(); k++) {
-        A += triangulated[k].area();
+    for (int64_t k = 0; k < tri.size(); k++) {
+        A += tri[k].area();
     }
 
     return A;
@@ -41,7 +41,7 @@ double polygon::perimeter() const {
     double P = 0.0;
 
     for (int64_t k = 0; k < size; k++) {
-        P += distance(vertices[k], vertices[mod(k+1, size)]);
+        P += distance(verts[k], verts[mod(k+1, size)]);
     }
 
     return P;
@@ -50,7 +50,9 @@ double polygon::perimeter() const {
 vec3<double>& polygon::operator[](int64_t idx) const {
     assert(("Out of Bounds Error: polygon index out of range", (idx >= 0 && idx < size)));
 
-    return vertices[idx];
+	vec3<double> *v = new vec3<double>(verts[idx]);
+
+    return *v;
 }
 
 polygon polygon::operator+(const vec3<double> v) const {
@@ -69,7 +71,7 @@ polygon polygon::operator-(const vec3<double> v) const {
     return copy;
 }
 
-polygon polygon::operator*(const mat3<double> M) const {
+polygon polygon::operator*(mat3<double>& M) const {
     polygon copy = polygon(*this);
 
     copy.transform(M);
@@ -79,27 +81,28 @@ polygon polygon::operator*(const mat3<double> M) const {
 
 void polygon::translate(const vec3<double> v) {
     for (int64_t k = 0; k < size; k++) {
-        vertices[k] += v;
+        verts[k] += v;
     }
 
-    triangulated = triangulate(vertices);
+    tri = triangulate(verts);
 }
 
-void polygon::transform(const mat3<double> v) {
+void polygon::transform(mat3<double>& M) {
     for (int64_t k = 0; k < size; k++) {
-        vertices[k] = M * vertices[k];
+		vec3<double> v = verts[k];
+        verts[k] = M * v;
     }
 
-    vertices = sort_vertices(vertices);
-    triangulated = triangulate(vertices);
+    verts = sort_vertices(verts);
+    tri = triangulate(verts);
 }
 
-list<vec3<double>>& polygon::vertices() const {
-    return this->vertices;
+list<vec3<double>>& polygon::vertices() {
+    return this->verts;
 }
 
-list<triangle>& polygon::triangulated() const {
-    return this->triangulated;
+list<triangle>& polygon::triangulated() {
+    return this->tri;
 }
 
 int64_t polygon::vertex_count() const {

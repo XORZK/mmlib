@@ -8,8 +8,8 @@
 class polygon {
     private:
         int64_t size;
-        list<vec3<double>> vertices;
-        list<triangle> triangulated;
+        list<vec3<double>> verts;
+        list<triangle> tri;
     public:
         polygon();
 
@@ -27,21 +27,21 @@ class polygon {
 
         polygon operator-(const vec3<double> v) const;
 
-        polygon operator*(const mat3<double> M) const;
+        polygon operator*(mat3<double>& M) const;
 
         void operator+=(const vec3<double> v);
 
         void operator-=(const vec3<double> v);
 
-        void operator*=(const mat3<double> M);
+        void operator*=(mat3<double>& M);
 
         void translate(const vec3<double> v);
 
-        void transform(const mat3<double> M);
+        void transform(mat3<double>& M);
 
-        list<vec3<double>>& vertices() const;
+        list<vec3<double>>& vertices();
 
-        list<triangle>& triangulated() const;
+        list<triangle>& triangulated();
 
         int64_t vertex_count() const;
 };

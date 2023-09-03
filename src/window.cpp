@@ -52,6 +52,7 @@ void window::initialize_window() {
 void window::initialize_camera() {
     this->cam = new camera(this->width, this->height);
     this->cam->compute_screen_coordinates(DEFAULT_NEAR_DISTANCE, DEFAULT_FAR_DISTANCE);
+	view_mat = new mat4<double>(cam->camera_view());
 }
 
 void window::set_render_color(color c) {
@@ -92,6 +93,9 @@ window::window(const int64_t W, const int64_t H, const int64_t D) : width(W),
 }
 
 window::~window() {
+	free(cam);
+	free(view_mat);
+
     if (this->r) 
         SDL_DestroyRenderer(this->r);
 
@@ -124,24 +128,24 @@ void window::draw_point(const vec2<double>& point) {
 }
 
 void window::draw_point(const vec3<double>& point) {
-	if (ABS(point.z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec4<double> v4 = vec4<double>(point, 1.0);
 
     this->draw_point(v4);
 }
 
 void window::draw_point(const vec4<double>& point) {
+	vec4<double> transformed_point = (*view_mat * point);
+
     // Converts vertex from 3D space to NDC 
-    if (ABS(point.z()) <= DEFAULT_Z_THRESH) 
+    if (ABS(transformed_point.z()) <= DEFAULT_Z_THRESH) 
         return;
 
-    vec4<double> ndc_vert = cam->compute_ndc(point);
+	if (transformed_point.z() > 0)
+		return;
 
-    vec2<double> screen_vert = this->ndc_to_screen_coords(ndc_vert);
+	vec2<double> screen = cartesian_to_screen_coords(transformed_point);
 
-    this->draw_point(screen_vert);
+    this->draw_point(screen);
 }
 
 void window::draw_point(const vec2<double>& point, color& c) {
@@ -150,9 +154,6 @@ void window::draw_point(const vec2<double>& point, color& c) {
 }
 
 void window::draw_point(const vec3<double>& point, color& c) {
-	if (ABS(point.z()) <= DEFAULT_Z_THRESH)
-		return;
-
     this->set_render_color(c);
     this->draw_point(point);
 }
@@ -169,9 +170,6 @@ void window::draw_line(const vec2<double>& p1,
 
 void window::draw_line(const vec3<double>& p1, 
                        const vec3<double>& p2) {
-	if (ABS(p1.z()) <= DEFAULT_Z_THRESH || ABS(p2.z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec4<double> v1 = vec4(p1, 1.0), 
 				 v2 = vec4(p2, 1.0);
 
@@ -180,16 +178,19 @@ void window::draw_line(const vec3<double>& p1,
 
 void window::draw_line(const vec4<double>& p1,
                        const vec4<double>& p2) {
-	if (ABS(p1.z()) <= DEFAULT_Z_THRESH || p2.z() <= DEFAULT_Z_THRESH) 
+	vec4<double> t1 = (*view_mat * p1),	
+			     t2 = (*view_mat * p2);
+
+	if (ABS(t1.z()) <= DEFAULT_Z_THRESH || ABS(t2.z()) <= DEFAULT_Z_THRESH) 
         return;
 
-    vec4<double> first_ndc_vert = cam->compute_ndc(p1),
-                 second_ndc_vert = cam->compute_ndc(p2);
+	if (t1.z() > 0 || t2.z() > 0)
+		return;
 
-    vec2<double> first_screen_vert = this->ndc_to_screen_coords(first_ndc_vert),
-                 second_screen_vert = this->ndc_to_screen_coords(second_ndc_vert);
+	vec2<double> first = cartesian_to_screen_coords(t1),
+				 second = cartesian_to_screen_coords(t2);
 
-    this->draw_line(first_screen_vert, second_screen_vert);
+    this->draw_line(first, second);
 }
 
 void window::draw_line(const vec2<double>& p1,
@@ -202,9 +203,6 @@ void window::draw_line(const vec2<double>& p1,
 void window::draw_line(const vec3<double>& p1,
                        const vec3<double>& p2,
                        color& c) {
-	if (ABS(p1.z()) <= DEFAULT_Z_THRESH || ABS(p2.z()) <= DEFAULT_Z_THRESH)
-		return;
-
     this->set_render_color(c);
     this->draw_line(p1, p2);
 }
@@ -254,9 +252,6 @@ void window::draw_wireframe_circle(const vec2<double>& center,
 
 void window::draw_wireframe_circle(const vec3<double>& center,
                                    const int64_t radius) {
-	if (ABS(center.z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec4<double> v4 = vec4(center, 1.0);
 
     this->draw_wireframe_circle(v4, radius);
@@ -264,15 +259,20 @@ void window::draw_wireframe_circle(const vec3<double>& center,
 
 void window::draw_wireframe_circle(const vec4<double>& center,
                                    const int64_t radius) {
-    if (ABS(center.z()) <= DEFAULT_Z_THRESH) 
+	vec4<double> tc = (*view_mat * center);
+
+    if (ABS(tc.z()) <= DEFAULT_Z_THRESH) 
 		return;
 
-    vec4<double> top_point = center + vec4<double>(0.0, (double) radius, 0.0, 0.0);
+	if (tc.z() > 0)
+		return;
 
-    vec2<double> center_screen = cartesian_to_screen_coords(center),
-                 top_screen = cartesian_to_screen_coords(top_point);
+	vec4<double> top = tc + vec4<double>(0.0, (double) radius, 0.0, 0.0);
 
-    this->draw_wireframe_circle(center_screen, (int64_t) (top_screen.y() - center_screen.y()));
+    vec2<double> screen_center = cartesian_to_screen_coords(tc),
+                 screen_top = cartesian_to_screen_coords(top);
+
+    this->draw_wireframe_circle(screen_center, (int64_t) (screen_top.y() - screen_center.y()));
 }
 
 void window::draw_wireframe_circle(const vec2<double>& center,
@@ -285,9 +285,6 @@ void window::draw_wireframe_circle(const vec2<double>& center,
 void window::draw_wireframe_circle(const vec3<double>& center,
                                    const int64_t radius,
                                    color& c) {
-	if (ABS(center.z()) <= DEFAULT_Z_THRESH)
-		return;
-
     this->set_render_color(c);
     this->draw_wireframe_circle(center, radius);
 }
@@ -334,9 +331,6 @@ void window::draw_filled_circle(const vec2<double>& center,
 
 void window::draw_filled_circle(const vec3<double>& center,
                                 const int64_t radius) {
-	if (ABS(center.z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec4<double> v4 = vec4(center, 1.0);
 
     this->draw_filled_circle(v4, radius);
@@ -344,15 +338,20 @@ void window::draw_filled_circle(const vec3<double>& center,
 
 void window::draw_filled_circle(const vec4<double>& center,
                                 const int64_t radius) {
-    if (ABS(center.z()) <= DEFAULT_Z_THRESH)
+	vec4<double> tc = (*view_mat * center);
+
+    if (ABS(tc.z()) <= DEFAULT_Z_THRESH)
         return;
 
-    vec4<double> top_point = center + vec4<double>(0.0, (double) radius, 0.0, 0.0);
+	if (tc.z() > 0)
+		return;
 
-    vec2<double> center_screen = cartesian_to_screen_coords(center),
-                 top_screen = cartesian_to_screen_coords(top_point);
+    vec4<double> top = tc + vec4<double>(0.0, (double) radius, 0.0, 0.0);
 
-    this->draw_wireframe_circle(center_screen, (int64_t) (top_screen.y() - center_screen.y()));
+    vec2<double> screen_center = cartesian_to_screen_coords(tc),
+                 screen_top = cartesian_to_screen_coords(top);
+
+    this->draw_wireframe_circle(screen_center, (int64_t) (screen_top.y() - screen_center.y()));
 }
 
 void window::draw_filled_circle(const vec2<double>& center,
@@ -365,9 +364,6 @@ void window::draw_filled_circle(const vec2<double>& center,
 void window::draw_filled_circle(const vec3<double>& center,
                                 const int64_t radius,
                                 color& c) { 
-	if (ABS(center.z()) <= DEFAULT_Z_THRESH)
-		return;
-
     this->set_render_color(c);
     this->draw_filled_circle(center, radius);
 }
@@ -390,10 +386,6 @@ void window::draw_wireframe_triangle(const vec2<double>& v1,
 void window::draw_wireframe_triangle(const vec3<double>& v1,
                                      const vec3<double>& v2,
                                      const vec3<double>& v3) {
-	if (ABS(v1.z()) <= DEFAULT_Z_THRESH || ABS(v2.z()) <= DEFAULT_Z_THRESH || ABS(v3.z()) <= DEFAULT_Z_THRESH)
-		return;
-
-
 	vec4<double> t1 = vec4(v1, 1.0),
 				 t2 = vec4(v2, 1.0),
 				 t3 = vec4(v3, 1.0);
@@ -406,17 +398,24 @@ void window::draw_wireframe_triangle(const vec3<double>& v1,
 void window::draw_wireframe_triangle(const vec4<double>& v1,
                                      const vec4<double>& v2,
                                      const vec4<double>& v3) {
-    vec2<double> v1_screen = vec2(cartesian_to_screen_coords(v1)),
-                 v2_screen = vec2(cartesian_to_screen_coords(v2)),     
-                 v3_screen = vec2(cartesian_to_screen_coords(v3));
+	vec4<double> t1 = (*view_mat * v1),
+				 t2 = (*view_mat * v2),
+				 t3 = (*view_mat * v3);
+
+	if (ABS(t1.z()) <= DEFAULT_Z_THRESH || ABS(t2.z()) <= DEFAULT_Z_THRESH || ABS(t3.z()) <= DEFAULT_Z_THRESH)
+		return;
+
+	if (t1.z() > 0 || t2.z() > 0 || t3.z() > 0)
+		return;
+
+    vec2<double> v1_screen = cartesian_to_screen_coords(t1),
+                 v2_screen = cartesian_to_screen_coords(t2),     
+                 v3_screen = cartesian_to_screen_coords(t3);
 
     this->draw_wireframe_triangle(v1_screen, v2_screen, v3_screen);
 }
 
 void window::draw_wireframe_triangle(const triangle& T) {
-	if (ABS(T.v1().z()) <= DEFAULT_Z_THRESH || ABS(T.v2().z()) <= DEFAULT_Z_THRESH || ABS(T.v3().z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec3<double> v1 = T.v1(),	
 				 v2 = T.v2(),
 				 v3 = T.v3();
@@ -437,9 +436,6 @@ void window::draw_wireframe_triangle(const vec3<double>& v1,
                                      const vec3<double>& v2,
                                      const vec3<double>& v3,
                                      color& c) {
-	if (ABS(v1.z()) <= DEFAULT_Z_THRESH || ABS(v2.z()) <= DEFAULT_Z_THRESH || ABS(v3.z()) <= DEFAULT_Z_THRESH)
-		return;
-
     this->set_render_color(c);
     this->draw_wireframe_triangle(v1, v2, v3);
 }
@@ -490,9 +486,6 @@ void window::draw_filled_triangle(vec2<double>& v1,
 void window::draw_filled_triangle(vec3<double>& v1,
                                   vec3<double>& v2,
                                   vec3<double>& v3) {
-	if (ABS(v1.z()) <= DEFAULT_Z_THRESH || ABS(v2.z()) <= DEFAULT_Z_THRESH || ABS(v3.z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec4<double> t1 = vec4(v1, 1.0),
 			     t2 = vec4(v2, 1.0),
 				 t3 = vec4(v3, 1.0);
@@ -503,17 +496,24 @@ void window::draw_filled_triangle(vec3<double>& v1,
 void window::draw_filled_triangle(vec4<double>& v1,
                                   vec4<double>& v2,
                                   vec4<double>& v3) {
-    vec2<double> c1 = cartesian_to_screen_coords(v1),
-                 c2 = cartesian_to_screen_coords(v2),
-                 c3 = cartesian_to_screen_coords(v3);
+	vec4<double> t1 = (*view_mat * v1),
+				 t2 = (*view_mat * v2),
+				 t3 = (*view_mat * v3);
+
+	if (ABS(t1.z()) <= DEFAULT_Z_THRESH || ABS(t2.z()) <= DEFAULT_Z_THRESH || ABS(t3.z()) <= DEFAULT_Z_THRESH)
+		return;
+
+	if (t1.z() > 0 || t2.z() > 0 || t3.z() > 0)
+		return;
+
+    vec2<double> c1 = cartesian_to_screen_coords(t1),
+                 c2 = cartesian_to_screen_coords(t2),
+                 c3 = cartesian_to_screen_coords(t3);
 
     return this->draw_filled_triangle(c1, c2, c3);
 }
 
 void window::draw_filled_triangle(const triangle& T) {
-	if (ABS(T.v1().z()) <= DEFAULT_Z_THRESH || ABS(T.v2().z()) <= DEFAULT_Z_THRESH || ABS(T.v3().z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec3<double> v1 = T.v1(),	
 				 v2 = T.v2(),
 				 v3 = T.v3();
@@ -533,9 +533,6 @@ void window::draw_filled_triangle(vec3<double>& v1,
                                   vec3<double>& v2,
                                   vec3<double>& v3,
                                   color& c) {
-	if (ABS(v1.z()) <= DEFAULT_Z_THRESH || ABS(v2.z()) <= DEFAULT_Z_THRESH || ABS(v3.z()) <= DEFAULT_Z_THRESH)
-		return;
-
     this->set_render_color(c);
     this->draw_filled_triangle(v1, v2, v3);
 }
@@ -561,19 +558,37 @@ void window::run() {
                 quit = true;
 
             if (event.type == SDL_KEYDOWN) {
-                switch (event.key.keysym.sym) {
-                    case (SDLK_SPACE): {
+				int64_t k = event.key.keysym.sym;
+
+				if (k >= 1073741903 && k <= 1073741906) {
+					int64_t N = k - 1073741903;
+					bool M = ((N+1) % 2);
+					vec3<double> tv = vec3<double>((N%2 == N) ? (M ? -1 : 1) : 0, (N%2 == N) ? 0 : (M ? -1 : 1), 0);
+
+					tv *= CAMERA_SPEED;
+					cam->translate(tv);
+					view_mat = new mat4<double>(cam->camera_view());
+				}
+
+                switch (k) {
+                    case (SDLK_SPACE): 
                         paused = 1-paused;
                         break;
-                    }
-
                     default: 
                         break; 
                 }
             }
+
+
+			if (event.type == SDL_MOUSEWHEEL) {
+				// inwards zoom
+				vec3<double> tv = vec3<double>(0, 0, (event.wheel.y > 0 ? -CAMERA_SPEED : event.wheel.y < 0 ? CAMERA_SPEED : 0));
+				cam->translate(tv);
+				view_mat = new mat4<double>(cam->camera_view());
+			}
         }
 
-        if (!paused) {
+        if (!paused && modified) {
             this->draw();
             ++this->global_time;
         }
@@ -617,7 +632,6 @@ void window::draw_colored_line(vec2<double>& v1,
 void window::draw_rainbow_triangle(vec2<double>& v1,
                                    vec2<double>& v2,
                                    vec2<double>& v3) {
-
     if (v1.y() > v2.y())
         std::swap(v1, v2);
 
@@ -629,6 +643,10 @@ void window::draw_rainbow_triangle(vec2<double>& v1,
 
     double bounds = v2.y();
 
+	vec3<double> c1 = vec3(v1, 1.0),
+				 c2 = vec3(v2, 1.0),
+				 c3 = vec3(v3, 1.0);
+
     for (int64_t y = v1.y(); y <= v3.y(); y++) {
         double x1 = (y <= bounds ? 
                      interp<double>(v1.x(), v1.y(), v2.x(), v2.y(), y) : 
@@ -636,15 +654,18 @@ void window::draw_rainbow_triangle(vec2<double>& v1,
 
         double x2 = interp<double>(v1.x(), v1.y(), v3.x(), v3.y(), y);
 
-        for (int64_t x = MIN(x1, x2); x <= MAX(x1, x2); x++) {
-            vec2<double> point = vec2((double) x, (double) y);
+		if (std::isinf(x1) || std::isinf(x2))
+			continue;
 
-            vec3<double> bary = barycentric(vec3(v1, 1.0), 
-                                            vec3(v2, 1.0), 
-                                            vec3(v3, 1.0), 
+        for (int64_t x = MIN(x1, x2); x <= MAX(x1, x2); x++) {
+            vec2<double> point = vec2<double>(x, y);
+
+            vec3<double> bary = barycentric(c1,
+                                            c2,
+                                            c3,
                                             vec3(point, 1.0));
 
-            color c(0xFF * bary[2], 0xFF * bary[0], 0xFF * bary[1]);
+            color c(0xFF * bary[0], 0xFF * bary[1], 0xFF * bary[2]);
 
             this->draw_point(point, c);
         }
@@ -654,11 +675,8 @@ void window::draw_rainbow_triangle(vec2<double>& v1,
 void window::draw_rainbow_triangle(const vec3<double>& v1,
                                    const vec3<double>& v2,
                                    const vec3<double>& v3) {
-	if (ABS(v1.z()) <= DEFAULT_Z_THRESH || ABS(v2.z()) <= DEFAULT_Z_THRESH || ABS(v3.z()) <= DEFAULT_Z_THRESH)
-		return;
-
 	vec4<double> t1 = vec4(v1, 1.0),
-				 t2 = vec4(v2, 1.0),
+			     t2 = vec4(v2, 1.0),
 				 t3 = vec4(v3, 1.0);
 
     this->draw_rainbow_triangle(t1, t2, t3);
@@ -667,40 +685,68 @@ void window::draw_rainbow_triangle(const vec3<double>& v1,
 void window::draw_rainbow_triangle(const vec4<double>& v1,
                                    const vec4<double>& v2,
                                    const vec4<double>& v3) {
-    vec2<double> c1 = cartesian_to_screen_coords(v1),
-                 c2 = cartesian_to_screen_coords(v2),
-                 c3 = cartesian_to_screen_coords(v3);
+	vec4<double> t1 = (*view_mat * v1),
+			     t2 = (*view_mat * v2),
+				 t3 = (*view_mat * v3);
 
-    this->draw_rainbow_triangle(c1, c2, c3);
+	if (ABS(t1.z()) <= DEFAULT_Z_THRESH || ABS(t2.z()) <= DEFAULT_Z_THRESH || ABS(t3.z()) <= DEFAULT_Z_THRESH)
+		return;
+
+	if (t1.z() > 0 || t2.z() > 0 || t3.z() > 0)
+		return;
+
+    vec2<double> c1 = cartesian_to_screen_coords(t1),
+                 c2 = cartesian_to_screen_coords(t2),
+                 c3 = cartesian_to_screen_coords(t3);
+
+    return this->draw_rainbow_triangle(c1, c2, c3);
 }
 
+void window::draw_wireframe_polygon(polygon& p) {
+	list<triangle> triangles = p.triangulated();
+
+	for (int64_t k = 0; k < triangles.size(); k++) {
+		this->draw_wireframe_triangle(triangles[k]);
+	}
+}
+
+void window::draw_filled_polygon(polygon& p) {
+	list<triangle> triangles = p.triangulated();
+
+	for (int64_t k = 0; k < triangles.size(); k++) {
+		this->draw_filled_triangle(triangles[k]);
+	}
+}
+
+void window::draw_wireframe_polygon(polygon& p,
+									color& c) {
+	this->set_render_color(c);
+	this->draw_wireframe_polygon(p);
+}
+
+void window::draw_filled_polygon(polygon& p,
+							 	 color& c) {
+	this->set_render_color(c);
+	this->draw_filled_polygon(p);
+}
+
+
 void window::draw() {
-	double angle = (global_time * M_PI)/180;
-
-	//
-	// [1, 0,      0      ][-1.0] = [-1.0]
-	// [0, cos(a), -sin(a)][+0.0] = [5.0 * sin(a)]
-	// [0, sin(a), cos(a) ][-5.0] = [-5.0 * cos(a)]
-
-	//vec3<double> *v1 = new vec3<double>(-1.0, 5.0 * sin(angle), -5.0 * cos(angle));
-	//vec3<double> *v2 = new vec3<double>(1.0, 0.0, -5.0);
-	//vec3<double> *v3 = new vec3<double>(0.0, 1.0, -5.0);
-
 	this->fill_background(color::BLACK());
 
 	mat3<double> R = create_3d_rotation_matrix(0, global_time, 0);
 
 	color c = color::RED();
 
-	vec3<double> v1 = vec3<double>(-1.0, 2.0, -5);
-	vec3<double> v2 = vec3<double>(-2, -3, -5);
-	vec3<double> v3 = vec3<double>(2, -3, -5);
+	vec3<double> v1 = vec3<double>(-1, -1, 0),
+				 v2 = vec3<double>(1, -1, 0),
+				 v3 = vec3<double>(0, 0, 0);
 
-	this->draw_wireframe_triangle((R * v1), 
-								  (R * v2), 
-								  (R * v3),
-								  c);
+	v1 = R * v1;
+	v2 = R * v2;
+	v3 = R * v3;
 
+	this->draw_rainbow_triangle(v1, v2, v3);
 
 	SDL_RenderPresent(this->r);
 	SDL_Delay(this->delay);

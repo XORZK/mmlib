@@ -17,7 +17,7 @@ inline int64_t mod(int64_t N, int64_t M) {
 
 template <typename T> 
 inline double interp(T x1, T y1, T x2, T y2, T y3) {
-    if (x1 == x2) 
+    if (x2 == x1)
         return x1;
 
     // y = mx + b, m = (y2-y1)/(x2-x1) 

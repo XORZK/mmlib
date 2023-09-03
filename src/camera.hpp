@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #define DEFAULT_CAMERA_FOV 90
+#define DEFAULT_Z_POS 3
 
 template <typename T>
 vec4<double> compute_ndc_vert(vec3<T> v3, const mat4<double>& proj);
@@ -17,29 +18,38 @@ mat4<double> create_projection_matrix(const double B, const double T,
                                       const double L, const double R,
                                       const double N, const double F);
 
+mat4<double> camera_look_at(vec3<double> eye,
+						    vec3<double> target,
+							vec3<double> up = vec3(0.0,1.0,0.0));
+
 class camera {
     private:
         double fov, ratio;
         // Near, Far, Right, Left, Top, Bottom Values
         double N, F, R, L, T, B;
 
-        vec3<int64_t>* position;
+		// Looks down -z.
+        vec3<double> position = vec3<double>(0, 0, DEFAULT_Z_POS),
+					 front_dir = vec3<double>(0, 0, -1), 
+					 up_dir = vec3<double>(0, -1, 0);
     public:
         camera(int64_t W, int64_t H);
 
         camera(int64_t W, int64_t H, double fov);
 
-		~camera() {
-			(*position).~vec3();
-		}
+		~camera() {}
 
         void compute_screen_coordinates(const double init_n, const double init_f);
 
-        void pos(vec3<int64_t> new_pos);
+        void pos(vec3<double> new_pos);
 
-        vec3<int64_t> pos() const;
+        vec3<double> pos() const;
 
-        void translate(vec3<int64_t> translate);
+        vec3<double> front() const;
+
+        vec3<double> up() const;
+
+        void translate(const vec3<double>& translate);
 
         mat4<double> compute_projection() const;
 
@@ -48,6 +58,8 @@ class camera {
 
         template <typename U>
         vec4<double> compute_ndc(vec4<U> vert) const;
+
+		mat4<double> camera_view() const;
 
         void reset();
 };

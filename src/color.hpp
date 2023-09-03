@@ -9,7 +9,7 @@
 
 class color {
     private:
-        vec4<uint8_t>* v4;
+        vec4<uint8_t> v4;
     public:
         color();
 

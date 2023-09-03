@@ -17,19 +17,16 @@
     - Sort vertices --> Clockwise? Counter-Clockwise? (Change from Bubble to Merge Later)
     - Triangulation can be done recursively until only one triangle remains.
     - Remember to switch back from void to an actual valid return type.
+- Polygon Triangulation doesn't work? Fix Barycentric Coordinates. [x]
+- Camera Movement [x]
 
 ## TODO
 High Priority:
-- Polygon Triangulation doesn't work? Fix Barycentric Coordinates.
-- Convex Hull
-- Camera Movement
-- Shapes Library? --> Is it required? Yes.
+- Bezier Curves 
+- Convex Hull for Polygon?
 - Forward Kinematics
     - Implement Limbs & Joints
 
 Low Priority:
 - Rewrite using Smart Pointers
 - Write (some) Documentation (~3 hrs)
-
-Optional: 
-- Implement matrices which hold functions?
