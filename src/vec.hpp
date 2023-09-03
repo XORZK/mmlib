@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <iostream>
 
-template <typename T> class vec2 {
+template <typename T = double> class vec2 {
     static_assert(std::is_arithmetic<T>::value, 
                   "vec2<T> must hold arithmetic types.");
     private:
@@ -205,8 +205,8 @@ void vec2<T>::operator/=(const T scalar) {
 
 template <typename T> 
 void vec2<T>::operator+=(const vec2<T> v2) {
-	this->a -= v2.x();
-	this->b -= v2.y();
+	this->a += v2.x();
+	this->b += v2.y();
 }
 
 template <typename T> 
@@ -313,7 +313,7 @@ std::ostream& operator<<(std::ostream& out, const vec2<T> vec) {
 }
 
 
-template <typename T> class vec3 {
+template <typename T = double> class vec3 {
     static_assert(std::is_arithmetic<T>::value, 
                   "vec3<T> must hold arithmetic types.");
     private:
@@ -684,7 +684,7 @@ std::ostream& operator<<(std::ostream& out, const vec3<T>& vec) {
     return (out << "vec3: " << '<' << vec.x() << ',' << vec.y() << ',' << vec.z() << '>');
 }
 
-template <typename T> class vec4 {
+template <typename T = double> class vec4 {
     static_assert(std::is_arithmetic<T>::value,
                   "vec4<T> must hold arithmetic types");
 

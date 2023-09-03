@@ -19,10 +19,11 @@
     - Remember to switch back from void to an actual valid return type.
 - Polygon Triangulation doesn't work? Fix Barycentric Coordinates. [x]
 - Camera Movement [x]
+- Bezier Curves [x]
 
 ## TODO
 High Priority:
-- Bezier Curves 
+- Bezier Curves (Extra Functions => Translation, Rotation...)
 - Convex Hull for Polygon?
 - Forward Kinematics
     - Implement Limbs & Joints

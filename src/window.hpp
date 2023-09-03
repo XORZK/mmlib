@@ -2,6 +2,7 @@
 #define WINDOW_HPP
 
 #pragma once
+#include "bezier.hpp"
 #include "color.hpp"
 #include "camera.hpp"
 #include "polygon.hpp"
@@ -238,6 +239,15 @@ class window {
 
 		void draw_filled_polygon(polygon& p,
 								 color& c);
+
+		template <int64_t N>
+		void draw_bezier_curve(const bezier<N>& b, 
+							   double intv = 0.001);
+
+		template <int64_t N>
+		void draw_bezier_curve(const bezier<N>& b,
+							   color& c,
+							   double intv = 0.001);
 
         void run();
         

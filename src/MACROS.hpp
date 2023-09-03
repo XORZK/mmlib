@@ -28,4 +28,17 @@ inline double interp(T x1, T y1, T x2, T y2, T y3) {
     return (y3 - B)/M;
 }
 
+inline int64_t fact(int64_t N) {
+	int64_t F = 1;
+
+	for (int64_t k = 1; k <= N; k++)
+		F *= k;
+
+	return F;
+}
+
+inline int64_t comb(int64_t N, int64_t k) {
+	return (fact(N))/(fact(N-k) * fact(k));
+}
+
 #endif

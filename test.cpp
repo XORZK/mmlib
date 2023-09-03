@@ -1,4 +1,4 @@
-#include "src/polynomial.hpp"
+#include "src/window.hpp"
 
 int main() {
     /*
@@ -70,9 +70,9 @@ int main() {
 
     std::cout << barycentric(t, vec3(2.0, 1.0, 1.0)) << "\n";
 
-    std::cout << triangulate(vertices) << "\n"; 
+    std::cout << triangulate(vertices) << "\n"; */
 
     window w(1000, 1000);
 
-    w.run();*/
+    w.run();
 }

@@ -730,23 +730,35 @@ void window::draw_filled_polygon(polygon& p,
 	this->draw_filled_polygon(p);
 }
 
+template <int64_t N>
+void window::draw_bezier_curve(const bezier<N>& b, 
+							   double intv) {
+	for (double t = 0.0; t <= 1.0; t += intv) {
+		vec2<double> p = b(t);
+
+		this->draw_point(p);
+	}
+}
+
+template <int64_t N>
+void window::draw_bezier_curve(const bezier<N>& b, 
+							   color& c, 
+							   double intv) {
+	this->set_render_color(c);
+
+	this->draw_bezier_curve<N>(b, intv);
+}
 
 void window::draw() {
 	this->fill_background(color::BLACK());
 
-	mat3<double> R = create_3d_rotation_matrix(0, global_time, 0);
+	bezier<2> b(vec2<double>(0.0, 0.0),
+				vec2<double>(250.0, 250.0),
+				vec2<double>(300, 400));
 
 	color c = color::RED();
 
-	vec3<double> v1 = vec3<double>(-1, -1, 0),
-				 v2 = vec3<double>(1, -1, 0),
-				 v3 = vec3<double>(0, 0, 0);
-
-	v1 = R * v1;
-	v2 = R * v2;
-	v3 = R * v3;
-
-	this->draw_rainbow_triangle(v1, v2, v3);
+	this->draw_bezier_curve(b, c);
 
 	SDL_RenderPresent(this->r);
 	SDL_Delay(this->delay);
