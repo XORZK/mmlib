@@ -242,12 +242,12 @@ class window {
 
 		template <int64_t N>
 		void draw_bezier_curve(const bezier<N>& b, 
-							   double intv = 0.001);
+							   double intv = 0.0001);
 
 		template <int64_t N>
 		void draw_bezier_curve(const bezier<N>& b,
 							   color& c,
-							   double intv = 0.001);
+							   double intv = 0.0001);
 
         void run();
         

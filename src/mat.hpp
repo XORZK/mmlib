@@ -1069,7 +1069,7 @@ template <typename T>
 int64_t mat4<T>::cols() const { return M; }
 
 template <typename T> 
-std::ostream& operator<<(std::ostream& out, const mat2<T>& M) {
+std::ostream& operator<<(std::ostream& out, mat2<T>& M) {
     for (int64_t i = 0; i < 2; i++) {
         out << "[";
         for (int64_t k = 0; k < 2; k++) {
@@ -1084,7 +1084,7 @@ std::ostream& operator<<(std::ostream& out, const mat2<T>& M) {
 }
 
 template <typename T> 
-std::ostream& operator<<(std::ostream& out, const mat3<T>& M) {
+std::ostream& operator<<(std::ostream& out, mat3<T>& M) {
     for (int64_t i = 0; i < 3; i++) {
         out << "[";
         for (int64_t k = 0; k < 3; k++) {
@@ -1099,7 +1099,7 @@ std::ostream& operator<<(std::ostream& out, const mat3<T>& M) {
 }
 
 template <typename T> 
-std::ostream& operator<<(std::ostream& out, const mat4<T>& M) {
+std::ostream& operator<<(std::ostream& out, mat4<T>& M) {
     for (int64_t i = 0; i < 4; i++) {
         out << "[";
         for (int64_t k = 0; k < 4; k++) {

@@ -734,7 +734,7 @@ template <int64_t N>
 void window::draw_bezier_curve(const bezier<N>& b, 
 							   double intv) {
 	for (double t = 0.0; t <= 1.0; t += intv) {
-		vec2<double> p = b(t);
+		vec3<double> p = b(t);
 
 		this->draw_point(p);
 	}
@@ -752,9 +752,13 @@ void window::draw_bezier_curve(const bezier<N>& b,
 void window::draw() {
 	this->fill_background(color::BLACK());
 
-	bezier<2> b(vec2<double>(0.0, 0.0),
-				vec2<double>(250.0, 250.0),
-				vec2<double>(300, 400));
+	mat3<double> R = create_3d_rotation_matrix(global_time, 0.0, 0.0);
+
+	bezier<2> b(vec3(0.0, 0.0, 1.0),
+				vec3(1.0, 1.0, 1.0),
+				vec3(1.0, 1.5, 1.0));
+
+	b.transform(R);
 
 	color c = color::RED();
 

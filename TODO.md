@@ -20,10 +20,10 @@
 - Polygon Triangulation doesn't work? Fix Barycentric Coordinates. [x]
 - Camera Movement [x]
 - Bezier Curves [x]
+- Bezier Curves (Extra Functions => Translation, Rotation...) => Move from vec2 to vec3 [x]
 
 ## TODO
 High Priority:
-- Bezier Curves (Extra Functions => Translation, Rotation...)
 - Convex Hull for Polygon?
 - Forward Kinematics
     - Implement Limbs & Joints
