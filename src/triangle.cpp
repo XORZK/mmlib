@@ -100,30 +100,6 @@ std::ostream& operator<<(std::ostream& out, const triangle& t) {
     return out;
 }
 
-inline bool less(const vec3<double>& a, 
-                 const vec3<double>& b, 
-                 const vec3<double>& center) {
-
-    if (a.x() >= center.x() && b.x() < center.x())
-        return true;
-
-    if (a.x() < center.x() && b.x() >= center.x()) 
-        return false;
-
-    if (a.x() == center.x() && b.x() == center.x())
-        return ((a.y() >= center.y() || b.y() >= center.y()) ? 
-                (a.y() > b.y()) : (b.y() > a.y()));
-
-    // Determinant of a 2x2 matrix filled with vectors a, b.
-    // Were calculating det([{a.x, b.x}, {a.y, b.y}])
-    double d = det<double>(a - center, b - center);    
-
-    // If determinant is negative, that means the 2-D plane is inverted.
-    // That means that the vector a is to the left of b.
-    return ((d < 0) ? true : (d > 0) ? false : 
-            distance(a, center) > distance(b, center));
-}
-
 // Assumes that for each vec3, z value is 1. 
 // Sorts vertices in clockwise order, starting from the top.
 list<vec3<double>> sort_vertices(const list<vec3<double>>& vertices) {
@@ -144,7 +120,7 @@ list<vec3<double>> sort_vertices(const list<vec3<double>>& vertices) {
     for (int64_t k = 1; k < size; k++) {
         int64_t swap = k;
 
-        while (swap > 0 && less(sorted_list[swap], sorted_list[swap-1], C)) {
+        while (swap > 0 && compare::clockwise(sorted_list[swap], sorted_list[swap-1], C)) {
             sorted_list.swap(swap, swap-1);
             --swap;
         }

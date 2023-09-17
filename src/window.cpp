@@ -24,12 +24,12 @@ void window::initialize_window() {
         return;
     }
 
-    this->w = SDL_CreateWindow("SDL Window",
-                         SDL_WINDOWPOS_CENTERED,
-                         SDL_WINDOWPOS_CENTERED,
-                         this->width,
-                         this->height,
-                         SDL_WINDOW_SHOWN);
+    this->w = SDL_CreateWindow("balls",
+   							   SDL_WINDOWPOS_CENTERED,
+							   SDL_WINDOWPOS_CENTERED,
+							   this->width,
+							   this->height,
+							   SDL_WINDOW_SHOWN);
 
     if (!this->w) {
         SDL_Log("Failed to initialize SDL Window: %s\n", SDL_GetError());
@@ -73,6 +73,42 @@ vec2<double> window::cartesian_to_screen_coords(const vec4<double>& vert) const 
     vec4<double> ndc_vert = cam->compute_ndc(vert);
 
     return this->ndc_to_screen_coords(ndc_vert);
+}
+
+list<vec2<double>> window::cartesian_to_screen_coords(const list<vec3<double>> &points) const {
+	list<vec4<double>> convert;
+
+	int64_t N = points.size();
+
+	linked_node<vec3<double>> *head = points.front();
+
+	for (int64_t k = 0; k < N; k++) {
+		vec3<double> P = head->value();
+
+		convert.push_back(vec4(P, 1.0));
+
+		head = head->next();
+	}
+
+	return cartesian_to_screen_coords(convert);
+}
+
+list<vec2<double>> window::cartesian_to_screen_coords(const list<vec4<double>> &points) const {
+	list<vec2<double>> screen;
+
+	int64_t N = points.size();
+
+	linked_node<vec4<double>> *head = points.front();
+
+	for (int64_t k = 0; k < N; k++) {
+		vec4<double> P = head->value();
+
+		screen.push_back(cartesian_to_screen_coords(P));
+
+		head = head->next();
+	}
+
+	return screen;
 }
 
 window::window() {
@@ -551,6 +587,209 @@ void window::draw_filled_triangle(const triangle& T,
     this->draw_filled_triangle(T);
 }
 
+void window::draw_wireframe_rectangle(const vec2<double> &top_left,
+									  const double length,
+									  const double width) {
+	// v1: top_left + (length, 0)
+	// v2: top_left + (0, width)
+	// v3: top_left + (length, width)
+
+	vec2<double> v1 = top_left + vec2(length, 0.0),
+				 v2 = top_left + vec2(0.0, width),
+				 v3 = top_left + vec2(length, width);
+
+	this->draw_line(top_left, v1);
+	this->draw_line(top_left, v2);
+	this->draw_line(v1, v3);
+	this->draw_line(v2, v3);
+}
+
+void window::draw_wireframe_rectangle(const vec3<double> &top_left,
+									  const double length,
+									  const double width) {
+	vec4<double> v4 = vec4(top_left, 1.0);
+	this->draw_wireframe_rectangle(v4, length, width);
+}
+
+void window::draw_wireframe_rectangle(const vec4<double> &top_left,
+									  const double length, 
+									  const double width) {
+	vec4<double> tc = (*view_mat * top_left);
+
+	if (ABS(tc.z()) <= DEFAULT_Z_THRESH || tc.z() > 0)
+		return;
+
+	vec4<double> right = tc + vec4(length, 0.0, 0.0, 0.0),
+			     bottom = tc + vec4(0.0, width, 0.0, 0.0);
+
+	vec2<double> screen_left = cartesian_to_screen_coords(tc),
+				 screen_right = cartesian_to_screen_coords(right),
+				 screen_bottom = cartesian_to_screen_coords(bottom);
+
+	this->draw_wireframe_rectangle(screen_left, 
+								   screen_right.x() - screen_left.x(),
+								   screen_bottom.y() - screen_left.y());
+}
+
+void window::draw_wireframe_rectangle(const vec2<double> &top_left,
+									  const double length, 
+									  const double width,
+									  color &c) {
+	this->set_render_color(c);
+	this->draw_wireframe_rectangle(top_left, length, width);
+}
+
+void window::draw_wireframe_rectangle(const vec3<double> &top_left,
+									  const double length,
+									  const double width,
+									  color &c) {
+	this->set_render_color(c);
+	this->draw_wireframe_rectangle(top_left, length, width);
+}
+
+void window::draw_wireframe_rectangle(const vec4<double> &top_left,
+									  const double length,
+									  const double width,
+									  color &c) {
+	this->set_render_color(c);
+	this->draw_wireframe_rectangle(top_left, length, width);
+}
+
+void window::draw_wireframe_square(const vec2<double> &top_left,
+								   const double size) {
+	this->draw_wireframe_rectangle(top_left, size, size);
+}
+
+void window::draw_wireframe_square(const vec3<double> &top_left,
+								   const double size) {
+	this->draw_wireframe_rectangle(top_left, size, size);
+}
+
+void window::draw_wireframe_square(const vec4<double> &top_left,
+								   const double size) {
+	this->draw_wireframe_rectangle(top_left, size, size);
+}
+
+void window::draw_wireframe_square(const vec2<double> &top_left,
+								   const double size,
+								   color &c) {
+	this->set_render_color(c);
+	this->draw_wireframe_square(top_left, size);
+}
+
+void window::draw_wireframe_square(const vec3<double> &top_left,
+								   const double size,
+								   color &c) {
+	this->set_render_color(c);
+	this->draw_wireframe_square(top_left, size);
+}
+
+void window::draw_wireframe_square(const vec4<double> &top_left,
+								   const double size,
+								   color &c) {
+	this->set_render_color(c);
+	this->draw_wireframe_square(top_left, size);
+}
+
+void window::draw_filled_rectangle(const vec2<double> &top_left,
+								   const double length,
+								   const double width) {
+	for (int64_t k = 0; k <= width; k++) {
+		vec2<double> left = top_left + vec2(0.0, (double) k),
+					 right = top_left + vec2(length, (double) k);
+
+		this->draw_line(left, right);
+	}
+}
+
+void window::draw_filled_rectangle(const vec3<double> &top_left,
+								   const double length,
+								   const double width) {
+	vec4<double> v4 = vec4(top_left, 1.0);
+	this->draw_filled_rectangle(v4, length, width);
+}
+
+void window::draw_filled_rectangle(const vec4<double> &top_left,
+								   const double length,
+								   const double width) {
+	vec4<double> tc = (*view_mat * top_left);
+
+	if (ABS(tc.z()) <= DEFAULT_Z_THRESH || tc.z() > 0)
+		return;
+
+	vec4<double> right = tc + vec4(length, 0.0, 0.0, 0.0),
+			     bottom = tc + vec4(0.0, width, 0.0, 0.0);
+
+	vec2<double> screen_left = cartesian_to_screen_coords(tc),
+				 screen_right = cartesian_to_screen_coords(right),
+				 screen_bottom = cartesian_to_screen_coords(bottom);
+
+
+	this->draw_filled_rectangle(screen_left, 
+								screen_right.x() - screen_left.x(),
+								screen_bottom.y() - screen_left.y());
+}
+
+void window::draw_filled_rectangle(const vec2<double> &top_left,
+	            				   const double length, 
+	            				   const double width,
+	            				   color &c) {
+	this->set_render_color(c);
+	this->draw_filled_rectangle(top_left, length, width);
+}
+
+void window::draw_filled_rectangle(const vec3<double> &top_left,
+	            				   const double length,
+	            				   const double width,
+	            				   color &c) {
+	this->set_render_color(c);
+	this->draw_filled_rectangle(top_left, length, width);
+}
+
+void window::draw_filled_rectangle(const vec4<double> &top_left,
+						           const double length,
+						           const double width,
+						           color &c) {
+	this->set_render_color(c);
+	this->draw_filled_rectangle(top_left, length, width);
+}
+
+void window::draw_filled_square(const vec2<double> &top_left,
+								const double size) {
+	this->draw_filled_rectangle(top_left, size, size);
+}
+
+void window::draw_filled_square(const vec3<double> &top_left,
+								const double size) {
+	this->draw_filled_rectangle(top_left, size, size);
+}
+
+void window::draw_filled_square(const vec4<double> &top_left,
+								const double size) {
+	this->draw_filled_rectangle(top_left, size, size);
+}
+
+void window::draw_filled_square(const vec2<double> &top_left,
+								const double size,
+								color &c) {
+	this->set_render_color(c);
+	this->draw_filled_square(top_left, size);
+}
+
+void window::draw_filled_square(const vec3<double> &top_left,
+								const double size,
+								color &c) {
+	this->set_render_color(c);
+	this->draw_filled_square(top_left, size);
+}
+
+void window::draw_filled_square(const vec4<double> &top_left,
+								const double size,
+								color &c) {
+	this->set_render_color(c);
+	this->draw_filled_square(top_left, size);
+}
+
 void window::run() {
     while (!quit) {
         while (SDL_PollEvent(&event)) {
@@ -749,20 +988,65 @@ void window::draw_bezier_curve(const bezier<N>& b,
 	this->draw_bezier_curve<N>(b, intv);
 }
 
+void window::draw_convex_hull(list<vec2<double>> &points,
+							  color norm,
+							  color highlight) {
+	list<vec2<double>> hull = convex_hull::graham_scan(points);
+
+	int64_t N = points.size(), M = hull.size();
+
+	// Draws the entire set of points.
+	for (int64_t k = 0; k < N; k++) {
+		vec2<double> P = points[k];
+		this->draw_filled_circle(P, 2, norm);
+	}
+
+	// Draw convex hull.
+	for (int64_t k = 0; k < M; k++) {
+		vec2<double> p0 = hull[k],
+					 p1 = hull[mod(k+1, M)];
+		this->draw_filled_circle(p0, 4, highlight);
+		this->draw_line(p0, p1, highlight);
+	}
+}
+
+void window::draw_convex_hull(list<vec3<double>> &points,
+							  color norm,
+							  color highlight) {
+}
+
 void window::draw() {
 	this->fill_background(color::BLACK());
 
-	mat3<double> R = create_3d_rotation_matrix(global_time, 0.0, 0.0);
+	color b = color::BLUE(), r = color::RED();
 
-	bezier<2> b(vec3(0.0, 0.0, 1.0),
-				vec3(1.0, 1.0, 1.0),
-				vec3(1.0, 1.5, 1.0));
+	list<vec2<double>> p;
 
-	b.transform(R);
+    p.push_back(vec2<double>(173,29)); 
+    p.push_back(vec2<double>(181,88)); 
+    p.push_back(vec2<double>(246,133)); 
+    p.push_back(vec2<double>(210,148)); 
+    p.push_back(vec2<double>(240,147)); 
+    p.push_back(vec2<double>(241,173)); 
+    p.push_back(vec2<double>(209,192)); 
+    p.push_back(vec2<double>(221,196)); 
+    p.push_back(vec2<double>(205,220)); 
+    p.push_back(vec2<double>(154,170));  
+    p.push_back(vec2<double>(93,222)); 
+    p.push_back(vec2<double>(63,223)); 
+    p.push_back(vec2<double>(72,155)); 
+    p.push_back(vec2<double>(109,104));
+    p.push_back(vec2<double>(68,129)); 
+    p.push_back(vec2<double>(59,73)); 
+    p.push_back(vec2<double>(27,64)); 
+    p.push_back(vec2<double>(38,39)); 
+    p.push_back(vec2<double>(57,49)); 
+    p.push_back(vec2<double>(118,25)); 
+    p.push_back(vec2<double>(142,78)); 
+    p.push_back(vec2<double>(151,50)); 
+    p.push_back(vec2<double>(151,21));
 
-	color c = color::RED();
-
-	this->draw_bezier_curve(b, c);
+	this->draw_convex_hull(p);
 
 	SDL_RenderPresent(this->r);
 	SDL_Delay(this->delay);

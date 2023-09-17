@@ -64,6 +64,8 @@ template <typename T = double> class vec2 {
 
         bool operator==(const vec2<T>& v2) const;
 
+        bool operator!=(const vec2<T>& v2) const;
+
         template <typename U>
         operator vec2<U>() const;
 
@@ -232,6 +234,11 @@ bool vec2<T>::operator==(const vec2<T>& v2) const {
     return (this->x() == v2.x() && this->y() == v2.y());
 }
 
+template <typename T> 
+bool vec2<T>::operator!=(const vec2<T>& v2) const {
+    return (this->x() != v2.x() || this->y() != v2.y());
+}
+
 template <typename T> template <typename U>
 vec2<T>::operator vec2<U>() const {
     vec2<U> casted(static_cast<U>(this->x()), static_cast<U>(this->y()));
@@ -375,6 +382,8 @@ template <typename T = double> class vec3 {
         void operator-=(const T value);
 
         bool operator==(const vec3<T>& v2) const;
+
+        bool operator!=(const vec3<T>& v2) const;
 
         template <typename U>
         operator vec3<U>() const;
@@ -583,6 +592,11 @@ bool vec3<T>::operator==(const vec3<T>& v2) const {
     return (this->x() == v2.x() && this->y() == v2.y() && this->z() == v2.z());
 }
 
+template <typename T>
+bool vec3<T>::operator!=(const vec3<T>& v2) const {
+    return (this->x() != v2.x() || this->y() != v2.y() || this->z() != v2.z());
+}
+
 template <typename T> template <typename U>
 vec3<T>::operator vec3<U>() const {
     vec3<U> casted(static_cast<U>(this->x()),
@@ -754,6 +768,8 @@ template <typename T = double> class vec4 {
         void operator-=(const T value);
 
         bool operator==(const vec4<T>& v2) const;
+
+        bool operator!=(const vec4<T>& v2) const;
 
         template <typename U>
         operator vec4<U>() const;
@@ -974,6 +990,13 @@ bool vec4<T>::operator==(const vec4<T>& v2) const {
             this->z() == v2.z() && this->w() == v2.w());
 }
 
+template <typename T>
+bool vec4<T>::operator!=(const vec4<T>& v2) const {
+    return (this->x() != v2.x() && this->y() != v2.y() && 
+            this->z() != v2.z() && this->w() != v2.w());
+}
+
+
 template <typename T> template <typename U>
 vec4<T>::operator vec4<U>() const {
     vec4<U> casted(static_cast<U>(this->x()),
@@ -1065,6 +1088,31 @@ T det(const vec2<T> v1, const vec2<T> v2) {
 template <typename T>
 T det(const vec3<T> v1, const vec3<T> v2) {
     return (v1.x() * v2.y()) - (v2.x() * v1.y());
+}
+
+inline double cross(const vec2<double> &a,
+				    const vec2<double> &b,
+				    const vec2<double> &c) {
+	// (x2 - x1)(y3 - y1) - (y2 - y1)(x3 - x1)
+	return ((b.x() - a.x()) * (c.y() - a.y())) - 
+		   ((b.y() - a.y()) * (c.x() - a.x()));
+}
+
+// Checks if point c is to the left of the line segment formed by points a,b.
+inline int64_t direction(const vec2<double> &a,	
+						 const vec2<double> &b,
+						 const vec2<double> &c) {
+	vec2 control = vec2(a.x()-1, a.y()); 
+
+	// Control is to the left of the segment a,b.
+	// Thus, if fc and sc have the same sign, then 
+	// they are both to the left of a,b. Otherwise, 
+	// fc is to the right of a,b.
+	double fc = cross(a, b, c), sc = cross(a, b, control);
+
+	// 1 if left.
+	// -1 if right.
+	return (sc == 0 ? (c.y() > a.y() ? 1 : -1) : (fc > 0) == (sc > 0) ? 1 : -1);
 }
 
 #endif

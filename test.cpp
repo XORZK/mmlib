@@ -1,4 +1,5 @@
 #include "src/window.hpp"
+#include "src/compare.hpp"
 
 int main() {
     /*
@@ -70,9 +71,25 @@ int main() {
 
     std::cout << barycentric(t, vec3(2.0, 1.0, 1.0)) << "\n";
 
-    std::cout << triangulate(vertices) << "\n"; */
+    std::cout << triangulate(vertices) << "\n"; 
 
     window w(1000, 1000);
 
-    w.run();
+    w.run();*/
+
+	list<vec2<double>> P;
+	
+	P.push_back(vec2(0, 0));
+	P.push_back(vec2(1, -2));
+	P.push_back(vec2(2, 2));
+	P.push_back(vec2(3, -1));
+	P.push_back(vec2(4, 1));
+
+	P.push_back(vec2(6, 2));
+	P.push_back(vec2(7, 3));
+	P.push_back(vec2(8, -1));
+	P.push_back(vec2(9, 0));
+	P.push_back(vec2(10, 2));
+
+	std::cout << convex_hull::divide_conquer(P) << "\n";
 }

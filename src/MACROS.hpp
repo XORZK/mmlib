@@ -2,11 +2,16 @@
 #define MACROS_HPP
 
 #pragma once
+#include <math.h>
 #include <stdint.h>
 
 #define MAX(x,y) ((x>y)?x:y)
 #define MIN(x,y) ((x<y)?x:y)
 #define ABS(x) (x < 0 ? -x : x)
+
+inline double atan(double y, double x) {
+	return (x == 0 ? (y == 0 ? 0 : 90) : atan(y/x) * 180/M_PI);
+}
 
 inline int64_t mod(int64_t N, int64_t M) {
     while (N < 0)

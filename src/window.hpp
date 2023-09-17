@@ -3,8 +3,9 @@
 
 #pragma once
 #include "bezier.hpp"
-#include "color.hpp"
 #include "camera.hpp"
+#include "color.hpp"
+#include "convex_hull.hpp"
 #include "polygon.hpp"
 #include "triangle.hpp"
 #include "mat.hpp"
@@ -54,6 +55,10 @@ class window {
         vec2<double> ndc_to_screen_coords(const vec4<double>& ndc_vert) const;
 
         vec2<double> cartesian_to_screen_coords(const vec4<double>& vert) const;
+
+		list<vec2<double>> cartesian_to_screen_coords(const list<vec3<double>> &points) const;
+
+		list<vec2<double>> cartesian_to_screen_coords(const list<vec4<double>> &points) const;
     public:
         window();
 
@@ -213,6 +218,103 @@ class window {
         void draw_filled_triangle(const triangle& T, 
                                   color& c);
 
+		void draw_wireframe_rectangle(const vec2<double> &top_left,
+									  const double length,
+									  const double width);
+
+		void draw_wireframe_rectangle(const vec3<double> &top_left,
+									  const double length,
+									  const double width);
+
+		void draw_wireframe_rectangle(const vec4<double> &top_left,
+									  const double length,
+									  const double width);
+
+		void draw_wireframe_rectangle(const vec2<double> &top_left,
+									  const double length,
+									  const double width,
+									  color &c);
+
+		void draw_wireframe_rectangle(const vec3<double> &top_left,
+									  const double length,
+									  const double width,
+									  color &c);
+
+		void draw_wireframe_rectangle(const vec4<double> &top_left,
+									  const double length,
+									  const double width,
+									  color &c);
+
+		void draw_wireframe_square(const vec2<double> &top_left,
+								   const double size);
+
+		void draw_wireframe_square(const vec3<double> &top_left,
+								   const double size);
+
+		void draw_wireframe_square(const vec4<double> &top_left,
+								   const double size);
+
+		void draw_wireframe_square(const vec2<double> &top_left,
+								   const double size,
+								   color &c);
+
+		void draw_wireframe_square(const vec3<double> &top_left,
+								   const double size,
+								   color &c);
+
+		void draw_wireframe_square(const vec4<double> &top_left,
+								   const double size,
+								   color &c);
+
+		void draw_filled_rectangle(const vec2<double> &top_left,
+								   const double length, 
+								   const double width);
+
+		void draw_filled_rectangle(const vec3<double> &top_left,
+								   const double length,
+								   const double width);
+
+		void draw_filled_rectangle(const vec4<double> &top_left,
+								   const double length,
+								   const double width);
+
+		void draw_filled_rectangle(const vec2<double> &top_left,
+								   const double length, 
+								   const double width,
+								   color &c);
+
+		void draw_filled_rectangle(const vec3<double> &top_left,
+								   const double length,
+								   const double width,
+								   color &c);
+
+		void draw_filled_rectangle(const vec4<double> &top_left,
+								   const double length,
+								   const double width,
+								   color &c);
+
+		void draw_filled_square(const vec2<double> &top_left,
+								const double size);
+
+		void draw_filled_square(const vec3<double> &top_left,
+								const double size);
+
+		void draw_filled_square(const vec4<double> &top_left,
+								const double size);
+
+		void draw_filled_square(const vec2<double> &top_left,
+								const double size,
+								color &c);
+
+		void draw_filled_square(const vec3<double> &top_left,
+								const double size,
+								color &c);
+
+		void draw_filled_square(const vec4<double> &top_left,
+								const double size,
+								color &c);
+
+
         void draw_colored_line(vec2<double>& v1,
                                vec2<double>& v2,
                                color& c1,
@@ -248,6 +350,14 @@ class window {
 		void draw_bezier_curve(const bezier<N>& b,
 							   color& c,
 							   double intv = 0.0001);
+
+		void draw_convex_hull(list<vec2<double>> &points,
+							  color norm = color::BLUE(),
+							  color highlight = color::RED());
+
+		void draw_convex_hull(list<vec3<double>> &points,
+							  color norm = color::BLUE(),
+							  color highlight = color::RED());
 
         void run();
         

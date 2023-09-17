@@ -6,6 +6,11 @@
 #include <assert.h>
 #include <stdint.h>
 
+template <typename T> 
+inline bool default_qsort_cmp(T x1, T x2) {
+	return (x1 <= x2);
+}
+
 template <typename T> class list {
     private:
         int64_t s;
@@ -17,6 +22,7 @@ template <typename T> class list {
             linked_node<T> node(value);
             this->head = this->tail = &node;
         }
+		list(const list<T> &l);
 
         ~list() {}
 
@@ -28,6 +34,7 @@ template <typename T> class list {
 
         void insert(int64_t idx, linked_node<T>* node);
         void insert(int64_t idx, T value);
+
 
         T pop_front();
         T pop_back();
@@ -42,6 +49,7 @@ template <typename T> class list {
         void reverse();
         void sort();
         list<T> merge(list<T> ll) const;
+		void remove_dupes();
 
         linked_node<T>* front() const;
         linked_node<T>* back() const;
@@ -49,12 +57,25 @@ template <typename T> class list {
         linked_node<T>* get_ptr(int64_t idx) const;
 
         T operator[](int64_t idx) const;
+		list<T> operator+(T value) const;
+		list<T> operator-(T value) const;
+		void operator+=(T value);
+	 	void operator-=(T value);
 
         void swap(int64_t k, int64_t j);
 
         template <typename U>
         friend std::ostream& operator<<(std::ostream& out, const list<U>& l);
 };
+
+template <typename T> list<T>::list(const list<T> &l) {
+	linked_node<T> *curr = l.front();
+
+	for (int64_t k = 0; k < l.size(); k++) {
+		this->push_back(curr->value());
+		curr = curr->next();
+	}
+}
 
 template <typename T> void list<T>::push_front(linked_node<T>* node) {
     if (this->is_empty()) {
@@ -67,7 +88,7 @@ template <typename T> void list<T>::push_front(linked_node<T>* node) {
 }
 
 template <typename T> void list<T>::push_front(T value) {
-    linked_node<T>* node = new linked_node<T>(node);
+    linked_node<T> *node = new linked_node<T>(value);
     this->push_front(node);
 }
 
@@ -202,6 +223,51 @@ template <typename T> T list<T>::operator[](int64_t idx) const {
     return this->get_ptr(idx)->value();
 }
 
+template <typename T> list<T> list<T>::operator+(T value) const {
+	list<T> sum;
+
+	linked_node<T> *curr = this->head;
+
+	for (int64_t k = 0; k < this->s; k++) {
+		sum.push_back(curr->value() + value);
+
+		curr = curr->next();
+	}
+
+	return sum;
+}
+
+template <typename T> list<T> list<T>::operator-(T value) const {
+	list<T> diff;
+
+	linked_node<T> *curr = this->head;
+
+	for (int64_t k = 0; k < this->s; k++) {
+		diff.push_back(curr->value() - value);
+		curr = curr->next();
+	}
+
+	return diff;
+}
+
+template <typename T> void list<T>::operator+=(T value) {
+	linked_node<T> *curr = this->head;
+
+	for (int64_t k = 0; k < this->s; k++) {
+		curr->value(curr->value() + value);
+		curr = curr->next();
+	}
+}
+
+template <typename T> void list<T>::operator-=(T value) {
+	linked_node<T> *curr = this->head;
+
+	for (int64_t k = 0; k < this->s; k++) {
+		curr->value(curr->value() - value);
+		curr = curr->next();
+	}
+}
+
 template <typename T> void list<T>::swap(int64_t k, int64_t j) {
     assert(("Out of Bounds Error: List Index Out of Bounds",
            (k >= 0 && k < this->s && j >= 0 && j < this->s)));
@@ -223,55 +289,63 @@ template <typename T> void list<T>::reverse() {
     linked_node<T> *front = this->head, *back = this->tail;
 
     for (uint64_t k = 0; k <= (this->s/2 - (this->s+1)%2) && front != nullptr && back != nullptr; k++) {
-        swap(front, back);
+		std::swap(front, back);
         front = front->next();
         back = back->prev();
     }
 }
 
-template <typename T> inline void quicksort(list<T>& l, int64_t lo, int64_t hi) {
-    if (lo >= hi || lo < 0) {
-        return;
-    }
+template <typename T> 
+inline linked_node<T>* partition(linked_node<T> *start, linked_node<T> *end, bool (*cmp) (T, T)) {
+	if (start == nullptr || end == nullptr || start == end)
+		return start;
 
-    int64_t p = partition(l, lo, hi);
+	T pivot = end->value();
 
-    quicksort(l, lo, p-1);
-    quicksort(l, p+1, hi);
+	linked_node<T> *swap_node = start->prev(),
+				   *curr_node = start;
+
+	while (curr_node != end) {
+		if (cmp(curr_node->value(), pivot)) {
+			swap_node = (swap_node == nullptr ? start : swap_node->next());
+			swap(curr_node, swap_node);
+		}
+
+		curr_node = curr_node->next();
+	}
+
+	swap_node = (swap_node == nullptr ? start : swap_node->next());
+
+	swap(swap_node, end);
+
+	return swap_node;
 }
 
-template <typename T> int64_t partition(list<T>& l, int64_t lo, int64_t hi) {
-    // high_node->value() is the pivot
-    linked_node<T> *curr_node = l[lo], *high_node = l[hi];
+template <typename T> 
+inline void quicksort(linked_node<T> *start, linked_node<T> *end, bool (*cmp) (T, T)) {
+	if ((start == nullptr) || (end == nullptr) || (start == end) || (start->prev() == end)) {
+		return;
+	}
 
-    int64_t k = lo-1;
+	linked_node<T>* p = partition(start, end, cmp);
 
-    linked_node<T>* swap_node = (k < 0 || k >= l.size() ? nullptr : l[k]);
+	quicksort(start, p->prev(), cmp);
+	quicksort(p->next(), end, cmp);
+}
 
-    for (int64_t j = lo; j < hi; j++) {
-        if (curr_node->value() <= high_node->value()) {
-            ++k;
+template <typename T> 
+inline void quicksort(list<T> &l, bool (*cmp)(T, T)) {
+	quicksort(l.front(), l.back(), cmp);
+}
 
-            swap_node = (swap_node == nullptr ? l[k] : swap_node->next());
-
-            swap(curr_node, swap_node);
-        }
-
-        curr_node = curr_node->next();
-    }
-
-    ++k;
-
-    swap_node = (swap_node == nullptr ? l[k] : swap_node->next());
-
-    swap(swap_node, high_node);
-
-    return k;
+template <typename T> 
+inline void quicksort(list<T> &l) { 
+	quicksort(l, &default_qsort_cmp); 
 }
 
 // Quicksort
 template <typename T> void list<T>::sort() {
-    quicksort(*this, 0, this->s-1);
+    quicksort(*this, 0, this->s-1, &default_qsort_cmp);
 }
 
 template <typename T> list<T> list<T>::merge(list<T> ll) const {
@@ -336,6 +410,23 @@ template <typename T> int64_t binary_search(list<T> l, T value) {
     }
 
     return -1;
+}
+
+
+// Assumes input list is ordered.
+template <typename T> list<T> remove_dupes(list<T> &l) {
+	list<T> set;
+
+	linked_node<T> *curr = l.front();
+
+	for (int64_t k = 0; k < l.size(); k++) {
+		if (set.size() == 0 || set.back()->value() != curr->value())
+			set.push_back(curr->value());
+
+		curr = curr->next();
+	}
+
+	return set;
 }
 
 #endif
