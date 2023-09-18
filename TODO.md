@@ -29,5 +29,5 @@ High Priority:
     - Implement Limbs & Joints
 
 Low Priority:
-- Rewrite using Smart Pointers
-- Write (some) Documentation (~3 hrs)
+- [ ] Rewrite using Smart Pointers
+- [ ] Write (some) Documentation (~3 hrs)
