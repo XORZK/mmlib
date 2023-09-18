@@ -25,7 +25,7 @@
 
 ## TODO
 High Priority:
-- Forward Kinematics
+- [ ] Forward Kinematics
     - Implement Limbs & Joints
 
 Low Priority:
