@@ -144,10 +144,15 @@ namespace convex_hull {
 			linked_node<vec2<double>> *NL = L->next(),
 									  *NR = R->next();
 
-			if (direction(L->value(), R->value(), NL->value()) == -1) { 
-				L = NL; 
-			} else if (direction(L->value(), R->value(), NR->value()) == -1) { 
-				R = NR; 
+			int64_t DL = direction(L->value(), R->value(), NL->value()),
+					RL = direction(L->value(), R->value(), NR->value());
+
+			bool G = (L->value().y() < R->value().y());
+
+			if ((G && DL == -1) || (!G && DL == 1)) {
+				L = NL;
+			} else if ((G && RL == -1) || (!G && RL == 1)) {
+				R = NR;
 			} else {
 				break;
 			}
@@ -162,16 +167,30 @@ namespace convex_hull {
 								  *R = B.back();
 
 		while (true) {
-			linked_node<vec2<double>> *PL = L->prev(), *PR = R->prev();
-			if (direction(L->value(), R->value(), PL->value()) == 1) { L = PL; }
-			else if (direction(L->value(), R->value(), PR->value()) == 1) { R = PR; }
-			else break;
+			linked_node<vec2<double>> *PL = L->prev(), 
+									  *PR = R->prev();
+
+			int64_t DL = direction(L->value(), R->value(), PL->value()),
+					RL = direction(L->value(), R->value(), PR->value());
+
+			bool G = (L->value().y() < R->value().y());
+
+			if ((G && DL == 1) || (!G && DL == -1)) {
+				L = PL;
+			} else if ((G && RL == 1) || (!G && RL == -1)) {
+				R = PR;
+			} else {
+				break;
+			}
 		}
 
 		return pair(L, R);
 	}
 
 	inline list<vec2<double>> merge(list<vec2<double>> &L, list<vec2<double>> &R) {
+		quicksort(L, &compare::x);
+		quicksort(R, &compare::x);
+
 		vec2 P = L.back()->value(), Q = R.front()->value();
 
 		list<vec2<double>> A = sort_cw(L, P), B = sort_ccw(R, Q);
@@ -183,10 +202,9 @@ namespace convex_hull {
 
 		pair<linked_node<vec2<double>>*, linked_node<vec2<double>>*> top = convex_hull::merge_top(A, B);
 
+		list<vec2<double>> merge;
 		linked_node<vec2<double>> *curr_l = top.key(), *curr_r = bottom.value(),
 								  *end_l = bottom.key(), *end_r = top.value();
-
-		list<vec2<double>> merge;
 
 		while (curr_l->next() != end_l) {
 			merge.push_back(curr_l->value());
@@ -196,7 +214,7 @@ namespace convex_hull {
 		while (curr_r->prev() != end_r) {
 			merge.push_back(curr_r->value());
 			curr_r = curr_r->next();
-		} 
+		}
 
 		return merge;
 	}

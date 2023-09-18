@@ -991,7 +991,7 @@ void window::draw_bezier_curve(const bezier<N>& b,
 void window::draw_convex_hull(list<vec2<double>> &points,
 							  color norm,
 							  color highlight) {
-	list<vec2<double>> hull = convex_hull::graham_scan(points);
+	list<vec2<double>> hull = convex_hull::divide_conquer(points);
 
 	int64_t N = points.size(), M = hull.size();
 
@@ -1022,29 +1022,29 @@ void window::draw() {
 
 	list<vec2<double>> p;
 
-    p.push_back(vec2<double>(173,29)); 
-    p.push_back(vec2<double>(181,88)); 
-    p.push_back(vec2<double>(246,133)); 
-    p.push_back(vec2<double>(210,148)); 
-    p.push_back(vec2<double>(240,147)); 
-    p.push_back(vec2<double>(241,173)); 
-    p.push_back(vec2<double>(209,192)); 
-    p.push_back(vec2<double>(221,196)); 
-    p.push_back(vec2<double>(205,220)); 
-    p.push_back(vec2<double>(154,170));  
-    p.push_back(vec2<double>(93,222)); 
-    p.push_back(vec2<double>(63,223)); 
-    p.push_back(vec2<double>(72,155)); 
-    p.push_back(vec2<double>(109,104));
-    p.push_back(vec2<double>(68,129)); 
-    p.push_back(vec2<double>(59,73)); 
-    p.push_back(vec2<double>(27,64)); 
-    p.push_back(vec2<double>(38,39)); 
-    p.push_back(vec2<double>(57,49)); 
-    p.push_back(vec2<double>(118,25)); 
-    p.push_back(vec2<double>(142,78)); 
-    p.push_back(vec2<double>(151,50)); 
-    p.push_back(vec2<double>(151,21));
+    p.push_back(vec2(173,29)); 
+    p.push_back(vec2(181,88)); 
+    p.push_back(vec2(246,133)); 
+    p.push_back(vec2(210,148)); 
+    p.push_back(vec2(240,147)); 
+    p.push_back(vec2(241,173)); 
+    p.push_back(vec2(209,192)); 
+    p.push_back(vec2(221,196)); 
+    p.push_back(vec2(205,220)); 
+    p.push_back(vec2(154,170));  
+    p.push_back(vec2(93,222)); 
+    p.push_back(vec2(63,223)); 
+    p.push_back(vec2(72,155)); 
+    p.push_back(vec2(109,104));
+    p.push_back(vec2(68,129)); 
+    p.push_back(vec2(59,73)); 
+    p.push_back(vec2(27,64)); 
+    p.push_back(vec2(38,39)); 
+    p.push_back(vec2(57,49)); 
+    p.push_back(vec2(118,25)); 
+    p.push_back(vec2(142,78)); 
+    p.push_back(vec2(151,50)); 
+    p.push_back(vec2(151,21));
 
 	this->draw_convex_hull(p);
 
