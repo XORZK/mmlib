@@ -22,6 +22,7 @@
 - [x] Bezier Curves 
 - [x] Bezier Curves (Extra Functions => Translation, Rotation...) => Move from vec2 to vec3 
 - [x] Convex Hull for Polygon? 
+	- Works for 2D and 3D
 
 ## TODO
 High Priority:

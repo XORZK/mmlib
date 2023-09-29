@@ -414,7 +414,7 @@ template <typename T> int64_t binary_search(list<T> l, T value) {
 
 
 // Assumes input list is ordered.
-template <typename T> list<T> remove_dupes(list<T> &l) {
+template <typename T> list<T> remove_consec_dupes(list<T> &l) {
 	list<T> set;
 
 	linked_node<T> *curr = l.front();
@@ -422,6 +422,23 @@ template <typename T> list<T> remove_dupes(list<T> &l) {
 	for (int64_t k = 0; k < l.size(); k++) {
 		if (set.size() == 0 || set.back()->value() != curr->value())
 			set.push_back(curr->value());
+
+		curr = curr->next();
+	}
+
+	return set;
+}
+
+template <typename T> list<T> remove_dupes(list<T> &l) {
+	list<T> set;
+
+	linked_node<T> *curr = l.front();
+
+	for (int64_t k = 0; k < l.size(); k++) {
+		int64_t idx = set.index(curr->value());
+		if (set.size() == 0 || idx == -1) {
+			set.push_back(curr->value());
+		}
 
 		curr = curr->next();
 	}

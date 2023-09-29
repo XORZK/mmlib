@@ -11,7 +11,16 @@ namespace compare {
 		return (v1.value() < v2.value());
 	}
 
+	inline bool polar(pair<vec3<double>, double> v1, 
+					  pair<vec3<double>, double> v2) {
+		return (v1.value() < v2.value());
+	}
+
 	inline bool x(vec2<double> v1, vec2<double> v2) {
+		return (v1.x() == v2.x() ? v1.y() < v2.y() : v1.x() < v2.x());
+	}
+
+	inline bool x(vec3<double> v1, vec3<double> v2) {
 		return (v1.x() == v2.x() ? v1.y() < v2.y() : v1.x() < v2.x());
 	}
 

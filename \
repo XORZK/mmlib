@@ -1021,7 +1021,7 @@ void window::draw_convex_hull(list<vec3<double>> &points,
 	for (int64_t k = 0; k < N; k++) {
 		vec3<double> P = points[k];
 
-		this->draw_filled_circle(P, 0.25, norm);
+		this->draw_filled_circle(P, 0.5, norm);
 	}
 
 	for (int64_t k = 0; k < M; k += 3) {

@@ -31,6 +31,7 @@ color interpolate_color(color& c1,
 
 class window {
     private:
+		color *current_color = nullptr;
         camera *cam = nullptr;
 		mat4<double> *view_mat;
 

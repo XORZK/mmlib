@@ -2,6 +2,7 @@
 #define VEC_HPP
 
 #pragma once
+#include "list.hpp"
 #include "vector.hpp"
 
 #include <assert.h>
@@ -1113,6 +1114,31 @@ inline int64_t direction(const vec2<double> &a,
 	// 1 if left.
 	// -1 if right.
 	return (sc == 0 ? (c.y() > a.y() ? 1 : -1) : (fc > 0) == (sc > 0) ? 1 : -1);
+}
+
+inline int64_t direction(const vec3<double> &a,
+					     const vec3<double> &b,
+						 const vec3<double> &c,
+						 const vec3<double> &d) {
+	vec3<double> q = (b - a).cross(c-a);
+
+	int64_t D = (d - a) * q;
+
+	return (D > 0 ? 1 : D == 0 ? 0 : -1);
+}
+
+template <typename T> 
+inline T centroid(list<T> &l) {
+	T c = l[0];
+
+	linked_node<T> *node = l.front()->next();
+
+	for (int64_t k = 1; k < l.size(); k++) {
+		c += node->value();
+		node = node->next();
+	}
+
+	return c;
 }
 
 #endif

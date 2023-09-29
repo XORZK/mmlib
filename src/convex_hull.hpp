@@ -9,6 +9,28 @@
 #include "vec.hpp"
 #include "mat.hpp"
 
+inline list<vec3<double>> sort_ccw(list<vec3<double>> &points, 
+								   vec3<double> p0) {
+	list<vec3<double>> sorted = points - p0;
+
+	quicksort(sorted, compare::counter_clockwise);
+
+	sorted += p0;
+
+	return sorted;
+}
+
+inline list<vec3<double>> sort_cw(list<vec3<double>> &points,
+								  vec3<double> p0) {
+	list<vec3<double>> sorted = points - p0;
+
+	quicksort(sorted, compare::clockwise);
+
+	sorted += p0;
+
+	return sorted;
+}
+
 inline list<vec2<double>> sort_ccw(list<vec2<double>> &points, vec2<double> p0) {
 	list<vec2<double>> sorted = points - p0;
 
@@ -41,7 +63,7 @@ namespace convex_hull {
 
 		linked_node<vec2<double>> *current = points.front();
 
-		vec2 p0 = points[0];
+		vec2<double> p0 = points[0];
 
 		for (int64_t k = 0; k < N; k++) {
 			if (p0.y() > current->value().y())
@@ -62,7 +84,7 @@ namespace convex_hull {
 		linked_node<vec2<double>> *head = sorted.front();
 
 		for (int64_t k = 0; k < N; k++) {
-			vec2 P = head->value();
+			vec2<double> P = head->value();
 
 			linked_node<vec2<double>> *back = (stack.size() > 1 ? stack.back() : nullptr);
 
@@ -90,10 +112,10 @@ namespace convex_hull {
 		linked_node<vec2<double>> *node_a = points.front();
 
 		for (int64_t k = 0; k < N; k++) {
-			vec2 A = node_a->value();
+			vec2<double> A = node_a->value();
 			linked_node<vec2<double>> *node_b = node_a->next();
 			for (int64_t i = k+1; i < N; i++) {
-				vec2 B = node_b->value();
+				vec2<double> B = node_b->value();
 
 				bool valid_segment = true;
 				int64_t K = 0xFF;
@@ -102,7 +124,7 @@ namespace convex_hull {
 
 				for (int64_t j = 0; j < N; j++) {
 					if (j != k && j != i) {
-						vec2 C = node_c->value();
+						vec2<double> C = node_c->value();
 
 						int64_t D = direction(A, B, C);
 
@@ -130,7 +152,7 @@ namespace convex_hull {
 
 		quicksort(hull, &compare::x);
 
-		return remove_dupes(hull);
+		return remove_consec_dupes(hull);
 	}
 
 	// Assume A is sorted in a CW order from the right-most point, 
@@ -191,7 +213,7 @@ namespace convex_hull {
 		quicksort(L, &compare::x);
 		quicksort(R, &compare::x);
 
-		vec2 P = L.back()->value(), Q = R.front()->value();
+		vec2<double> P = L.back()->value(), Q = R.front()->value();
 
 		list<vec2<double>> A = sort_cw(L, P), B = sort_ccw(R, Q);
 
@@ -244,6 +266,66 @@ namespace convex_hull {
 						   right = convex_hull::divide_conquer(R);
 
 		return merge(left, right);
+	}
+
+	// O(n^4)
+	inline list<vec3<double>> brute_force(list<vec3<double>> &points) {
+		list<vec3<double>> hull;
+
+		int64_t N = points.size();
+
+		linked_node<vec3<double>> *node_a = points.front();
+
+		for (int64_t k = 0; k < N; k++) {
+			vec3<double> A = node_a->value();
+			linked_node<vec3<double>> *node_b = node_a->next();
+
+			for (int64_t i = k+1; i < N; i++) {
+				vec3<double> B = node_b->value();
+
+				linked_node<vec3<double>> *node_c = node_b->next();
+				for (int64_t j = i+1; j < N; j++) {
+					vec3<double> C = node_c->value();
+
+					bool valid_segment = true;
+					int64_t sign = 0xFF;
+
+					linked_node<vec3<double>> *node_d = points.front();
+
+					for (int64_t l = 0; l < N; l++) {
+						if (l != k && l != i && l != j) {
+							vec3<double> D = node_d->value();
+
+							int64_t E = direction(A, B, C, D);
+
+							if (sign == 0xFF) 
+								sign = E;
+
+							if (sign != E) {
+								valid_segment = false;
+								break;
+							}
+						}
+
+						node_d = node_d->next();
+					}
+
+					if (valid_segment) {
+						hull.push_back(A);
+						hull.push_back(B);
+						hull.push_back(C);
+					}
+
+					node_c = node_c->next();
+				}
+
+				node_b = node_b->next();
+			}
+
+			node_a = node_a->next();
+		}
+
+		return hull;
 	}
 };
 
