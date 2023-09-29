@@ -26,6 +26,10 @@
 
 ## TODO
 High Priority:
+- [ ] Depth Buffer
+- [ ] Shading
+	- Phong Shading
+	- Gouraud Shading
 - [ ] Forward Kinematics
     - Implement Limbs & Joints
 

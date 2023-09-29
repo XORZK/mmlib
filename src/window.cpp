@@ -55,8 +55,13 @@ void window::initialize_camera() {
 	view_mat = new mat4<double>(cam->camera_view());
 }
 
-void window::set_render_color(color c) {
-	this->current_color = new color(c);
+void window::initialize_light() {
+	this->l = new light();
+}
+
+void window::set_render_color(color c, bool cache) {
+	if (cache)
+		this->current_color = new color(c);
     SDL_SetRenderDrawColor(this->r, c.R(), c.G(), c.B(), c.A());
 }
 
@@ -115,11 +120,13 @@ list<vec2<double>> window::cartesian_to_screen_coords(const list<vec4<double>> &
 window::window() {
     initialize_window();
     initialize_camera();
+	initialize_light();
 }
 
 window::window(const int64_t W, const int64_t H) : width(W), height(H) {
     initialize_window();
     initialize_camera();
+	initialize_light();
 }
 
 window::window(const int64_t W, const int64_t H, const int64_t D) : width(W),
@@ -127,6 +134,7 @@ window::window(const int64_t W, const int64_t H, const int64_t D) : width(W),
                                                                     delay(D) {
     initialize_window();
     initialize_camera();
+	initialize_light();
 }
 
 window::~window() {
@@ -253,7 +261,7 @@ void window::draw_line(const vec4<double>& p1,
 
 // Bresenham's Circle Drawing Algorithm
 void window::draw_wireframe_circle(const vec2<double>& center,
-                                   const int64_t radius) {
+                                   const double radius) {
     int64_t D = 3 - (2 * radius);
     int64_t x = 0, y = radius;
 
@@ -288,14 +296,14 @@ void window::draw_wireframe_circle(const vec2<double>& center,
 }
 
 void window::draw_wireframe_circle(const vec3<double>& center,
-                                   const int64_t radius) {
+                                   const double radius) {
 	vec4<double> v4 = vec4(center, 1.0);
 
     this->draw_wireframe_circle(v4, radius);
 }
 
 void window::draw_wireframe_circle(const vec4<double>& center,
-                                   const int64_t radius) {
+                                   const double radius) {
 	vec4<double> tc = (*view_mat * center);
 
     if (ABS(tc.z()) <= DEFAULT_Z_THRESH) 
@@ -304,30 +312,30 @@ void window::draw_wireframe_circle(const vec4<double>& center,
 	if (tc.z() > 0)
 		return;
 
-	vec4<double> top = tc + vec4<double>(0.0, (double) radius, 0.0, 0.0);
+	vec4<double> top = tc + vec4<double>(0.0, radius, 0.0, 0.0);
 
     vec2<double> screen_center = cartesian_to_screen_coords(tc),
                  screen_top = cartesian_to_screen_coords(top);
 
-    this->draw_wireframe_circle(screen_center, (int64_t) (screen_top.y() - screen_center.y()));
+    this->draw_wireframe_circle(screen_center, (screen_top.y() - screen_center.y()));
 }
 
 void window::draw_wireframe_circle(const vec2<double>& center,
-                                   const int64_t radius,
+                                   const double radius,
                                    color& c) {
     this->set_render_color(c);
     this->draw_wireframe_circle(center, radius);
 }
 
 void window::draw_wireframe_circle(const vec3<double>& center,
-                                   const int64_t radius,
+                                   const double radius,
                                    color& c) {
     this->set_render_color(c);
     this->draw_wireframe_circle(center, radius);
 }
 
 void window::draw_wireframe_circle(const vec4<double>& center,
-                                   const int64_t radius,
+                                   const double radius,
                                    color& c) {
     this->set_render_color(c);
     this->draw_wireframe_circle(center, radius);
@@ -335,7 +343,7 @@ void window::draw_wireframe_circle(const vec4<double>& center,
 
 // Brensenham's Circle Drawing Algorithm (Again)
 void window::draw_filled_circle(const vec2<double>& center, 
-                                const int64_t radius) {
+                                const double radius) {
 
     int64_t D = 3 - (2 * radius);
     int64_t x = 0, y = radius;
@@ -367,14 +375,14 @@ void window::draw_filled_circle(const vec2<double>& center,
 }
 
 void window::draw_filled_circle(const vec3<double>& center,
-                                const int64_t radius) {
+                                const double radius) {
 	vec4<double> v4 = vec4(center, 1.0);
 
     this->draw_filled_circle(v4, radius);
 }
 
 void window::draw_filled_circle(const vec4<double>& center,
-                                const int64_t radius) {
+                                const double radius) {
 	vec4<double> tc = (*view_mat * center);
 
     if (ABS(tc.z()) <= DEFAULT_Z_THRESH)
@@ -383,30 +391,30 @@ void window::draw_filled_circle(const vec4<double>& center,
 	if (tc.z() > 0)
 		return;
 
-    vec4<double> top = tc + vec4<double>(0.0, (double) radius, 0.0, 0.0);
+    vec4<double> top = tc + vec4<double>(0.0, radius, 0.0, 0.0);
 
     vec2<double> screen_center = cartesian_to_screen_coords(tc),
                  screen_top = cartesian_to_screen_coords(top);
 
-    this->draw_wireframe_circle(screen_center, (int64_t) (screen_top.y() - screen_center.y()));
+    this->draw_wireframe_circle(screen_center, (screen_top.y() - screen_center.y()));
 }
 
 void window::draw_filled_circle(const vec2<double>& center,
-                                const int64_t radius,
+                                const double radius,
                                 color& c) { 
     this->set_render_color(c);
     this->draw_filled_circle(center, radius);
 }
 
 void window::draw_filled_circle(const vec3<double>& center,
-                                const int64_t radius,
+                                const double radius,
                                 color& c) { 
     this->set_render_color(c);
     this->draw_filled_circle(center, radius);
 }
 
 void window::draw_filled_circle(const vec4<double>& center,
-                                const int64_t radius,
+                                const double radius,
                                 color& c) { 
     this->set_render_color(c);
     this->draw_filled_circle(center, radius);
@@ -588,13 +596,49 @@ void window::draw_filled_triangle(const triangle& T,
     this->draw_filled_triangle(T);
 }
 
+void window::draw_shaded_triangle(vec3<double> v1,
+								  vec3<double> v2,
+								  vec3<double> v3) {
+	color c = *(this->current_color);
+	this->draw_shaded_triangle(v1, v2, v3, c);
+}
+
+void window::draw_shaded_triangle(vec3<double> v1,
+								  vec3<double> v2,
+								  vec3<double> v3,
+								  color &c) {
+	if (compare::counter_clockwise(v1, v2)) 
+		std::swap(v1, v2);
+
+	if (compare::counter_clockwise(v1, v3))
+		std::swap(v1, v3);
+
+	if (compare::counter_clockwise(v2, v3))
+		std::swap(v2, v3);
+
+	vec3 N = ((v2 - v1).cross(v3 - v1)).normalize();
+
+	color diffuse = light::diffuse(l->norm_pos(), N, c);
+
+	this->set_render_color(diffuse, false);
+	this->draw_filled_triangle(v1, v2, v3);
+}
+
+void window::draw_shaded_triangle(const triangle& T) {
+	this->draw_shaded_triangle(T.v1(), T.v2(), T.v3());
+}
+
+void window::draw_shaded_triangle(const triangle& T,
+								  color &c) {
+	this->draw_shaded_triangle(T.v1(), T.v2(), T.v3(), c);
+}
+
 void window::draw_wireframe_rectangle(const vec2<double> &top_left,
 									  const double length,
 									  const double width) {
 	// v1: top_left + (length, 0)
 	// v2: top_left + (0, width)
 	// v3: top_left + (length, width)
-
 	vec2<double> v1 = top_left + vec2(length, 0.0),
 				 v2 = top_left + vec2(0.0, width),
 				 v3 = top_left + vec2(length, width);
@@ -1014,44 +1058,37 @@ void window::draw_convex_hull(list<vec2<double>> &points,
 void window::draw_convex_hull(list<vec3<double>> &points,
 							  color norm,
 							  color highlight) {
-	list<vec3<double>> hull = convex_hull::brute_force(points);
+	list<triangle> hull = convex_hull::brute_force(points);
 
-	int64_t N = points.size(), M = hull.size();
+	quicksort(hull, &compare::tz);
 
-	for (int64_t k = 0; k < N; k++) {
-		vec3<double> P = points[k];
+	int64_t M = hull.size();
 
-		this->draw_filled_circle(P, 0.25, norm);
-	}
+	linked_node<triangle> *node = hull.front();
 
-	for (int64_t k = 0; k < M; k += 3) {
-		vec3<double> p0 = hull[k],
-					 p1 = hull[mod(k+1, M)],
-					 p2 = hull[mod(k+2, M)];
+	for (int64_t k = 0; k < M; k++) {
+		this->draw_shaded_triangle(node->value(), highlight);
 
-		this->draw_wireframe_triangle(p0, p1, p2, highlight);
+		node = node->next();
 	}
 }
 
 void window::draw() {
 	this->fill_background(color::BLACK());
 
-	color B = color::BLUE(), R = color::RED();
+	mat3<double> mat = create_3d_rotation_matrix(0.0, global_time, 15.0);
 
-	list<vec3<double>> points;
+	color R = color::RED(), B = color::BLUE();
 
-	// [vec3: <6,1,-10>][vec3: <4,0,-12>][vec3: <2,2,-11>][vec3: <2,3,-12>][vec3: <4,2,-12>][vec3: <1,4,-10>][vec3: <0,8,-10>][vec3: <8,8,-12>][vec3: <2,5,-11>][vec3: <4,7,-12>]
-	
-	points.push_back(vec3(6, 1, -10));
-	points.push_back(vec3(4, 0, -12));
-	points.push_back(vec3(2, 2, -11));
-	points.push_back(vec3(2, 3, -12));
-	points.push_back(vec3(4, 2, -12));
-	points.push_back(vec3(1, 4, -10));
-	points.push_back(vec3(0, 8, -10));
-	points.push_back(vec3(8, 8, -12));
-	points.push_back(vec3(2, 5, -11));
-	points.push_back(vec3(4, 7, -12));
+	list<vec3<double>> golden = polygon::golden_icosahedron(), points;
+
+	linked_node<vec3<double>> *node = golden.front();
+
+	for (int64_t k = 0; k < golden.size(); k++) {
+		vec3 P = node->value();
+		points.push_back(mat * P);
+		node = node->next();
+	}
 
 	this->draw_convex_hull(points);
 

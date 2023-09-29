@@ -2,6 +2,7 @@
 #define COMPARE_HPP
 
 #pragma once
+#include "triangle.hpp"
 #include "pair.hpp"
 #include "vec.hpp"
 
@@ -21,11 +22,24 @@ namespace compare {
 	}
 
 	inline bool x(vec3<double> v1, vec3<double> v2) {
-		return (v1.x() == v2.x() ? v1.y() < v2.y() : v1.x() < v2.x());
+		return (v1.x() < v2.x());
 	}
 
 	inline bool y(vec2<double> v1, vec2<double> v2) {
-		return (v1.y() == v2.y() ? v1.x() < v2.x() : v1.y() < v2.y());
+		return (v1.y() < v2.y());
+	}
+
+	inline bool y(vec3<double> v1, vec3<double> v2) {
+		return (v1.y() < v2.y());
+	}
+
+	inline bool z(vec3<double> v1, vec3<double> v2) {
+		return (v1.z() < v2.z());
+	}
+
+	inline bool tz(triangle a, triangle b) {
+		return (MIN(MIN(a.v1().z(), a.v2().z()), a.v3().z())) < 
+			   (MIN(MIN(b.v1().z(), b.v2().z()), b.v3().z()));
 	}
 
 	inline bool clockwise(vec3<double> a,

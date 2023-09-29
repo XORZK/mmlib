@@ -44,6 +44,11 @@ class polygon {
         list<triangle>& triangulated();
 
         int64_t vertex_count() const;
+
+		static list<vec3<double>> golden_icosahedron();
+
+		static list<vec3<double>> icosahedron(double length);
 };
+
 
 #endif

@@ -5,6 +5,7 @@
 #include "compare.hpp"
 #include "pair.hpp"
 #include "list.hpp"
+#include "triangle.hpp"
 
 #include "vec.hpp"
 #include "mat.hpp"
@@ -269,7 +270,7 @@ namespace convex_hull {
 	}
 
 	// O(n^4)
-	inline list<vec3<double>> brute_force(list<vec3<double>> &points) {
+	inline list<triangle> brute_force(list<vec3<double>> &points) {
 		list<vec3<double>> hull;
 
 		int64_t N = points.size();
@@ -293,12 +294,13 @@ namespace convex_hull {
 					linked_node<vec3<double>> *node_d = points.front();
 
 					for (int64_t l = 0; l < N; l++) {
-						if (l != k && l != i && l != j) {
+						if ((l != k && l != i && l != j) && 
+							(A != B && A != C && B != C)) {
 							vec3<double> D = node_d->value();
 
 							int64_t E = direction(A, B, C, D);
 
-							if (sign == 0xFF) 
+							if (sign == 0xFF || sign == 0) 
 								sign = E;
 
 							if (sign != E) {
@@ -325,7 +327,26 @@ namespace convex_hull {
 			node_a = node_a->next();
 		}
 
-		return hull;
+		list<triangle> triangles;
+
+		linked_node<vec3<double>> *node = hull.front();
+
+		for (int64_t k = 0 ; k < hull.size(); k += 3) {
+			linked_node<vec3<double>> *n = node->next(),
+									  *nn = n->next();
+
+			vec3<double> p0 = node->value(),
+						 p1 = n->value(),
+						 p2 = nn->value();
+
+			triangle T = triangle(p0, p1, p2);
+
+			triangles.push_back(T);
+
+			node = nn->next();
+		}
+
+		return triangles;
 	}
 };
 

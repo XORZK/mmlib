@@ -2,7 +2,6 @@
 #define TRIANGLE_HPP
 
 #pragma once
-#include "compare.hpp"
 #include "list.hpp"
 #include "vec.hpp"
 #include "mat.hpp"

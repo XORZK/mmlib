@@ -108,3 +108,40 @@ list<triangle>& polygon::triangulated() {
 int64_t polygon::vertex_count() const {
     return this->size;
 }
+
+list<vec3<double>> polygon::golden_icosahedron() {
+	list<vec3<double>> points;
+
+	double golden = (1.0 + sqrt(5.0))/2.0;
+
+	points.push_back(vec3(0.0, 1.0, golden));
+	points.push_back(vec3(0.0, 1.0, -golden));
+	points.push_back(vec3(0.0, -1.0, golden));
+	points.push_back(vec3(0.0, -1.0, -golden));
+	points.push_back(vec3(1.0, golden, 0.0));
+	points.push_back(vec3(1.0, -golden, 0.0));
+	points.push_back(vec3(-1.0, golden, 0.0));
+	points.push_back(vec3(-1.0, -golden, 0.0));
+	points.push_back(vec3(golden, 0.0, 1.0));
+	points.push_back(vec3(-golden, 0.0, 1.0));
+	points.push_back(vec3(golden, 0.0, -1.0));
+	points.push_back(vec3(-golden, 0.0, -1.0));
+
+	return points;
+}
+
+list<vec3<double>> polygon::icosahedron(double length) {
+	assert((length != 0, "Length of an icosahedron cannot be 0."));
+
+	list<vec3<double>> golden = golden_icosahedron(),
+					   points;
+
+	linked_node<vec3<double>> *node = golden.front();
+
+	for (int64_t k = 0; k < golden.size(); k++) {
+		points.push_back(node->value() * length);
+		node = node->next();
+	}
+
+	return points;
+}

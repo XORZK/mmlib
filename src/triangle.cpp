@@ -1,4 +1,5 @@
 #include "triangle.hpp"
+#include "compare.hpp"
 
 triangle::triangle() {
     A = new vec3<double>(-1.0, 0.0, 1.0);

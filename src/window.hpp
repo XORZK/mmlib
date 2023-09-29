@@ -6,9 +6,10 @@
 #include "camera.hpp"
 #include "color.hpp"
 #include "convex_hull.hpp"
+#include "light.hpp"
+#include "mat.hpp"
 #include "polygon.hpp"
 #include "triangle.hpp"
-#include "mat.hpp"
 #include "vec.hpp"
 
 #include <SDL2/SDL.h>
@@ -31,7 +32,7 @@ color interpolate_color(color& c1,
 
 class window {
     private:
-		color *current_color = nullptr;
+		light *l = nullptr;
         camera *cam = nullptr;
 		mat4<double> *view_mat;
 
@@ -42,6 +43,7 @@ class window {
 				delay = RENDERER_DELAY;
 
         int64_t global_time = 0;
+		color *current_color = nullptr;
 
         SDL_Window *w;
         SDL_Renderer *r;
@@ -51,7 +53,10 @@ class window {
 
         void initialize_camera();
 
-        void set_render_color(color c);
+		void initialize_light();
+
+        void set_render_color(color c,
+						 	  bool cache = true);
 
         vec2<double> ndc_to_screen_coords(const vec4<double>& ndc_vert) const;
 
@@ -114,45 +119,45 @@ class window {
                        color& c);
 
         void draw_wireframe_circle(const vec2<double>& center, 
-                                   const int64_t radius);
+                                   const double radius);
 
         void draw_wireframe_circle(const vec3<double>& center,
-                                   const int64_t radius);
+                                   const double radius);
 
         void draw_wireframe_circle(const vec4<double>& center,
-                                   const int64_t radius);
+                                   const double radius);
 
         void draw_wireframe_circle(const vec2<double>& center, 
-                                   const int64_t radius, 
+                                   const double radius, 
                                    color& c);
 
         void draw_wireframe_circle(const vec4<double>& center,
-                                   const int64_t radius,
+                                   const double radius,
                                    color& c);
 
         void draw_wireframe_circle(const vec3<double>& center,
-                                   const int64_t radius,
+                                   const double radius,
                                    color& c);
 
         void draw_filled_circle(const vec2<double>& center, 
-                                const int64_t radius);
+                                const double radius);
 
         void draw_filled_circle(const vec3<double>& center,
-                                const int64_t radius);
+                                const double radius);
 
         void draw_filled_circle(const vec4<double>& center,
-                                const int64_t radius);
+                                const double radius);
 
         void draw_filled_circle(const vec2<double>& center, 
-                                const int64_t radius, 
+                                const double radius, 
                                 color& c);
 
         void draw_filled_circle(const vec3<double>& center,
-                                const int64_t radius,
+                                const double radius,
                                 color& c);
 
         void draw_filled_circle(const vec4<double>& center,
-                                const int64_t radius,
+                                const double radius,
                                 color& c);
 
         void draw_wireframe_triangle(const vec2<double>& v1,
@@ -217,6 +222,20 @@ class window {
                                   color& c);
 
         void draw_filled_triangle(const triangle& T, 
+                                  color& c);
+
+		void draw_shaded_triangle(vec3<double> v1,
+								  vec3<double> v2,
+								  vec3<double> v3);
+
+		void draw_shaded_triangle(vec3<double> v1,
+								  vec3<double> v2,
+								  vec3<double> v3, 
+								  color &c);
+
+        void draw_shaded_triangle(const triangle& T);
+
+        void draw_shaded_triangle(const triangle& T, 
                                   color& c);
 
 		void draw_wireframe_rectangle(const vec2<double> &top_left,
