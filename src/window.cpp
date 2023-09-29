@@ -514,12 +514,19 @@ void window::draw_filled_triangle(vec2<double>& v1,
 
     double bounds = v2.y();
 
+	double min = MIN(MIN(v1.x(), v2.x()), v3.x()),
+		   max = MAX(MAX(v1.x(), v2.x()), v3.x());
+
     for (int64_t y = v1.y(); y <= v3.y(); y++) {
         double x1 = (y <= bounds ? 
                      interp<double>(v1.x(), v1.y(), v2.x(), v2.y(), y) : 
                      interp<double>(v2.x(), v2.y(), v3.x(), v3.y(), y));
 
         double x2 = interp<double>(v1.x(), v1.y(), v3.x(), v3.y(), y);
+
+		if (x1 > max || x2 > max || x1 < min || x2 < min) {
+			continue;
+		}
 
 		vec2<double> p1 = vec2<double>(x1, y),
 					 p2 = vec2<double>(x2, y);
@@ -1060,6 +1067,7 @@ void window::draw_convex_hull(list<vec3<double>> &points,
 							  color highlight) {
 	list<triangle> hull = convex_hull::brute_force(points);
 
+	// Very temporary z-buffer hack.
 	quicksort(hull, &compare::tz);
 
 	int64_t M = hull.size();
@@ -1076,7 +1084,7 @@ void window::draw_convex_hull(list<vec3<double>> &points,
 void window::draw() {
 	this->fill_background(color::BLACK());
 
-	mat3<double> mat = create_3d_rotation_matrix(0.0, global_time, 15.0);
+	mat3<double> mat = create_3d_rotation_matrix(global_time, global_time, 0.0);
 
 	color R = color::RED(), B = color::BLUE();
 

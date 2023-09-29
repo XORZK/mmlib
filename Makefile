@@ -1,5 +1,5 @@
 OUT=heron
-IN=src/polygon.cpp src/window.cpp src/camera.cpp src/color.cpp src/triangle.cpp src/light.cpp test.cpp 
+IN=src/polygon.cpp src/window.cpp src/camera.cpp src/color.cpp src/triangle.cpp src/light.cpp test.cpp
 LIB=-lSDL2
 
 default:

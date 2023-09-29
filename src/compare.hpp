@@ -37,6 +37,16 @@ namespace compare {
 		return (v1.z() < v2.z());
 	}
 
+	inline bool tx(triangle a, triangle b) {
+		return (MIN(MIN(a.v1().x(), a.v2().x()), a.v3().x())) < 
+			   (MIN(MIN(b.v1().x(), b.v2().x()), b.v3().x()));
+	}
+
+	inline bool ty(triangle a, triangle b) {
+		return (MIN(MIN(a.v1().y(), a.v2().y()), a.v3().y())) < 
+			   (MIN(MIN(b.v1().y(), b.v2().y()), b.v3().y()));
+	}
+
 	inline bool tz(triangle a, triangle b) {
 		return (MIN(MIN(a.v1().z(), a.v2().z()), a.v3().z())) < 
 			   (MIN(MIN(b.v1().z(), b.v2().z()), b.v3().z()));
