@@ -8,6 +8,7 @@
 #include "convex_hull.hpp"
 #include "light.hpp"
 #include "mat.hpp"
+#include "mesh.hpp"
 #include "polygon.hpp"
 #include "triangle.hpp"
 #include "vec.hpp"
@@ -375,9 +376,15 @@ class window {
 							  color norm = color::BLUE(),
 							  color highlight = color::RED());
 
+		void draw_convex_hull(list<vec3<double>> &points);
+
 		void draw_convex_hull(list<vec3<double>> &points,
-							  color norm = color::BLUE(),
-							  color highlight = color::RED());
+							  color &c);
+
+		void draw_mesh(mesh &m);
+
+		void draw_mesh(mesh &m,
+					   color &c);
 
         void run();
         

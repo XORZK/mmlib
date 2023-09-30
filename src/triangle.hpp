@@ -37,7 +37,7 @@ class triangle {
 
 		vec3<double> mid() const;
 
-		vec3<double> norm() const;
+		vec3<double> normal() const;
 
         double area() const;
 
@@ -58,6 +58,8 @@ class triangle {
         void translate(const vec3<double> v);
 
         void transform(mat3<double>& M);
+
+		void sort_ccw();
 };
 
 std::ostream& operator<<(std::ostream& out, const triangle& t);

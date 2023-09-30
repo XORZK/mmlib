@@ -147,7 +147,7 @@ namespace convex_hull {
 
 				node_b = node_b->next();
 			}
-
+			
 			node_a = node_a->next();
 		}
 

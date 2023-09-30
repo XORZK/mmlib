@@ -2,6 +2,7 @@
 #define LIGHT_HPP
 
 #pragma once
+#include <assert.h>
 #include "color.hpp"
 #include "vec.hpp"
 

@@ -36,8 +36,10 @@ color light::diffuse(const vec3<double> &L,
 color light::diffuse(const vec4<double> &L, 
 					 const vec4<double> &N,
 					 color &c) {
-	vec3 v1 = vec3(L.x(), L.y(), L.z()),
-		 v2 = vec3(N.x(), N.y(), N.z());
+	assert(("Math Error: Division by Zero", N.w() != 0.0 && L.w() != 0.0));
+
+	vec3 v1 = vec3(L.x() / L.w(), L.y() / L.w(), L.z() / L.w()),
+		 v2 = vec3(N.x() / N.w(), N.y() / N.w(), N.z() / N.w());
 
 	return light::diffuse(v1, v2, c);
 }

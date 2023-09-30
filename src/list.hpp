@@ -24,7 +24,8 @@ template <typename T> class list {
         }
 		list(const list<T> &l);
 
-        ~list() {}
+        ~list() {
+		}
 
         void push_front(linked_node<T>* node);
         void push_front(T value);
@@ -72,7 +73,8 @@ template <typename T> list<T>::list(const list<T> &l) {
 	linked_node<T> *curr = l.front();
 
 	for (int64_t k = 0; k < l.size(); k++) {
-		this->push_back(curr->value());
+		T copy = curr->value();
+		this->push_back(copy);
 		curr = curr->next();
 	}
 }

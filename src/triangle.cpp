@@ -5,6 +5,7 @@ triangle::triangle() {
     A = new vec3<double>(-1.0, 0.0, 1.0);
     B = new vec3<double>(0.0, 1.0, 1.0);
     C = new vec3<double>(1.0, 0.0, 1.0);
+	this->sort_ccw();
 }
 
 triangle::triangle(vec3<double> v1, 
@@ -13,12 +14,14 @@ triangle::triangle(vec3<double> v1,
 	A = new vec3<double>(v1);
 	B = new vec3<double>(v2);
 	C = new vec3<double>(v3);
+	this->sort_ccw();
 }
 
 triangle::triangle(const triangle& copy) {
     A = new vec3(copy.v1());
     B = new vec3(copy.v2());
     C = new vec3(copy.v3());
+	this->sort_ccw();
 }
 
 vec3<double> triangle::v1() const {
@@ -35,22 +38,25 @@ vec3<double> triangle::v3() const {
 
 void triangle::v1(vec3<double> vertex) {
     A = new vec3<double>(vertex);
+	this->sort_ccw();
 }
 
 void triangle::v2(vec3<double> vertex) {
     B = new vec3<double>(vertex);
+	this->sort_ccw();
 }
 
 void triangle::v3(vec3<double> vertex) {
     C = new vec3<double>(vertex);
+	this->sort_ccw();
 }
 
 vec3<double> triangle::mid() const {
 	return (*A + *B + *C) / 3.0;
 }
 
-vec3<double> triangle::norm() const {
-	return (*A - *B).cross(*C - *B).normalize();
+vec3<double> triangle::normal() const {
+	return (*A - *B).cross(*C - *B);
 }
 
 double triangle::area() const {
@@ -96,12 +102,28 @@ void triangle::translate(const vec3<double> v) {
     *A += v;
     *B += v;
     *C += v;
+	this->sort_ccw();
 }
 
 void triangle::transform(mat3<double>& M) {
     *A = M * (*A);
     *B = M * (*B);
     *C = M * (*C);
+	this->sort_ccw();
+}
+
+void triangle::sort_ccw() {
+	if (compare::counter_clockwise((*A), (*B))) {
+		std::swap(A, B);
+	} 
+
+	if (compare::counter_clockwise((*A), (*C))) {
+		std::swap(A, C);
+	}
+
+	if (compare::counter_clockwise((*B), (*C))) {
+		std::swap(B, C);
+	}
 }
 
 std::ostream& operator<<(std::ostream& out, const triangle& t) {

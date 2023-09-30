@@ -1062,9 +1062,7 @@ void window::draw_convex_hull(list<vec2<double>> &points,
 	}
 }
 
-void window::draw_convex_hull(list<vec3<double>> &points,
-							  color norm,
-							  color highlight) {
+void window::draw_convex_hull(list<vec3<double>> &points) {
 	list<triangle> hull = convex_hull::brute_force(points);
 
 	// Very temporary z-buffer hack.
@@ -1075,30 +1073,58 @@ void window::draw_convex_hull(list<vec3<double>> &points,
 	linked_node<triangle> *node = hull.front();
 
 	for (int64_t k = 0; k < M; k++) {
-		this->flat_shaded_triangle(node->value(), highlight);
+		this->flat_shaded_triangle(node->value());
 
 		node = node->next();
 	}
 }
 
+void window::draw_convex_hull(list<vec3<double>> &points,
+							  color &c) {
+	this->set_render_color(c);
+	this->draw_convex_hull(points);
+}
+
+// Assume mesh has pre-computed normals.
+void window::draw_mesh(mesh &m) {
+	list<triangle> faces = m.faces();
+
+	quicksort(faces, &compare::tz);
+
+	linked_node<triangle> *face_node = faces.front();
+
+	color c = *(this->current_color);
+
+	for (int64_t k = 0; k < m.face_count(); k++) {
+		triangle T = face_node->value();
+		vec3<double> N = T.normal(),
+					 v1 = T.v1(),
+					 v2 = T.v2(),
+					 v3 = T.v3();
+
+		color diffuse = light::diffuse(l->norm_pos(), N, c);
+
+		this->set_render_color(diffuse, false);
+		this->draw_filled_triangle(v1, v2, v3);
+
+		face_node = face_node->next();
+	}
+}
+
+void window::draw_mesh(mesh &m, 
+					   color &c) {
+	this->set_render_color(c);
+	this->draw_mesh(m);
+}
+
 void window::draw() {
 	this->fill_background(color::BLACK());
 
-	mat3<double> mat = create_3d_rotation_matrix(global_time, global_time, 0.0);
-
 	color R = color::RED(), B = color::BLUE();
 
-	list<vec3<double>> golden = polygon::golden_icosahedron(), points;
+	mesh m = mesh::parse_obj("obj/isohedron.obj");
 
-	linked_node<vec3<double>> *node = golden.front();
-
-	for (int64_t k = 0; k < golden.size(); k++) {
-		vec3 P = node->value();
-		points.push_back(mat * P);
-		node = node->next();
-	}
-
-	this->draw_convex_hull(points);
+	this->draw_mesh(m, R);
 
 	SDL_RenderPresent(this->r);
 	SDL_Delay(this->delay);

@@ -10,8 +10,6 @@
 #include <stdint.h>
 
 template <typename T> class vector {
-    static_assert(std::is_arithmetic<T>::value, 
-                  "vector<T> must hold arithmetic types.");
     private:
         int64_t vec_size, vec_capacity;
         T* data;
@@ -29,6 +27,8 @@ template <typename T> class vector {
         vector(T* dat, int64_t dat_size);
 
         vector(const vector<T>& v2);
+
+		~vector() {}
 
         void fill(T value); 
 

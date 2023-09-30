@@ -33,7 +33,10 @@ High Priority:
 - [ ] Forward Kinematics
     - Implement Limbs & Joints
 - [ ] Minimize O(n) indexing for linked lists
+- [ ] OBJ File Parsing
 
 Low Priority:
 - [ ] Rewrite using Smart Pointers
 - [ ] Write (some) Documentation (~10 hrs)
+- [ ] Fix function names
+- [ ] Free pointers
