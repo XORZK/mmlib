@@ -45,6 +45,14 @@ void triangle::v3(vec3<double> vertex) {
     C = new vec3<double>(vertex);
 }
 
+vec3<double> triangle::mid() const {
+	return (*A + *B + *C) / 3.0;
+}
+
+vec3<double> triangle::norm() const {
+	return (*A - *B).cross(*C - *B).normalize();
+}
+
 double triangle::area() const {
     return 0.5 * (((*B)-(*A)).cross((*C)-(*A)).magnitude());
 }

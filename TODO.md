@@ -32,7 +32,8 @@ High Priority:
 	- Gouraud Shading
 - [ ] Forward Kinematics
     - Implement Limbs & Joints
+- [ ] Minimize O(n) indexing for linked lists
 
 Low Priority:
 - [ ] Rewrite using Smart Pointers
-- [ ] Write (some) Documentation (~3 hrs)
+- [ ] Write (some) Documentation (~10 hrs)

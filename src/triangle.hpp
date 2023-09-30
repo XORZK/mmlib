@@ -35,6 +35,10 @@ class triangle {
 
         void v3(vec3<double> vertex);
 
+		vec3<double> mid() const;
+
+		vec3<double> norm() const;
+
         double area() const;
 
         double perimeter() const;

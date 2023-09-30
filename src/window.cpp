@@ -603,14 +603,14 @@ void window::draw_filled_triangle(const triangle& T,
     this->draw_filled_triangle(T);
 }
 
-void window::draw_shaded_triangle(vec3<double> v1,
+void window::flat_shaded_triangle(vec3<double> v1,
 								  vec3<double> v2,
 								  vec3<double> v3) {
 	color c = *(this->current_color);
-	this->draw_shaded_triangle(v1, v2, v3, c);
+	this->flat_shaded_triangle(v1, v2, v3, c);
 }
 
-void window::draw_shaded_triangle(vec3<double> v1,
+void window::flat_shaded_triangle(vec3<double> v1,
 								  vec3<double> v2,
 								  vec3<double> v3,
 								  color &c) {
@@ -631,13 +631,13 @@ void window::draw_shaded_triangle(vec3<double> v1,
 	this->draw_filled_triangle(v1, v2, v3);
 }
 
-void window::draw_shaded_triangle(const triangle& T) {
-	this->draw_shaded_triangle(T.v1(), T.v2(), T.v3());
+void window::flat_shaded_triangle(const triangle& T) {
+	this->flat_shaded_triangle(T.v1(), T.v2(), T.v3());
 }
 
-void window::draw_shaded_triangle(const triangle& T,
+void window::flat_shaded_triangle(const triangle& T,
 								  color &c) {
-	this->draw_shaded_triangle(T.v1(), T.v2(), T.v3(), c);
+	this->flat_shaded_triangle(T.v1(), T.v2(), T.v3(), c);
 }
 
 void window::draw_wireframe_rectangle(const vec2<double> &top_left,
@@ -870,8 +870,7 @@ void window::run() {
                 }
             }
 
-
-			if (event.type == SDL_MOUSEWHEEL) {
+			if (event.type == SDL_MOUSEWHEEL) { 
 				// inwards zoom
 				vec3<double> tv = vec3<double>(0, 0, (event.wheel.y > 0 ? -CAMERA_SPEED : event.wheel.y < 0 ? CAMERA_SPEED : 0));
 				cam->translate(tv);
@@ -879,10 +878,11 @@ void window::run() {
 			}
         }
 
-        if (!paused && modified) {
-            this->draw();
-            ++this->global_time;
-        }
+		if (!paused) {
+			++this->global_time;
+		}
+
+        this->draw();
     }
 }
 
@@ -1075,7 +1075,7 @@ void window::draw_convex_hull(list<vec3<double>> &points,
 	linked_node<triangle> *node = hull.front();
 
 	for (int64_t k = 0; k < M; k++) {
-		this->draw_shaded_triangle(node->value(), highlight);
+		this->flat_shaded_triangle(node->value(), highlight);
 
 		node = node->next();
 	}

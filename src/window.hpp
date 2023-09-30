@@ -224,18 +224,18 @@ class window {
         void draw_filled_triangle(const triangle& T, 
                                   color& c);
 
-		void draw_shaded_triangle(vec3<double> v1,
+		void flat_shaded_triangle(vec3<double> v1,
 								  vec3<double> v2,
 								  vec3<double> v3);
 
-		void draw_shaded_triangle(vec3<double> v1,
+		void flat_shaded_triangle(vec3<double> v1,
 								  vec3<double> v2,
 								  vec3<double> v3, 
 								  color &c);
 
-        void draw_shaded_triangle(const triangle& T);
+        void flat_shaded_triangle(const triangle& T);
 
-        void draw_shaded_triangle(const triangle& T, 
+        void flat_shaded_triangle(const triangle& T, 
                                   color& c);
 
 		void draw_wireframe_rectangle(const vec2<double> &top_left,
