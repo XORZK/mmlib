@@ -75,6 +75,8 @@ class window {
 
         ~window();
 
+		int64_t time() const;
+
         bool has_quit() const;
 
         bool is_initialized() const;
@@ -381,14 +383,13 @@ class window {
 		void draw_convex_hull(list<vec3<double>> &points,
 							  color &c);
 
-		void draw_mesh(mesh &m);
+		void draw_mesh(mesh *m);
 
-		void draw_mesh(mesh &m,
-					   color &c);
+		void draw_mesh(mesh *m, color &c);
 
-        void run();
-        
-        void draw(); 
+        void tick();
+
+		void present();
 };
 
 #endif

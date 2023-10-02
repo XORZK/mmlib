@@ -150,6 +150,10 @@ window::~window() {
     SDL_Quit();
 }
 
+int64_t window::time() const {
+	return this->global_time;
+}
+
 bool window::has_quit() const {
     return quit;
 }
@@ -842,48 +846,49 @@ void window::draw_filled_square(const vec4<double> &top_left,
 	this->draw_filled_square(top_left, size);
 }
 
-void window::run() {
-    while (!quit) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT)
-                quit = true;
+void window::tick() {
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT)
+			quit = true;
 
-            if (event.type == SDL_KEYDOWN) {
-				int64_t k = event.key.keysym.sym;
+		if (event.type == SDL_KEYDOWN) {
+			int64_t k = event.key.keysym.sym;
 
-				if (k >= 1073741903 && k <= 1073741906) {
-					int64_t N = k - 1073741903;
-					bool M = ((N+1) % 2);
-					vec3<double> tv = vec3<double>((N%2 == N) ? (M ? -1 : 1) : 0, (N%2 == N) ? 0 : (M ? -1 : 1), 0);
+			if (k >= 1073741903 && k <= 1073741906) {
+				int64_t N = k - 1073741903;
+				bool M = ((N+1) % 2);
+				vec3<double> tv = vec3<double>((N%2 == N) ? (M ? -1 : 1) : 0, (N%2 == N) ? 0 : (M ? -1 : 1), 0);
 
-					tv *= CAMERA_SPEED;
-					cam->translate(tv);
-					view_mat = new mat4<double>(cam->camera_view());
-				}
-
-                switch (k) {
-                    case (SDLK_SPACE): 
-                        paused = 1-paused;
-                        break;
-                    default: 
-                        break; 
-                }
-            }
-
-			if (event.type == SDL_MOUSEWHEEL) { 
-				// inwards zoom
-				vec3<double> tv = vec3<double>(0, 0, (event.wheel.y > 0 ? -CAMERA_SPEED : event.wheel.y < 0 ? CAMERA_SPEED : 0));
+				tv *= CAMERA_SPEED;
 				cam->translate(tv);
 				view_mat = new mat4<double>(cam->camera_view());
 			}
-        }
 
-		if (!paused) {
-			++this->global_time;
+			switch (k) {
+				case (SDLK_SPACE): 
+					paused = 1-paused;
+					break;
+				default: 
+					break; 
+			}
 		}
 
-        this->draw();
-    }
+		if (event.type == SDL_MOUSEWHEEL) { 
+			// inwards zoom
+			vec3<double> tv = vec3<double>(0, 0, (event.wheel.y > 0 ? -CAMERA_SPEED : event.wheel.y < 0 ? CAMERA_SPEED : 0));
+			cam->translate(tv);
+			view_mat = new mat4<double>(cam->camera_view());
+		}
+	}
+
+	if (!paused) {
+		++this->global_time;
+	}
+}
+
+void window::present() {
+	SDL_RenderPresent(this->r);
+	SDL_Delay(this->delay);
 }
 
 // DDA Algorithm
@@ -1085,17 +1090,15 @@ void window::draw_convex_hull(list<vec3<double>> &points,
 	this->draw_convex_hull(points);
 }
 
-// Assume mesh has pre-computed normals.
-void window::draw_mesh(mesh &m) {
-	list<triangle> faces = m.faces();
+void window::draw_mesh(mesh *m) {
+	list<triangle> *faces = m->faces;
+	quicksort(*faces, &compare::tz);
 
-	quicksort(faces, &compare::tz);
-
-	linked_node<triangle> *face_node = faces.front();
+	linked_node<triangle> *face_node = faces->front();
 
 	color c = *(this->current_color);
 
-	for (int64_t k = 0; k < m.face_count(); k++) {
+	for (int64_t k = 0; k < m->face_count(); k++) {
 		triangle T = face_node->value();
 		vec3<double> N = T.normal(),
 					 v1 = T.v1(),
@@ -1111,21 +1114,7 @@ void window::draw_mesh(mesh &m) {
 	}
 }
 
-void window::draw_mesh(mesh &m, 
-					   color &c) {
+void window::draw_mesh(mesh *m, color &c) {
 	this->set_render_color(c);
 	this->draw_mesh(m);
-}
-
-void window::draw() {
-	this->fill_background(color::BLACK());
-
-	color R = color::RED(), B = color::BLUE();
-
-	mesh m = mesh::parse_obj("obj/isohedron.obj");
-
-	this->draw_mesh(m, R);
-
-	SDL_RenderPresent(this->r);
-	SDL_Delay(this->delay);
 }
