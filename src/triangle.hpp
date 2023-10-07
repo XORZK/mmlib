@@ -18,9 +18,6 @@ class triangle {
         triangle(const triangle& copy);
 
 		~triangle() {
-			(*A).~vec3();
-			(*B).~vec3();
-			(*C).~vec3();
 		}
 
         vec3<double> v1() const;

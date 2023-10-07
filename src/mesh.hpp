@@ -11,18 +11,29 @@
 
 class mesh {
 	private:
-	public:	
-		list<triangle> *faces = nullptr;
-		list<vec3<int64_t>> *mappings = nullptr;
-		list<vec4<double>> *vertices = nullptr;
+		list<triangle> F;
+		list<vec3<int64_t>> M;
+		list<vec4<double>> V;
 
 		void assign_faces();
+	public:
+		mesh();
+
+		mesh(mesh &m);
+
+		mesh(std::string fn);
+
+		~mesh();
+
+		list<vec4<double>>& vertices();
+
+		list<triangle>& faces();
+
+		list<vec3<int64_t>>& mappings();
 
 		int64_t vertex_count() const;
 
 		int64_t face_count() const;
 };
-
-mesh* parse_obj(std::string fn);
 
 #endif

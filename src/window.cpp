@@ -1090,31 +1090,32 @@ void window::draw_convex_hull(list<vec3<double>> &points,
 	this->draw_convex_hull(points);
 }
 
-void window::draw_mesh(mesh *m) {
-	list<triangle> *faces = m->faces;
-	quicksort(*faces, &compare::tz);
+void window::draw_mesh(mesh &m) {
+	list<triangle> &faces = m.faces();
+	quicksort(faces, &compare::tz);
 
-	linked_node<triangle> *face_node = faces->front();
+	linked_node<triangle> *face_node = faces.front();
 
-	color c = *(this->current_color);
+	color curr = *(this->current_color);
 
-	for (int64_t k = 0; k < m->face_count(); k++) {
+	for (int64_t k = 0; k < m.face_count(); k++) {
 		triangle T = face_node->value();
 		vec3<double> N = T.normal(),
 					 v1 = T.v1(),
 					 v2 = T.v2(),
 					 v3 = T.v3();
 
-		color diffuse = light::diffuse(l->norm_pos(), N, c);
+		color diffuse = light::diffuse(l->norm_pos(), N, curr);
 
 		this->set_render_color(diffuse, false);
 		this->draw_filled_triangle(v1, v2, v3);
 
 		face_node = face_node->next();
 	}
+
 }
 
-void window::draw_mesh(mesh *m, color &c) {
+void window::draw_mesh(mesh &m, color &c) {
 	this->set_render_color(c);
 	this->draw_mesh(m);
 }

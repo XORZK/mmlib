@@ -383,9 +383,9 @@ class window {
 		void draw_convex_hull(list<vec3<double>> &points,
 							  color &c);
 
-		void draw_mesh(mesh *m);
+		void draw_mesh(mesh &m);
 
-		void draw_mesh(mesh *m, color &c);
+		void draw_mesh(mesh &m, color &c);
 
         void tick();
 

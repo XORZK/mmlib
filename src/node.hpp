@@ -17,7 +17,7 @@ template <typename T> class linked_node {
         ~linked_node() {}
 
         void value(T v);
-        T value() const;
+        T& value();
 
         void next(linked_node* n, bool set_prev = true);
         linked_node<T>* next() const;
@@ -33,14 +33,14 @@ template <typename T> class linked_node {
         bool operator<=(linked_node<T>* node) const;
 
         template <typename U>
-        friend std::ostream& operator<<(std::ostream& out, const linked_node<U>& h);
+        friend std::ostream& operator<<(std::ostream& out, linked_node<U>& h);
 };
 
 template <typename T> void linked_node<T>::value(T new_value) { 
     this->v = new_value; 
 }
 
-template <typename T> T linked_node<T>::value() const { 
+template <typename T> T& linked_node<T>::value() { 
     return this->v; 
 }
 
@@ -90,12 +90,12 @@ template <typename T> bool linked_node<T>::operator<=(linked_node<T>* node) cons
     return (this->value() <= node->value());
 }
 
-template <typename T> std::ostream& operator<<(std::ostream& out, const linked_node<T>& h) {
+template <typename T> std::ostream& operator<<(std::ostream& out, linked_node<T>& h) {
     out << "[" << h.value() << "]";
     return out;
 }
 
-template <typename T> std::ostream& operator<<(std::ostream& out, const linked_node<T>* h) {
+template <typename T> std::ostream& operator<<(std::ostream& out, linked_node<T>* h) {
     out << *h;
     return out;
 }
